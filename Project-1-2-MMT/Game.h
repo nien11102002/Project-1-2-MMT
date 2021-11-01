@@ -21,6 +21,6 @@ void Read(ifstream& file, vector<vector<char>>& stat1, vector<vector<char>>& sta
 int Random();
 void RunGame(vector<vector<char>>& map1, vector<vector<char>>& map2, vector<vector<char>>& stat1, vector<vector<char>>& stat2);
 int count(vector<vector<char>>enermystat);
-void Attack(vector<vector<char>>& map, vector<vector<char>>& allystat, vector<vector<char>>& enermystat, bool& flag);
+void Attack(vector<vector<char>>& map, vector<vector<char>>& allystat, vector<vector<char>>& enermystat, bool& flag, int player);
 void DFS(vector<vector<char>>enermystat, int i, int j, int n, vector<vector<bool>>& visited);
 #endif

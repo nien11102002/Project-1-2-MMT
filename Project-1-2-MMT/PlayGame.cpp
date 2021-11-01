@@ -11,40 +11,48 @@ int Random() {
 void RunGame(vector<vector<char>>& map1, vector<vector<char>>& map2, 
 vector<vector<char>>& stat1, vector<vector<char>>& stat2) {
 	int number = Random();
+	
 	cout << "\nPlayer #" << number << " go first.\n";
 	do {
 		bool flag = true;
-		if (number == 1) {
+
+		if (number == 1) 
+		{
+			int temp = number + 1;
 			do {
-				cout << "\nPlayer #" << number << "turn.\n";
-				Attack(map1, stat1, stat2, flag);
+				cout << "\nPlayer #" << number << " turn.\n";
+				Attack(map1, stat1, stat2, flag, number);
 			} while (flag);
 
 			flag = true;
 
 			do {
-				cout << "\nPlayer #" << number + 1 << "turn.\n";
-				Attack(map2, stat2, stat1, flag);
+				cout << "\nPlayer #" << number + 1 << " turn.\n";
+				Attack(map2, stat2, stat1, flag, temp);
 			} while (flag);
 		}
-		else {
+
+		if(number == 2)
+		{
+			int temp = number - 1;
 			do {
-				cout << "\nPlayer #" << number << "turn.\n";
-				Attack(map2, stat2, stat1, flag);
+				cout << "\nPlayer #" << number << " turn.\n";
+				Attack(map2, stat2, stat1, flag, number);
 			} while (flag);
 
 			flag = true;
 
 			do {
-				cout << "\nPlayer #" << number + 1 << "turn.\n";
-				Attack(map1, stat1, stat2, flag);
+				cout << "\nPlayer #" << temp << " turn.\n";
+				Attack(map1, stat1, stat2, flag, temp);
 			} while (flag);
 		}
+
 	} while (!game_over);
 }
 
 void Attack(vector<vector<char>>& map, vector<vector<char>>& allystat, 
-	vector<vector<char>>& enermystat, bool &flag)
+	vector<vector<char>>& enermystat, bool &flag, int player)
 {
 	cout << "Map:\n";
 	PrintMap(map);
@@ -55,7 +63,7 @@ void Attack(vector<vector<char>>& map, vector<vector<char>>& allystat,
 		cout << "Attack at:\n";
 		cout << "Row: "; cin >> x;
 		cout << "Collum: "; cin >> y;
-	} while (x < 1 || x > 20 || y < 1 || y > 20);
+	} while (x < 1 || x > 20 || y < 1 || y > 20 || enermystat[x][y]=='o');
 	x--; y--;
 
 	if (enermystat[x][y] == 'x') {
@@ -64,14 +72,18 @@ void Attack(vector<vector<char>>& map, vector<vector<char>>& allystat,
 		map[x][y] = 'O';
 		int army = count(enermystat);
 		if (army < quantity)
-			cout << "\nYou have destroy one enermy ship.\n";
-		if (army == 0)
+			cout << "\nYou have destroy" << quantity - army << " enermy ship(s).\n";
+		if (army == 0) {
+			cout << "Game over! Player #" << player << " win the game." << endl;
 			game_over = true;
+		}
+			
 	}
 	else
 	{
 		cout << "Miss the target.\n";
 		map[x][y] = 'X';
+		enermystat[x][y] = '~';
 		flag = false;
 	}
 }

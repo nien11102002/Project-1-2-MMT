@@ -17,9 +17,11 @@ int main() {
 
 		RunGame(map1, map2, stat1, stat2);
 
-		cout << "Continue?\n";
+		cout << "Continue?(Y/N)\n";
 		cin >> rep1;
 		cin >> rep2;
+		rep1 = toupper(rep1);
+		rep2 = toupper(rep2);
 
 	} while (rep1 == 'Y' && rep2 == 'Y');
 	
