@@ -10,25 +10,16 @@ void ReadMap(ifstream& file, vector<vector<char>>& map1, vector<vector<char>>& m
 	}
 }
 
-void ReadData1(ifstream& file, vector<vector<char>>& stat1) {
+void ReadData(ifstream& file, vector<vector<char>>& stat) {
 	string line;
 	while (getline(file, line)) {
 		vector<char>tempest;
 		for (int i = 0; i < line.size(); i++)
 			tempest.push_back(line[i]);
-		stat1.push_back(tempest);
+		stat.push_back(tempest);
 	}
 }
 
-void ReadData2(ifstream& file, vector<vector<char>>& stat2) {
-	string line;
-	while (getline(file, line)) {
-		vector<char>tempest;
-		for (int i = 0; i < line.size(); i++)
-			tempest.push_back(line[i]);
-		stat2.push_back(tempest);
-	}
-}
 
 void PrintMap(vector<vector<char>>map) {
 	for (int i = 0; i < map.size(); i++)

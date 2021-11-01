@@ -4,13 +4,13 @@ void Read(ifstream& file, vector<vector<char>>& stat1, vector<vector<char>>& sta
 	if (!file.is_open())
 		cerr << "Error" << endl;
 	else
-		ReadData1(file, stat1);
+		ReadData(file, stat1);
 	file.close();
 
 	file.open("tablecloth 2.txt", ios::out);
 	if (!file.is_open())
 		cerr << "Error" << endl;
 	else
-		ReadData2(file, stat2);
+		ReadData(file, stat2);
 	file.close();
 }
