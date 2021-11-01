@@ -1,26 +1,28 @@
 #include"Game.h"
 
 int main() {
-	ifstream file;
-	vector<vector<char>> map1, map2, stat1,stat2;
-	file.open("map.txt", ios::out);
-	if (!file.is_open())
-		cerr << "Error" << endl;
-	else
-		ReadMap(file, map1, map2);
-	file.close();
+	char rep1, rep2;
+	do {
+		ifstream file;
+		vector<vector<char>> map1, map2, stat1, stat2;
 
-	Read(file, stat1, stat2);
+		file.open("map.txt", ios::out);
+		if (!file.is_open())
+			cerr << "Error" << endl;
+		else
+			ReadMap(file, map1, map2);
+		file.close();
 
-	cout << "Map Client 1:\n";
-	PrintMap(map1);
-	cout << "\nMap Client 2:\n";
-	PrintMap(map2);
+		Read(file, stat1, stat2);
 
-	cout << "\nTable cloth 1:\n";
-	PrintTableCloth(stat1);
-	cout << "\nTable cloth 2:\n";
-	PrintTableCloth(stat2);
+		RunGame(map1, map2, stat1, stat2);
+
+		cout << "Continue?\n";
+		cin >> rep1;
+		cin >> rep2;
+
+	} while (rep1 == 'Y' && rep2 == 'Y');
+	
 
 	return 0;
 }

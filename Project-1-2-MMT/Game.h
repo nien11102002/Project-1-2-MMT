@@ -11,6 +11,7 @@
 using namespace std;
 
 static int const quantity = 12;
+static bool game_over = false;
 
 void ReadMap(ifstream& file, vector<vector<char>>& map1, vector<vector<char>>& map2);
 void ReadData(ifstream& file, vector<vector<char>>& stat);
