@@ -52,19 +52,20 @@ vector<vector<char>>& stat1, vector<vector<char>>& stat2) {
 }
 
 void Attack(vector<vector<char>>& map, vector<vector<char>>& allystat, 
-	vector<vector<char>>& enermystat, bool &flag, int player)
+	vector<vector<char>>& enermystat, bool &flag, int player, string Directive)
 {
+	int x = stoi(s.substr(12, s.find_last_of(" ") - s.find_first_of(" ")));
+	int y = stoi(s.substr(13 + s.find_last_of(" ") - s.find_first_of(" "), s.size() - s.find_last_of(" ") - 1));
+	x--;y--;
+	if(x < 1 || x > 20 || y < 1 || y > 20 || enermystat[x][y]=='o')
+	{
+		cout<<"Stat is not available."<<endl;
+		return;
+	}
 	cout << "Map:\n";
 	PrintMap(map);
 	cout << "\nCrewState:\n";
 	PrintTableCloth(allystat);
-	int x, y;
-	do {
-		cout << "Attack at:\n";
-		cout << "Row: "; cin >> x;
-		cout << "Collum: "; cin >> y;
-	} while (x < 1 || x > 20 || y < 1 || y > 20 || enermystat[x][y]=='o');
-	x--; y--;
 
 	if (enermystat[x][y] == 'x') {
 		cout << "\n\nYou have hit enermy ship.\n";
