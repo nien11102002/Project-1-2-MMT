@@ -8,6 +8,7 @@
 #include<ctime>
 #include<fstream>
 #include<string>
+#include<iomanip>
 using namespace std;
 
 static int const quantity = 12;
