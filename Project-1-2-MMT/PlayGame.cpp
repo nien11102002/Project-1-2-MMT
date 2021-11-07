@@ -27,7 +27,7 @@ vector<vector<char>>& stat1, vector<vector<char>>& stat2) {
 			flag = true;
 
 			do {
-				cout << "\nPlayer #" << number + 1 << " turn.\n";
+				cout << "\nPlayer #" << temp << " turn.\n";
 				Attack(map2, stat2, stat1, flag, temp);
 			} while (flag);
 		}
