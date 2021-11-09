@@ -54,13 +54,16 @@ void RunGame(vector<vector<char>>& map1, vector<vector<char>>& map2,
 void Attack(vector<vector<char>>& map, vector<vector<char>>& allystat,
 	vector<vector<char>>& enemystat, bool& flag, int player, string Directive)
 {
+	cout << ">> ";
+	getline(cin, Directive);
 	int x = stoi(Directive.substr(12, Directive.find_last_of(" ") - Directive.find_first_of(" ")));
 	int y = stoi(Directive.substr(13 + Directive.find_last_of(" ") - Directive.find_first_of(" "),
 		Directive.size() - Directive.find_last_of(" ") - 1));
 	x--; y--;
 	if (x < 1 || x > 20 || y < 1 || y > 20 || enemystat[x][y] == 'o')
 	{
-		cout << "Stat is not available." << endl;
+		cout << "Stat is not available. Re-input: " << endl;
+		getline(cin, Directive);
 		return;
 	}
 	
