@@ -38,3 +38,27 @@ void PrintTableCloth(vector<vector<char>>stat) {
 		cout << endl;
 	}
 }
+
+void PrintPlayBoard(vector<vector<char>> cloth, vector<vector<char>> map)
+{
+	cout << setw(25) << "Your Field"<<setw(50)<<"Enemy's Field";
+
+	cout << setw(3);
+	for (int i = 1; i <= 15; i++)
+		cout<< setw(3) << i ;
+	cout << " || " << setw(3);
+	for (int i = 1; i <= 15; i++)
+		cout << setw(3) << i;
+
+	for (int i = 0; i < 15; i++)
+	{
+		cout << left << setw(5) << i+1;
+		for(int j=0;j<15;j++)
+			cout << setw(3) << cloth[i][j];
+		cout << " || ";
+		cout << left << setw(5) << i + 1;
+		for (int j = 1; j <= 15; j++)
+			cout << setw(3) << map[i][j];
+		cout << endl;
+	}
+}
