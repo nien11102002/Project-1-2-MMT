@@ -8,110 +8,109 @@ int Random() {
 	return randomNumber;
 }
 
-void RunGame(vector<vector<char>>& map1, vector<vector<char>>& map2, 
-vector<vector<char>>& stat1, vector<vector<char>>& stat2) {
+void RunGame(vector<vector<char>>& map1, vector<vector<char>>& map2,
+	vector<vector<char>>& stat1, vector<vector<char>>& stat2,string Directive) {
 	int number = Random();
-	
+
 	cout << "\nPlayer #" << number << " go first.\n";
 	do {
 		bool flag = true;
 
-		if (number == 1) 
+		if (number == 1)
 		{
 			int temp = number + 1;
 			do {
 				cout << "\nPlayer #" << number << " turn.\n";
-				Attack(map1, stat1, stat2, flag, number);
+				Attack(map1, stat1, stat2, flag, number,Directive);
 			} while (flag);
 
 			flag = true;
 
 			do {
 				cout << "\nPlayer #" << temp << " turn.\n";
-				Attack(map2, stat2, stat1, flag, temp);
+				Attack(map2, stat2, stat1, flag, temp,Directive);
 			} while (flag);
 		}
 
-		if(number == 2)
+		if (number == 2)
 		{
 			int temp = number - 1;
 			do {
 				cout << "\nPlayer #" << number << " turn.\n";
-				Attack(map2, stat2, stat1, flag, number);
+				Attack(map2, stat2, stat1, flag, number,Directive);
 			} while (flag);
 
 			flag = true;
 
 			do {
 				cout << "\nPlayer #" << temp << " turn.\n";
-				Attack(map1, stat1, stat2, flag, temp);
+				Attack(map1, stat1, stat2, flag, temp,Directive);
 			} while (flag);
 		}
 
 	} while (!game_over);
 }
 
-void Attack(vector<vector<char>>& map, vector<vector<char>>& allystat, 
-	vector<vector<char>>& enermystat, bool &flag, int player, string Directive)
+void Attack(vector<vector<char>>& map, vector<vector<char>>& allystat,
+	vector<vector<char>>& enemystat, bool& flag, int player, string Directive)
 {
-	int x = stoi(s.substr(12, s.find_last_of(" ") - s.find_first_of(" ")));
-	int y = stoi(s.substr(13 + s.find_last_of(" ") - s.find_first_of(" "), s.size() - s.find_last_of(" ") - 1));
-	x--;y--;
-	if(x < 1 || x > 20 || y < 1 || y > 20 || enermystat[x][y]=='o')
+	int x = stoi(Directive.substr(12, Directive.find_last_of(" ") - Directive.find_first_of(" ")));
+	int y = stoi(Directive.substr(13 + Directive.find_last_of(" ") - Directive.find_first_of(" "),
+		Directive.size() - Directive.find_last_of(" ") - 1));
+	x--; y--;
+	if (x < 1 || x > 20 || y < 1 || y > 20 || enemystat[x][y] == 'o')
 	{
-		cout<<"Stat is not available."<<endl;
+		cout << "Stat is not available." << endl;
 		return;
 	}
-	cout << "Map:\n";
-	PrintMap(map);
-	cout << "\nCrewState:\n";
-	PrintTableCloth(allystat);
+	
+	PrintPlayBoard(map,enemystat);
 
-	if (enermystat[x][y] == 'x') {
-		cout << "\n\nYou have hit enermy ship.\n";
-		enermystat[x][y] = 'o';
+	if (enemystat[x][y] == 'x') {
+		cout << "\n\nYou have hit enemy  ship.\n";
+		enemystat[x][y] = 'o';
 		map[x][y] = 'O';
-		int army = count(enermystat);
+		int army = count(enemystat);
 		if (army < quantity)
-			cout << "\nYou have destroy" << quantity - army << " enermy ship(s).\n";
+			cout << "\nYou have destroy" << quantity - army << " enemy ship(s).\n";
 		if (army == 0) {
 			cout << "Game over! Player #" << player << " win the game." << endl;
 			game_over = true;
 		}
-			
+
 	}
 	else
 	{
 		cout << "Miss the target.\n";
 		map[x][y] = 'X';
-		enermystat[x][y] = '~';
+		enemystat[x][y] = '~';
 		flag = false;
 	}
 }
 
-int count(vector<vector<char>>enermystat) {
+int count(vector<vector<char>>enemystat) {
 	int count = 0;
-	vector<vector<bool>> visited(20,vector<bool>(20,false));
-	
+	vector<vector<bool>> visited(20, vector<bool>(20, false));
 
-	for (int i = 0; i < enermystat.size(); i++)
+
+	for (int i = 0; i < enemystat.size(); i++)
 	{
-		for (int j = 0; j < enermystat[i].size(); j++)
-			if (enermystat[i][j] == 'x' && !visited[i][j])
+		for (int j = 0; j < enemystat[i].size(); j++)
+			if (enemystat[i][j] == 'x' && !visited[i][j])
 			{
 				count++;
-				DFS(enermystat, i, j, enermystat.size(), visited);
+				DFS(enemystat, i, j, enemystat.size(), visited);
 			}
 	}
 
 	return count;
 }
 
-void DFS(vector<vector<char>>enermystat, int i, int j, int n, vector<vector<bool>> &visited)
+void DFS(vector<vector<char>>enemystat, int i, int j, int n, vector<vector<bool>>& visited)
 {
-	if (i < 0 || j < 0 || i > n - 1 || j > n - 1 || visited[i][j] || enermystat[i][j] == '*' || enermystat[i][j] == 'o')
+	if (i < 0 || j < 0 || i > n - 1 || j > n - 1 || visited[i][j] || enemystat[i][j] == '*' || enemystat[i][j] == 'o')
 		return;
 	visited[i][j] = true;
 	for (int k = 0; k < 4; k++)
-		DFS(enermystat, i + x[k], j + y[k], n, visited);
+		DFS(enemystat, i + x[k], j + y[k], n, visited);
 }
