@@ -2,6 +2,7 @@
 
 int main() {
 	char rep1, rep2;
+	string Directive;
 	do {
 		ifstream file;
 		vector<vector<char>> map1, map2, stat1, stat2;
@@ -15,7 +16,7 @@ int main() {
 
 		Read(file, stat1, stat2);
 
-		RunGame(map1, map2, stat1, stat2);
+		RunGame(map1, map2, stat1, stat2,Directive);
 
 		cout << "Continue?(Y/N)\n";
 		cin >> rep1;
@@ -24,7 +25,7 @@ int main() {
 		rep2 = toupper(rep2);
 
 	} while (rep1 == 'Y' && rep2 == 'Y');
-	
+
 
 	return 0;
 }
