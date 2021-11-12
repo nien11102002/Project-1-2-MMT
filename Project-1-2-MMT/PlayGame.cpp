@@ -55,7 +55,7 @@ void Attack(vector<vector<char>>& map, vector<vector<char>>& allystat,
 	vector<vector<char>>& enemystat, bool& flag, int player, string Directive)
 {
 	PrintPlayBoard(map, enemystat);
-
+	cout<<endl;
 	cout << ">>";
 	getline(cin, Directive);
 	int a = Directive.find_last_of(" ") - Directive.find_first_of(" ")-1;
