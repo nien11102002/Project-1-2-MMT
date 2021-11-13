@@ -1,34 +1,28 @@
 #include"DataCore.h"
+void Readfile(unordered_map<Account*, Player*>& hashmap, fstream& jav, fstream& editor) {
+	while (!(jav.eof() && editor.eof())) {
+		string name_acc, password, player_name;
+		int victory = 0, loss = 0, enflag = 0;
 
-void Readfile(map<Account, Player>& hashmap, fstream& jav, fstream& editor) {
-	while (!editor.eof() && !jav.eof()) {
-		Account info;
-		Player pvp;
+		getline(editor, name_acc); getline(jav, player_name);
 
-		string t; int num;
+		editor >> enflag; jav >> victory;
 
-		getline(editor, t);
-		info.setName(t);
-		editor >> num;
-		info.setEnNum(num);
-		editor.ignore();
-		getline(editor, t);
-		info.EncryptPass(t);
 		editor.ignore();
 
-		getline(jav, t);
-		pvp.setName(t);
-		jav >> num;
-		pvp.setWin(num);
-		jav >> num;
-		pvp.setLoss(num);
-		jav.ignore();
-		jav.ignore();
+		getline(editor, password); jav >> loss;
 
-		hashmap[info] = pvp;
+		editor.ignore(); jav.ignore(); jav.ignore();
+
+		hashmap.insert(make_pair(new Account(name_acc,enflag,password), 
+			new Player(player_name,victory,loss)));
 	}
 }
 
-void Display(map<Account, Player> hashmap)
-{
+void Display(unordered_map<Account*, Player*> hashmap) {
+	unordered_map<Account*, Player*>::iterator itr;
+	cout << "\nAll Elements : \n";
+	for (itr = hashmap.begin(); itr != hashmap.end(); itr++){
+		cout << itr->first->ToString() << " " << itr->second->ToString() << endl << endl;
+	}
 }

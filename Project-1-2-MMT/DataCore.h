@@ -3,7 +3,7 @@
 
 #include<iostream>
 #include<fstream>
-#include<map>
+#include<unordered_map>
 #include<sstream>
 #include<string>
 #include<vector>
@@ -17,9 +17,11 @@ private:
 	long loss;
 
 public:
-	void setName(string str) { name = str; }
-	void setWin(long victory) { win = victory; }
-	void setLoss(long defeat) { loss = defeat; }
+	Player(string name, long vic, long los) {
+		this->name = name;
+		this->win = vic;
+		this->loss = los;
+	}
 
 	string Name() { return name; }
 	long Win() { return win; }
@@ -39,6 +41,24 @@ public:
 	}
 };
 
+class EncodeAndDecode {
+public:
+	string Encode(string in) {
+		string temp;
+		for (int i = 0; i < in.length(); i++)
+			temp += in[i] + 3;
+		return temp;
+	}
+
+	string Decode(string out) {
+		string temp;
+		for (int i = 0; i < out.length(); i++)
+			temp += out[i] - 3;
+		return temp;
+	}
+};
+
+
 class Account {
 private:
 	string pass;
@@ -51,40 +71,37 @@ public:
 		account_name = "";
 	}
 
-	void setEnNum(int num) { encrypted = num; }
-	int encryption() { return encrypted; }
-
-	void setName(string acc) {account_name = acc;}
-	string Account_name() { return account_name; }
-
-
-	void EncryptPass(const string &in) {
-		string temp;
+	Account(string acc_name, int encrypt, string password) {
+		this->account_name = acc_name;
+		this->encrypted = encrypt;
 		if (encrypted != 0) {
-			for (int i = 0; i < in.length(); i++)
-				temp += in[i] + 3;
-			pass = temp;
+			EncodeAndDecode vpn;
+			this->pass = vpn.Encode(password);
 		}
 		else
-			pass = in;
+			this->pass = password;
 	}
 
-	string Pass() { return pass; }
-
-	string ToString() {
-		string result;
-		if (encrypted == 1) {
-			for (int i = 0; i < pass.length(); i++)
-				result += pass[i] - 3;
+	int encryption() { return encrypted; }
+	string Account_name() { return account_name; }
+	string Pass() {
+		string temp;
+		if (encrypted != 0) {
+			EncodeAndDecode vpn;
+			temp = vpn.Decode(pass);
 		}
 		else
-			result = pass;
-		stringstream todo;
-		todo << "Acc name: " << account_name << ", Password: " << result;
-		return todo.str();
+			temp = pass;
+		return temp;
+	}
+
+	string ToString() {
+		stringstream builder;
+		builder << account_name << " " << Pass() << endl;
+		return builder.str();
 	}
 };
 
-void Readfile(map<Account, Player>& hashmap, fstream& jav, fstream& editor);
-void Display(map<Account, Player> mp);
+void Readfile(unordered_map<Account*, Player*>& hashmap, fstream& jav, fstream& editor);
+void Display(unordered_map<Account*, Player*> hashmap);
 #endif
