@@ -1,20 +1,7 @@
-#include"DataCore.h"
+﻿#include"DataCore.h"
+#include"Game.h"
 
 int main() {
-	fstream editor, jav;
-	editor.open("Acc and Pass.txt", ios::in);
-	jav.open("Player data.txt", ios::in);
-	map<Account, Player> hashmap;
-	if (!editor.is_open() && !jav.is_open()) {
-		cerr << "Can't open file.\n";
-		return 0;
-	}
-	else {
-		Readfile(hashmap, jav, editor);
-		jav.close();
-		editor.close();
-	}
-		
-
+	// Hàm main để xây Server và Client.
 	return 0;
 }
