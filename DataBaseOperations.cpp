@@ -4,15 +4,16 @@
 
 	fstream editor, jav;
 	editor.open("Acc and Pass.txt", ios::in);
-	jav.open("Player data.txt", ios::in);
-	map<Account, Player> hashmap;
+	jav.open("Player.txt", ios::in);
+
+	unordered_map<Account*, Player*> hashmap;
+
 	if (!editor.is_open() && !jav.is_open()) {
 		cerr << "Can't open file.\n";
 		return 0;
 	}
 	else {
 		Readfile(hashmap, jav, editor);
-		jav.close();
-		editor.close();
 	}
+	Display(hashmap);
 }
