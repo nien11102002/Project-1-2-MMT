@@ -15,5 +15,27 @@
 	else {
 		Readfile(hashmap, jav, editor);
 	}
-	Display(hashmap);
+	
+	jav.close(); editor.close();
+
+	string command;
+	do {
+		cout << ">> ";
+		getline(cin, command);
+
+		if (command == "log in") {
+
+		}
+		else if (command == "change password") {
+
+		}
+		else if (command == "register") {
+
+		}
+		else
+			cout << "Not match any results. Please enter again.\n" << endl;
+
+	} while (command != "quit" || command != "log out");
+
+	cout << "Bye bye, have a nice day.\n";
 }
