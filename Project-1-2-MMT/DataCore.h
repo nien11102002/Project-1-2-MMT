@@ -15,27 +15,39 @@ private:
 	string name;
 	long win;
 	long loss;
+	bool online;
+	string DOB;
 
 public:
-	Player(string name, long vic, long los) {
+	Player(string name, long vic, long los, string birthday) {
 		this->name = name;
 		this->win = vic;
 		this->loss = los;
+		this->online = false;
+		this->DOB = birthday;
 	}
+
+	void setOnline(bool onl) { online = onl; }
 
 	string Name() { return name; }
 	long Win() { return win; }
 	long Loss() { return loss; }
+	string Birthday() { return DOB; }
 
 	Player() {
 		name = "";
+		DOB = "";
 		win = 0;
 		loss = 0;
+		online = false;
 	}
 
 	string ToString() {
 		stringstream builder;
-		builder << name << "\n" << "Win: " << win << "\tLoss: " << loss;
+		builder << name << "\n" << "Win: " << win << "\tLoss: " << loss << "\n";
+		builder << "Birthday: " << DOB << endl;
+		string onl = (online == true) ? "Online.\n" : "Offline.\n";
+		builder << "Status: " << onl;
 		string stream =  builder.str();
 		return stream;
 	}
@@ -71,9 +83,9 @@ public:
 		account_name = "";
 	}
 
-	Account(string acc_name, int encrypt, string password) {
+	Account(string acc_name, int en, string password) {
 		this->account_name = acc_name;
-		this->encrypted = encrypt;
+		encrypted = en;
 		if (encrypted != 0) {
 			EncodeAndDecode vpn;
 			this->pass = vpn.Encode(password);

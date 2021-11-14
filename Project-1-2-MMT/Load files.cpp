@@ -1,10 +1,11 @@
 #include"DataCore.h"
 void Readfile(unordered_map<Account*, Player*>& hashmap, fstream& jav, fstream& editor) {
 	while (!(jav.eof() && editor.eof())) {
-		string name_acc, password, player_name;
+		string name_acc, password, player_name, DOB;
 		int victory = 0, loss = 0, enflag = 0;
 
 		getline(editor, name_acc); getline(jav, player_name);
+		getline(jav, DOB);
 
 		editor >> enflag; jav >> victory;
 
@@ -15,7 +16,7 @@ void Readfile(unordered_map<Account*, Player*>& hashmap, fstream& jav, fstream& 
 		editor.ignore(); jav.ignore(); jav.ignore();
 
 		hashmap.insert(make_pair(new Account(name_acc,enflag,password), 
-			new Player(player_name,victory,loss)));
+			new Player(player_name,victory,loss,DOB)));
 	}
 }
 
