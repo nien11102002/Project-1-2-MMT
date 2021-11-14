@@ -28,6 +28,10 @@ public:
 	}
 
 	void setOnline(bool onl) { online = onl; }
+	void setName(string str) { name = str; }
+	void setWin(long vic) { win = vic; }
+	void setLoss(long def) { loss = def; }
+	void setBirthday(string ser) { DOB = ser; }
 
 	string Name() { return name; }
 	long Win() { return win; }
@@ -115,5 +119,6 @@ public:
 };
 
 void Readfile(unordered_map<Account*, Player*>& hashmap, fstream& jav, fstream& editor);
-void Display(unordered_map<Account*, Player*> hashmap);
+void Login(unordered_map<Account*, Player*> hashmap);
+bool isMatch(unordered_map<Account*, Player*>& hashmap, string account, string password, Player& user);
 #endif
