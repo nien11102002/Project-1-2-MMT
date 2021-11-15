@@ -5,19 +5,8 @@
 	fstream editor, jav;
 	unordered_map<Account*, Player*> hashmap;
 
-	editor.open("Acc and Pass.txt", ios::in);
-	jav.open("Player.txt", ios::in);
-		
-
-	if (!editor.is_open() && !jav.is_open()) {
-		cerr << "Can't open file.\n";
-		return 0;
-	}
-	else {
-		Readfile(hashmap, jav, editor);
-	}
+	LoadData(editor, jav, hashmap);
 	
-	jav.close(); editor.close();
 	string command;
 
 	do {
@@ -39,4 +28,5 @@
 			cout << "Not match any results. Please enter again.\n" << endl;
 
 	} while (true);
+
 }
