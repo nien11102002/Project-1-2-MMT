@@ -9,10 +9,10 @@ void Login(unordered_map<Account*, Player*> hashmap) {
 		getline(cin, account);
 		cout << ">>Password: ";
 		getline(cin, password);
-	} while (isMatch(hashmap, account, password, user));
+	} while (isMatch(hashmap, account, password, user) != true);
 	
-	// viết các hàm check_user tại đây.
-
+	cout << "Welcome to BattleShip Online.\n";
+	cout<<user.ToString();
 }
 
 bool isMatch(unordered_map<Account*, Player*> &hashmap, string account, string password, Player& user) {

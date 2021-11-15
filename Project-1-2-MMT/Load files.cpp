@@ -1,4 +1,5 @@
 #include"DataCore.h"
+
 void Readfile(unordered_map<Account*, Player*>& hashmap, fstream& jav, fstream& editor) {
 	while (!(jav.eof() && editor.eof())) {
 		string name_acc, password, player_name, DOB;

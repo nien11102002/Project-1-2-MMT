@@ -98,6 +98,16 @@ public:
 			this->pass = password;
 	}
 
+	void setPassword(string secret, int t) { 
+		encrypted = t;
+		if(t!=1)
+			pass = secret;
+		else {
+			EncodeAndDecode vpn;
+			pass = vpn.Encode(secret);
+		}
+	}
+
 	int encryption() { return encrypted; }
 	string Account_name() { return account_name; }
 	string Pass() {
@@ -121,4 +131,5 @@ public:
 void Readfile(unordered_map<Account*, Player*>& hashmap, fstream& jav, fstream& editor);
 void Login(unordered_map<Account*, Player*> hashmap);
 bool isMatch(unordered_map<Account*, Player*>& hashmap, string account, string password, Player& user);
+void ChangePass(unordered_map<Account*, Player*>& hashmap);
 #endif
