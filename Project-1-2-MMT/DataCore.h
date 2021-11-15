@@ -128,6 +128,7 @@ public:
 	}
 };
 
+void LoadData(fstream &editor, fstream &jav, unordered_map<Account*, Player*>& hashmap);
 void Readfile(unordered_map<Account*, Player*>& hashmap, fstream& jav, fstream& editor);
 void Login(unordered_map<Account*, Player*> hashmap);
 bool isMatch(unordered_map<Account*, Player*>& hashmap, string account, string password, Player& user);
