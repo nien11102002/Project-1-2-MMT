@@ -13,6 +13,8 @@ void Login(unordered_map<Account*, Player*> hashmap) {
 	
 	cout << "Welcome to BattleShip Online.\n";
 	cout<<user.ToString();
+	
+	// làm các hàm check user sau khi login tại đây.
 }
 
 bool isMatch(unordered_map<Account*, Player*> &hashmap, string account, string password, Player& user) {
