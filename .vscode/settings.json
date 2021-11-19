@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "xhash": "cpp",
+        "unordered_map": "cpp"
+    }
+}

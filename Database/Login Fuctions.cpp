@@ -46,6 +46,7 @@ void check_user_menu(unordered_map<Account*, Player*>& hashmap){
 	} while(!isValid_getline(opt));
 	int option = getoption(opt);
 	string name = getname(opt);
+	dispatch(hashmap, option, name);
 }
 
 bool isValid_getline(string opt){
@@ -88,21 +89,48 @@ string getname(string opt){
 	return name_string;
 }
 
-bool checkExist_Name(unordered_map<Account*, Player*> &hashmap, string account, string password, Player& user) {
-	for (auto it = hashmap.begin(); it != hashmap.end(); it++) 
-		if (it->first->Account_name() == account && it->first->Pass() == password) {
-			user.setName(it->second->Name());
-			user.setBirthday(it->second->Birthday());
-			user.setOnline(true);
-			user.setWin(it->second->Win());
-			user.setLoss(it->second->Loss());
+void dispatch(unordered_map<Account*, Player*> &hashmap, int option, string name){
+	const int find_name = 1;
+	const int check_online = 2;
+	const int show_dob = 3;
+	const int show_fullname = 4;
+	const int show_note = 5;
+	const int show_all = 6;
+	const int show_point = 7;
+	switch (option)
+	{
+	case find_name:
+		if(find_Name(hashmap, name)) cout << "Player " << name << " exists!";
+		break;
+	case check_online:
+		
+		break;
+	case show_dob:
+	
+		break;
+	case show_fullname:
+	
+		break;
+	case show_note:
+	
+		break;
+	case show_all:
+	
+		break;
+	case show_point:
+	
+		break;
+	default:
+		break;
+	}
+}
 
-			it->second->setOnline(true);
-			return true;
-		}
-			
+bool find_Name(unordered_map<Account*, Player*> &hashmap, string pname) {
+	for (auto it = hashmap.begin(); it != hashmap.end(); it++) 
+		if (it->second->Name() == pname) return true;		
 	return false;
 }
+
 bool isMatch(unordered_map<Account*, Player*> &hashmap, string account, string password, Player& user) {
 	for (auto it = hashmap.begin(); it != hashmap.end(); it++) 
 		if (it->first->Account_name() == account && it->first->Pass() == password) {
