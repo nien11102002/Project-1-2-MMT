@@ -31,20 +31,21 @@ void check_user_menu(unordered_map<Account*, Player*>& hashmap){
 	cout << "Your choice:\n\tcheck_user ";
 	string opt = "-NULL NULL";
 	do{
-	if(isValid_getline(opt)){
+	if(isValid_getline(opt))
 		getline(cin, opt);
-		int option = getoption(opt);
-		string name = getname(opt);
-	}
 	else{
-		if(!isValid_getline(opt))
-		cout << "Wrong input format, please re-enter:";
-		else if(getoption(opt) == 0)
-		cout << "Error: option is invalid! Please re-enter";
+		if(getoption(opt) == 0){
+			cout << "Error: invalid option! Please re-enter:";
+			getline(cin, opt);
+		}
+		else{
+			cout << "Wrong input format! Please re-enter:";
+			getline(cin, opt);
+		}
 	}
 	} while(!isValid_getline(opt));
-	
-
+	int option = getoption(opt);
+	string name = getname(opt);
 }
 
 bool isValid_getline(string opt){
@@ -87,8 +88,21 @@ string getname(string opt){
 	return name_string;
 }
 
-bool isValid();
+bool checkExist_Name(unordered_map<Account*, Player*> &hashmap, string account, string password, Player& user) {
+	for (auto it = hashmap.begin(); it != hashmap.end(); it++) 
+		if (it->first->Account_name() == account && it->first->Pass() == password) {
+			user.setName(it->second->Name());
+			user.setBirthday(it->second->Birthday());
+			user.setOnline(true);
+			user.setWin(it->second->Win());
+			user.setLoss(it->second->Loss());
 
+			it->second->setOnline(true);
+			return true;
+		}
+			
+	return false;
+}
 bool isMatch(unordered_map<Account*, Player*> &hashmap, string account, string password, Player& user) {
 	for (auto it = hashmap.begin(); it != hashmap.end(); it++) 
 		if (it->first->Account_name() == account && it->first->Pass() == password) {
