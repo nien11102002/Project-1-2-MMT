@@ -37,6 +37,7 @@ public:
 	string Name() { return name; }
 	long Win() { return win; }
 	long Loss() { return loss; }
+	bool Online() { return online;}
 	string Birthday() { return DOB; }
 
 	Player() {
