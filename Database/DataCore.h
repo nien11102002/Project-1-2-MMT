@@ -135,4 +135,6 @@ void Readfile(unordered_map<Account*, Player*>& hashmap, fstream& jav, fstream& 
 void Login(unordered_map<Account*, Player*> hashmap);
 bool isMatch(unordered_map<Account*, Player*>& hashmap, string account, string password, Player& user);
 void ChangePass(unordered_map<Account*, Player*>& hashmap);
+void Register(unordered_map<Account*, Player*>& hashmap,string Command);
+bool isAvailableUsername(unordered_map<Account*, Player*>& hashmap, string S);
 #endif
