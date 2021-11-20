@@ -31,27 +31,27 @@ void check_user_menu(unordered_map<Account*, Player*>& hashmap){
 	cout << "Your choice:\n\tcheck_user ";
 	string opt = "-NULL NULL";
 	do{
-	if(isValid_getline(opt))
-		getline(cin, opt);
-	else{
+		if(isValid_getline(opt))
+			getline(cin, opt);
+		else{
 		if(getoption(opt) == 0){
 			cout << "Error: invalid option! Please re-enter:";
 			getline(cin, opt);
-		}
+	}
 		else{
 			cout << "Wrong input format! Please re-enter:";
 			getline(cin, opt);
-		}
+	}	
 	}
 	} while(!isValid_getline(opt));
 	int option = getoption(opt);
-	string name = getname(opt);
-	dispatch(hashmap, option, name);
+	string username = getname(opt);
+	dispatch(hashmap, option, username);
 }
 
 bool isValid_getline(string opt){
 	bool result = 0;
-	regex input_pattern("-(\\w+_?\\w+)");
+	regex input_pattern("-(\\w+_?\\w+)\\s(\\w+(\\s?\\w+)*)");
 	if(regex_match(opt,input_pattern))
 	result = 1;
 	return result;
@@ -83,15 +83,14 @@ int getoption(string opt){
 string getname(string opt){
 	string name_string;
 	smatch match;
-	regex name_pattern("\\s(\\w+\\s?\\w+)");
+	regex name_pattern("\\s(\\w+(\\s?\\w+)*)");
 	regex_search(opt,match,name_pattern);
 	name_string = match[1];
 	return name_string;
 }
 
-bool isValid_getname(unordered_map<Account*, Player*> &hashmap, string name){
 
-}
+
 
 void dispatch(unordered_map<Account*, Player*> &hashmap, int option, string name){
 	const int find_name = 1;
@@ -105,16 +104,18 @@ void dispatch(unordered_map<Account*, Player*> &hashmap, int option, string name
 	{
 	case find_name:
 		if(find_Name(hashmap, name)) cout << "Player " << name << " exists!";
-		else cout << "Player " << name << " doesnt exist!";
+		else cout << "Player " << name << " does not exist!";
 		break;
 	case check_online:
 		if(check_Online(hashmap, name)) cout << "Player " << name << " is online";
+		else if(find_Name(hashmap, name)) cout << "Player " << name << " does not exist!";
+		else cout << "Player " << name << " is not online!";
 		break;
 	case show_dob:
 		show_DOB(hashmap, name);
 		break;
 	case show_fullname:
-	
+
 		break;
 	case show_note:
 	
@@ -147,7 +148,10 @@ void show_DOB(unordered_map<Account*, Player*> &hashmap, string pname){
 	for (auto it = hashmap.begin(); it != hashmap.end(); it++) 
 		if (it->second->Name() == pname)
 			cout << "Player " << pname << "'s date of birth is: " << it->second->Birthday();
+	if(!find_Name(hashmap, pname))
+		cout << "Player " << pname << " does not exist!";	
 }
+
 
 
 
