@@ -137,4 +137,5 @@ bool isMatch(unordered_map<Account*, Player*>& hashmap, string account, string p
 void ChangePass(unordered_map<Account*, Player*>& hashmap);
 void Register(unordered_map<Account*, Player*>& hashmap,string Command);
 bool isAvailableUsername(unordered_map<Account*, Player*>& hashmap, string S);
+void writeAtBottomOfNewOne(Player P, Account A);
 #endif
