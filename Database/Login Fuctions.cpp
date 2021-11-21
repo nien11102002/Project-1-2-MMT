@@ -81,18 +81,18 @@ int getoption(string opt){
 }
 
 string getname(string opt){
-	string name_string;
+	string user_string;
 	smatch match;
-	regex name_pattern("\\s(\\w+(\\s?\\w+)*)");
-	regex_search(opt,match,name_pattern);
-	name_string = match[1];
-	return name_string;
+	regex user_pattern("\\s(\\w+(\\s?\\w+)*)");
+	regex_search(opt,match,user_pattern);
+	user_string = match[1];
+	return user_string;
 }
 
 
 
 
-void dispatch(unordered_map<Account*, Player*> &hashmap, int option, string name){
+void dispatch(unordered_map<Account*, Player*> &hashmap, int option, string username){
 	const int find_name = 1;
 	const int check_online = 2;
 	const int show_dob = 3;
@@ -103,22 +103,22 @@ void dispatch(unordered_map<Account*, Player*> &hashmap, int option, string name
 	switch (option)
 	{
 	case find_name:
-		if(find_Name(hashmap, name)) cout << "Player " << name << " exists!";
-		else cout << "Player " << name << " does not exist!";
+		if(find_Name(hashmap, username)) cout << "Player " << username << " exists!";
+		else cout << "Player " << username << " does not exist!";
 		break;
 	case check_online:
-		if(check_Online(hashmap, name)) cout << "Player " << name << " is online";
-		else if(find_Name(hashmap, name)) cout << "Player " << name << " does not exist!";
-		else cout << "Player " << name << " is not online!";
+		if(check_Online(hashmap, username)) cout << "Player " << username << " is online";
+		else if(!find_Name(hashmap, username)) cout << "Player " << username << " does not exist!";
+		else cout << "Player " <<username << " is not online!";
 		break;
 	case show_dob:
-		show_DOB(hashmap, name);
+		show_DOB(hashmap, username);
 		break;
 	case show_fullname:
-
+		show_Fullname(hashmap, username);
 		break;
 	case show_note:
-	
+
 		break;
 	case show_all:
 	
@@ -131,29 +131,64 @@ void dispatch(unordered_map<Account*, Player*> &hashmap, int option, string name
 	}
 }
 
-bool find_Name(unordered_map<Account*, Player*> &hashmap, string pname) {
+bool find_Name(unordered_map<Account*, Player*> &hashmap, string username) {
 	for (auto it = hashmap.begin(); it != hashmap.end(); it++) 
-		if (it->second->Name() == pname) return true;		
+		if (it->first->Account_name() == username) return true;		
 	return false;
 }
 
-bool check_Online(unordered_map<Account*, Player*> &hashmap, string pname) {
+bool check_Online(unordered_map<Account*, Player*> &hashmap, string username) {
 	for (auto it = hashmap.begin(); it != hashmap.end(); it++) 
-		if (it->second->Name() == pname)
+		if (it->first->Account_name() == username)
 			if(it->second->Online()) return true;		
 	return false;
 }
 
-void show_DOB(unordered_map<Account*, Player*> &hashmap, string pname){
+void show_DOB(unordered_map<Account*, Player*> &hashmap, string username){
 	for (auto it = hashmap.begin(); it != hashmap.end(); it++) 
-		if (it->second->Name() == pname)
-			cout << "Player " << pname << "'s date of birth is: " << it->second->Birthday();
-	if(!find_Name(hashmap, pname))
-		cout << "Player " << pname << " does not exist!";	
+		if (it->first->Account_name() == username)
+			cout << "Player " << username << "'s date of birth is: " << it->second->Birthday();
+	if(!find_Name(hashmap, username))
+		cout << "Player " << username << " does not exist!";	
 }
 
+void show_Fullname(unordered_map<Account*, Player*> &hashmap, string username){
+	for (auto it = hashmap.begin(); it != hashmap.end(); it++) 
+		if (it->first->Account_name() == username)
+			cout << "Player " << username << "'s fullname is: " << it->second->Name();
+	if(!find_Name(hashmap, username))
+		cout << "Player " << username << " does not exist!";	
+}
 
+void show_Note(unordered_map<Account*, Player*> &hashmap, string username){
+	for (auto it = hashmap.begin(); it != hashmap.end(); it++) 
+		if (it->first->Account_name() == username)
+			cout << "Player " << username << "as no note";
+	if(!find_Name(hashmap, username))
+		cout << "Player " << username << " does not exist!";	
+}
 
+void show_All(unordered_map<Account*, Player*> &hashmap, string username){
+	cout << "All information about Player: " << username << endl;
+	for (auto it = hashmap.begin(); it != hashmap.end(); it++) 
+		if (it->first->Account_name() == username){
+			cout << "Fullname: " << it->second->Name();
+			cout << "Status: " << it->second->Online();
+			cout << "Date of Birth: " << it->second->Birthday();
+			cout << "Win: " << it->second->Win();
+			cout << "Loss: " << it->second->Loss();		
+		}
+	if(!find_Name(hashmap, username))
+		cout << "Player " << username << " does not exist!";	
+}
+
+void show_Point(unordered_map<Account*, Player*> &hashmap, string username){
+	for (auto it = hashmap.begin(); it != hashmap.end(); it++) 
+		if (it->first->Account_name() == username)
+			cout << "Player " << username << "'s point: W: " << it->second->Win() << " L: " << it->second->Loss();
+	if(!find_Name(hashmap, username))
+		cout << "Player " << username << " does not exist!";
+}
 
 bool isMatch(unordered_map<Account*, Player*> &hashmap, string account, string password, Player& user) {
 	for (auto it = hashmap.begin(); it != hashmap.end(); it++) 
