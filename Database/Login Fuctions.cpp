@@ -15,6 +15,7 @@ void Login(unordered_map<Account*, Player*> hashmap) {
 	cout<<user.ToString();
 	
 	// làm các hàm check user sau khi login tại đây.
+	check_user_menu(hashmap);
 }
 
 void check_user_menu(unordered_map<Account*, Player*>& hashmap){
