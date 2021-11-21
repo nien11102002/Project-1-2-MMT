@@ -6,7 +6,7 @@ void Register(unordered_map<Account*, Player*>& hashmap,string Command)
 	string username = Command.substr(firstSpace, Command.length() - firstSpace);
 	if (!isAvailableUsername(hashmap, username))
 	{
-		cout << "This username isn't available!!!\n";
+		cout << "This username has been available!!!\n";
 		return;
 	}
 	cout << ">> Password: ";
@@ -27,7 +27,25 @@ void Register(unordered_map<Account*, Player*>& hashmap,string Command)
 	}
 	else cout << "Register successfullyand Message wasn’t encrypted\n";
 
-	hashmap.insert(make_pair(new Account(username,encr,pass),new Player()));
+	cin.ignore();
+	string name, DOB;
+	int d, m, y;
+	cout << "What is your fullname: ";
+	getline(cin, name);
+	cin.ignore();
+	cout << "\nWhat is your Date of Birth: \n";
+	cout << "Day: "; cin >> d;
+	cout << "Month: "; cin >> m;
+	cout << "Year: "; cin >> y;
+	stringstream builder;
+	builder << d << "/" << m << "/" << y;
+	DOB = builder.str();
+
+	Player P(name, 0, 0, DOB);
+	Account A(username, encr, pass);
+	writeAtBottomOfNewOne(P, A);
+
+	hashmap.insert(make_pair(new Account(username,encr,pass),new Player(name,0,0,DOB)));
 }
 
 bool isAvailableUsername(unordered_map<Account*, Player*>& hashmap, string S)
@@ -43,4 +61,23 @@ bool isAvailableUsername(unordered_map<Account*, Player*>& hashmap, string S)
 	}
 
 	return result;
+}
+
+void writeAtBottomOfNewOne(Player P, Account A)
+{
+	fstream f;
+	f.open("Acc and Pass.txt", ios::out | ios::app);
+	f << endl;
+	f << A.Account_name() << endl;;
+	f << A.encryption() << endl;
+	f << A.Pass() << endl;
+	f.close();
+
+	f.open("Player.txt", ios::out | ios::app);
+	f << endl;
+	f << P.Name() << endl;
+	f << P.Birthday() << endl;
+	f << P.Win() << endl;
+	f << P.Loss() << endl;
+	f.close();
 }
