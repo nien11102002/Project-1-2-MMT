@@ -1,0 +1,38 @@
+#include"Header.h"
+
+int main() {
+	WSAData data;
+	WORD ver = MAKEWORD(2, 2);
+	int wsResult = WSAStartup(ver, &data);
+	if (wsResult != 0){
+		cerr << "Can't start Winsock, Err #" << wsResult << endl;
+		return 0;
+	}
+
+	// Create a socket.
+	SOCKET hexgate = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
+	if (hexgate == INVALID_SOCKET){// check if it failed to create.
+		cerr << "Can't create socket, Err #" << WSAGetLastError() << endl;
+		WSACleanup();
+		return 0;
+	}
+
+	//Complete the core of hexgate 
+	sockaddr_in core;
+	core.sin_family = AF_INET;
+	core.sin_port = htons(stoi(port));
+	inet_pton(AF_INET, IP.c_str(), &core.sin_addr);
+
+	// Connect to Server
+	if (connect(hexgate, (SOCKADDR*)&core, sizeof(core)) == 0) {
+		cout << "Connected!" << endl;
+		string in;
+		getline(cin, in);
+		exit(0);
+	}
+	else {
+		cout << "Error Connecting to Host" << endl;
+		exit(1);
+	}
+	return 0;
+}
