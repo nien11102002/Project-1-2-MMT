@@ -54,7 +54,7 @@ void check_user_menu(unordered_map<Account*, Player*>& hashmap){
 	cout << "6. Show all information: -show_all" << endl;
 	cout << "7. Show point: -show_point" << endl;
 	cout << endl << "Answer format should be: check_user [-option] [username]" << endl;
-	cout << "Your choice:\n\n\tcheck_user ";
+	cout << "Your choice:\n	\n\tcheck_user ";
 	string opt = "-null null";
 	do{
 		if(isValid_getline(opt))

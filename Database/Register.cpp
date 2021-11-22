@@ -25,7 +25,7 @@ void Register(unordered_map<Account*, Player*>& hashmap,string Command)
 		encr = 1;
 		cout << "Register successfully and Message was encrypted\n";
 	}
-	else cout << "Register successfully and Message wasn’t encrypted\n";
+	else cout << "Register successfullyand Message wasn’t encrypted\n";
 
 	cin.ignore();
 	string name, DOB;
