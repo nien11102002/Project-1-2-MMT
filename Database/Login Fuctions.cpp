@@ -40,7 +40,6 @@ void Login(unordered_map<Account*, Player*> hashmap) {
 	default:
 		break;
 	}
-	
 }
 
 void check_user_menu(unordered_map<Account*, Player*>& hashmap){
@@ -234,7 +233,8 @@ void setup_info_menu(unordered_map<Account*, Player*>& hashmap, string username)
 	}
 	while(!isValid_getline(opt));
 	int option = getoption_setup(opt);
-	dispatch_setup(hashmap, option, username);
+	string element = getelement_setup(opt);
+	dispatch_setup(hashmap, option, element, username);
 }
 
 bool isValid_getline_setup(string opt){
@@ -260,19 +260,28 @@ int getoption_setup(string opt){
 	else return 0;
 }
 
-void dispatch_setup(unordered_map<Account*, Player*> &hashmap, int option, string username){
-	const int change_Fullname = 1;
-	const int change_Dob = 2;
-	const int change_Note = 3;
+string getelement_setup(string opt){
+	string element_string;
+	smatch match;
+	regex user_pattern("\\s(\\w+(\\s?\\w+)*)");
+	regex_search(opt,match,user_pattern);
+	element_string = match[1];
+	return element_string;
+}
+
+void dispatch_setup(unordered_map<Account*, Player*> &hashmap, int option, string element, string username){
+	const int change_fullname = 1;
+	const int change_dob = 2;
+	const int change_note = 3;
 	switch (option)
 	{
-	case change_Fullname:
+	case change_fullname:
+		
+		break;
+	case change_dob:
 
 		break;
-	case change_Dob:
-
-		break;
-	case change_Note:
+	case change_note:
 	
 		break;
 	default:
@@ -280,7 +289,13 @@ void dispatch_setup(unordered_map<Account*, Player*> &hashmap, int option, strin
 	}
 }
 
-
+void change_Fullname(unordered_map<Account*, Player*> &hashmap, int option, string element, string username){
+	for (auto it = hashmap.begin(); it != hashmap.end(); it++) 
+		if (it->first->Account_name() == username)
+			cout << "Player " << username << "'s fullname is: " << it->second->Name();
+	if(!find_Name(hashmap, username))
+		cout << "Player " << username << " does not exist!";	
+}
 
 bool isMatch(unordered_map<Account*, Player*> &hashmap, string account, string password, Player& user) {
 	for (auto it = hashmap.begin(); it != hashmap.end(); it++) 

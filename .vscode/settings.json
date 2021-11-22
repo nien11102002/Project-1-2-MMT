@@ -8,6 +8,11 @@
         "system_error": "cpp",
         "xlocale": "cpp",
         "utility": "cpp",
-        "string": "cpp"
+        "string": "cpp",
+        "initializer_list": "cpp",
+        "list": "cpp",
+        "regex": "cpp",
+        "vector": "cpp",
+        "xutility": "cpp"
     }
 }
