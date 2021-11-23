@@ -1,24 +1,28 @@
 #include "DataCore.h"
 
-void Register(unordered_map<Account*, Player*>& hashmap,string Command)
+void Register(unordered_map<Account*, Player*>& hashmap, string Command)
 {
 	int firstSpace = Command.find_first_of(" ") + 1;
 	string username = Command.substr(firstSpace, Command.length() - firstSpace);
-	if (!isAvailableUsername(hashmap, username))
+	if (isAvailableUsername(hashmap, username)==true)
 	{
-		cout << "This username has been available!!!\n";
+		cout << "This username is already exist!!!\n";
 		return;
 	}
 	cout << ">> Password: ";
 	string pass;
 	getline(cin, pass);
 	cout << "Do you want to encrypt your message before sending?\n";
+
 	char answer;
 	do
 	{
 		cout << "(Y/N): ";
 		cin >> answer;
-	} while (answer == 'Y' || answer == 'N');
+		answer = toupper(answer);
+
+	} while (answer != 'Y' && answer != 'N');
+
 	bool encr = 0;
 	if (answer == 'Y')
 	{
@@ -45,7 +49,7 @@ void Register(unordered_map<Account*, Player*>& hashmap,string Command)
 	Account A(username, encr, pass);
 	writeAtBottomOfNewOne(P, A);
 
-	hashmap.insert(make_pair(new Account(username,encr,pass),new Player(name,0,0,DOB)));
+	hashmap.insert(make_pair(new Account(username, encr, pass), new Player(name, 0, 0, DOB)));
 }
 
 bool isAvailableUsername(unordered_map<Account*, Player*>& hashmap, string S)
