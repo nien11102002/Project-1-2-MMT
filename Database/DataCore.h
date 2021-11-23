@@ -134,11 +134,18 @@ public:
 	}
 };
 
+// hàm nạp dữ liệu từ file.
 void LoadData(fstream &editor, fstream &jav, unordered_map<Account*, Player*>& hashmap);
 void Readfile(unordered_map<Account*, Player*>& hashmap, fstream& jav, fstream& editor);
+
+// hàm login.
 void Login(unordered_map<Account*, Player*> hashmap);
 bool isMatch(unordered_map<Account*, Player*>& hashmap, string account, string password, Player& user);
+
+// hàm đổi password.
 void ChangePass(unordered_map<Account*, Player*>& hashmap);
+
+// hàm tạo tài khoản mới cho ng chơi.
 void Register(unordered_map<Account*, Player*>& hashmap,string Command);
 bool isAvailableUsername(unordered_map<Account*, Player*>& hashmap, string S);
 void writeAtBottomOfNewOne(Player P, Account A);
