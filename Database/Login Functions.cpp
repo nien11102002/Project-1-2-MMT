@@ -21,7 +21,7 @@ void Login(unordered_map<Account*, Player*> hashmap) {
 	string gura;
 	int flag = 0;
 	do{
-
+	
 	do{	
 		if(get_gura(gura) == 0 && flag != 0) 
 			cout << "Function unrecognized! Please re-enter";
