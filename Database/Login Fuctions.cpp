@@ -15,9 +15,9 @@ void Login(unordered_map<Account*, Player*> hashmap) {
 	cout<<user.ToString();
 	// làm các hàm check user sau khi login tại đây.
 	cout << "What do you want to do?" << endl;
-	cout << "1. Checking the status of other players: check_user [-option] [username]" << endl;
-	cout << "2. Setting up your personal information: setup_info [-option] [element]" << endl;
-	cout << "NOTE: If you need help, just type: \help" << endl;
+	cout << "1. Check the status of other players: check_user [-option] [username]" << endl;
+	cout << "2. Change your personal information: setup_info [-option] [element]" << endl;
+	cout << "NOTE: If you need help, just type: \help [funciton]" << endl << endl;
 	string gura;
 	int flag = 0;
 	do{	
@@ -27,7 +27,7 @@ void Login(unordered_map<Account*, Player*> hashmap) {
 		cin >> gura;
 		flag++;
 	} while (get_gura(gura) == 0);
-
+	
 	switch (get_gura(gura))
 	{
 	case 1:
@@ -37,21 +37,35 @@ void Login(unordered_map<Account*, Player*> hashmap) {
 		setup_info_menu(hashmap, gura, account);
 		break;
 	case 3:
-		show_help_gura();
+		show_help_checkuser();
+		break;
+	case 4:
+		show_help_setup();
+		break;
+	case -1:
+		
+		break;
 	default:
 		break;
 	}
+	flag = 0;
 }
 
 int get_gura(string input){
+	const regex quit_pattern("[Qq][Uu][Ii][Tt]");
+	if(regex_match(input, quit_pattern)) return -1;
 	string gura_choice = input.substr(0, input.find_first_of(' '));
 	if(gura_choice == "check_user") return 1;
 	else if(gura_choice == "setup_info") return 2;
-	else if(gura_choice == "\help") return 3;
+	else if(gura_choice == "\help "){
+		string function_string = input.substr(input.find_first_of(' ') + 1, input.size() - (input.find_first_of(' ') + 1));
+		if(function_string == "check_user") return 3;
+		else if(function_string == "setup_info") return 4;
+	}
 	else return 0;
 }
 
-void show_help_gura(){
+void show_help_checkuser(){
 	cout << "=== Checking the status of another player ===" << endl;
 	cout << "Choose one(1) of the option below:" << endl;
 	cout << "1. Find: -find" << endl;
@@ -61,13 +75,16 @@ void show_help_gura(){
 	cout << "5. Show note: -show_note" << endl;
 	cout << "6. Show all information: -show_all" << endl;
 	cout << "7. Show point: -show_point" << endl;
-	cout << endl;
+}
+
+void show_help_setup(){
 	cout << "=== Change your personal information ===" << endl;
 	cout << "Choose one(1) of the option below:" << endl;
 	cout << "1. Change your fullname: -fullname" << endl;
 	cout << "2. Change your date of birth: -date" << endl;
 	cout << "3. Change your note: -note" << endl;
 }
+
 void check_user_menu(unordered_map<Account*, Player*>& hashmap, string opt){	
 	int option = getoption(opt);
 	string username = getname(opt);
@@ -293,6 +310,7 @@ void change_Note(unordered_map<Account*, Player*> &hashmap, int option, string e
 			cout << "Birthday of player " << username << " has been changed to" << it->second->Name();
 		}
 }
+
 bool isMatch(unordered_map<Account*, Player*> &hashmap, string account, string password, Player& user) {
 	for (auto it = hashmap.begin(); it != hashmap.end(); it++) 
 		if (it->first->Account_name() == account && it->first->Pass() == password) {
