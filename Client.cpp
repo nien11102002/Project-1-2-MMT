@@ -1,5 +1,3 @@
-#include"Header.h"
-
 int main() {
 	WSAData data;
 	WORD ver = MAKEWORD(2, 2);
@@ -26,13 +24,44 @@ int main() {
 	// Connect to Server
 	if (connect(hexgate, (SOCKADDR*)&core, sizeof(core)) == 0) {
 		cout << "Connected!" << endl;
-		string in;
-		getline(cin, in);
-		exit(0);
+		string mess;
+
+		while (true) {
+			cout << "> ";
+			getline(cin, mess);
+
+			if (mess.compare("quit")){
+				cout << "Break the connection.\n";
+				break;
+			}
+
+			//message before send
+			int iResult = send(hexgate, mess.c_str(), strlen(mess.c_str()), 0);
+
+			if (iResult <= 0)
+			{
+				cout << "send() failed: " << WSAGetLastError() << endl;
+				break;
+			}
+			
+		}
 	}
 	else {
 		cout << "Error Connecting to Host" << endl;
 		exit(1);
 	}
+
+	//close socket.
+	int result = shutdown(hexgate, SD_SEND);
+	if (result == SOCKET_ERROR) {
+		cout << "shutdown() failed with error: " << WSAGetLastError() << endl;
+		closesocket(hexgate);
+		WSACleanup();
+		return 1;
+	}
+
+	closesocket(hexgate);
+	WSACleanup();
+
 	return 0;
 }
