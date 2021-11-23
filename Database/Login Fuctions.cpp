@@ -22,7 +22,7 @@ void Login(unordered_map<Account*, Player*> hashmap) {
 	int flag = 0;
 	do{	
 		if(get_gura(gura) == 0 && flag != 0) 
-			cout << "Unrecognizable choice! Please re-enter";
+			cout << "Function unrecognized! Please re-enter";
 		else cout << "Your choice: "; 
 		cin >> gura;
 		flag++;
@@ -43,7 +43,7 @@ void Login(unordered_map<Account*, Player*> hashmap) {
 		show_help_setup();
 		break;
 	case -1:
-		
+		cout << "Quitting";
 		break;
 	default:
 		break;
@@ -57,7 +57,7 @@ int get_gura(string input){
 	string gura_choice = input.substr(0, input.find_first_of(' '));
 	if(gura_choice == "check_user") return 1;
 	else if(gura_choice == "setup_info") return 2;
-	else if(gura_choice == "\help "){
+	else if(gura_choice == "\help"){
 		string function_string = input.substr(input.find_first_of(' ') + 1, input.size() - (input.find_first_of(' ') + 1));
 		if(function_string == "check_user") return 3;
 		else if(function_string == "setup_info") return 4;
