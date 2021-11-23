@@ -4,7 +4,7 @@ void Register(unordered_map<Account*, Player*>& hashmap, string Command)
 {
 	int firstSpace = Command.find_first_of(" ") + 1;
 	string username = Command.substr(firstSpace, Command.length() - firstSpace);
-	if (isAvailableUsername(hashmap, username)==true)
+	if (isAvailableUsername(hashmap, username) == true)
 	{
 		cout << "This username is already exist!!!\n";
 		return;
@@ -36,7 +36,6 @@ void Register(unordered_map<Account*, Player*>& hashmap, string Command)
 	int d, m, y;
 	cout << "What is your fullname: ";
 	getline(cin, name);
-	cin.ignore();
 	cout << "\nWhat is your Date of Birth: \n";
 	cout << "Day: "; cin >> d;
 	cout << "Month: "; cin >> m;
@@ -50,17 +49,18 @@ void Register(unordered_map<Account*, Player*>& hashmap, string Command)
 	writeAtBottomOfNewOne(P, A);
 
 	hashmap.insert(make_pair(new Account(username, encr, pass), new Player(name, 0, 0, DOB)));
+	cin.ignore();
 }
 
 bool isAvailableUsername(unordered_map<Account*, Player*>& hashmap, string S)
 {
-	bool result = true;
+	bool result = false;
 	for (auto i = hashmap.begin(); i != hashmap.end(); i++)
 	{
 		if (i->first->Account_name() == S)
 		{
-			result = false;
-			break;
+			result = true;
+			return result;
 		}
 	}
 
