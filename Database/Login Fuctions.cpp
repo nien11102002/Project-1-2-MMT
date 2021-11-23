@@ -50,7 +50,7 @@ void Login(unordered_map<Account*, Player*> hashmap) {
 	}
 	flag = 0;
 }
-
+//hàm lấy lựa chọn từ người dùng nhập ở trên
 int get_gura(string input){
 	const regex quit_pattern("[Qq][Uu][Ii][Tt]");
 	if(regex_match(input, quit_pattern)) return -1;
@@ -64,7 +64,7 @@ int get_gura(string input){
 	}
 	else return 0;
 }
-
+// 2 hàm xuất ra bảng menu
 void show_help_checkuser(){
 	cout << "=== Checking the status of another player ===" << endl;
 	cout << "Choose one(1) of the option below:" << endl;
@@ -85,20 +85,15 @@ void show_help_setup(){
 	cout << "3. Change your note: -note" << endl;
 }
 
+//hàm check_user
 void check_user_menu(unordered_map<Account*, Player*>& hashmap, string opt){	
 	int option = getoption(opt);
 	string username = getname(opt);
 	dispatch(hashmap, option, username);
 }
 
-// bool isValid_getline(string opt){
-// 	bool result = 0;
-// 	regex input_pattern("-(\\w+_?\\w+)\\s(\\w+(\\s?\\w+)*)");
-// 	if(regex_match(opt,input_pattern))
-// 	result = 1;
-// 	return result;
-// }
- 
+
+// 2 hàm trích lựa chọn từ chuỗi người dùng nhập và chuyển thành lựa chọn
 int getoption(string opt){
 	const string opt1 = "find";
 	const string opt2 = "online";
@@ -131,6 +126,7 @@ string getname(string opt){
 	return user_string;
 }
 
+// hàm dispatch đưa lựa chọn đến các option khác nhau
 void dispatch(unordered_map<Account*, Player*> &hashmap, int option, string username){
 	const int find_name = 1;
 	const int check_online = 2;
@@ -170,13 +166,14 @@ void dispatch(unordered_map<Account*, Player*> &hashmap, int option, string user
 	}
 }
 
-bool find_Name(unordered_map<Account*, Player*> &hashmap, string username) {
+// các hàm con
+bool find_Name(unordered_map<Account*, Player*> &hashmap, string username){
 	for (auto it = hashmap.begin(); it != hashmap.end(); it++) 
 		if (it->first->Account_name() == username) return true;		
 	return false;
 }
 
-bool check_Online(unordered_map<Account*, Player*> &hashmap, string username) {
+bool check_Online(unordered_map<Account*, Player*> &hashmap, string username){
 	for (auto it = hashmap.begin(); it != hashmap.end(); it++) 
 		if (it->first->Account_name() == username)
 			if(it->second->Online()) return true;		
@@ -235,14 +232,8 @@ void setup_info_menu(unordered_map<Account*, Player*>& hashmap, string opt_setup
 	dispatch_setup(hashmap, option, element, username);
 }
 
-// bool isValid_getline_setup(string opt){
-// 	bool result = 0;
-// 	regex option_pattern("-(\\w+)");
-// 	if(regex_match(opt,option_pattern))
-// 	result = 1;
-// 	return result;
-// }
 
+//hàm lấy lựa chọn từ chuỗi người dùng như trên
 int getoption_setup(string opt){
 	const string opt1 = "fullname";
 	const string opt2 = "date";
@@ -258,6 +249,7 @@ int getoption_setup(string opt){
 	else return 0;
 }
 
+//hàm lấy nội dung thay đổi 
 string getelement_setup(string opt){
 	string element_string;
 	smatch match;
@@ -267,6 +259,7 @@ string getelement_setup(string opt){
 	return element_string;
 }
 
+// hàm dispatch như trên
 void dispatch_setup(unordered_map<Account*, Player*> &hashmap, int option, string element, string username){
 	const int change_fullname = 1;
 	const int change_dob = 2;
@@ -287,6 +280,7 @@ void dispatch_setup(unordered_map<Account*, Player*> &hashmap, int option, strin
 	}
 }
 
+//các hàm con
 void change_Fullname(unordered_map<Account*, Player*> &hashmap, int option, string element, string username){
 	for (auto it = hashmap.begin(); it != hashmap.end(); it++) 
 		if (it->first->Account_name() == username){
@@ -310,6 +304,7 @@ void change_Note(unordered_map<Account*, Player*> &hashmap, int option, string e
 			cout << "Birthday of player " << username << " has been changed to" << it->second->Name();
 		}
 }
+
 
 bool isMatch(unordered_map<Account*, Player*> &hashmap, string account, string password, Player& user) {
 	for (auto it = hashmap.begin(); it != hashmap.end(); it++) 
