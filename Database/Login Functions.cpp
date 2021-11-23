@@ -20,11 +20,14 @@ void Login(unordered_map<Account*, Player*> hashmap) {
 	cout << "NOTE: If you need help, just type: /help [funciton]" << endl << endl;
 	string gura;
 	int flag = 0;
+	do{
+
 	do{	
 		if(get_gura(gura) == 0 && flag != 0) 
 			cout << "Function unrecognized! Please re-enter";
 		else cout << "Your choice: "; 
 		cin >> gura;
+		cout << endl;
 		flag++;
 	} while (get_gura(gura) == 0);
 	
@@ -49,6 +52,7 @@ void Login(unordered_map<Account*, Player*> hashmap) {
 		break;
 	}
 	flag = 0;
+	} while(!get_gura(gura)==-1);
 }
 //hàm lấy lựa chọn từ người dùng nhập ở trên
 int get_gura(string input){
@@ -91,7 +95,6 @@ void check_user_menu(unordered_map<Account*, Player*>& hashmap, string opt){
 	string username = getname(opt);
 	dispatch(hashmap, option, username);
 }
-
 
 // 2 hàm trích lựa chọn từ chuỗi người dùng nhập và chuyển thành lựa chọn
 int getoption(string opt){
