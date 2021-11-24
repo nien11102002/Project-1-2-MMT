@@ -138,7 +138,9 @@ public:
 void LoadData(fstream& editor, fstream& jav, unordered_map<Account*, Player*>& hashmap);
 void Readfile(unordered_map<Account*, Player*>& hashmap, fstream& jav, fstream& editor);
 
-//hàm ghi đè dữ liệu. Mai t sẽ code hàm ghi đè lại dữ liệu.
+//hàm ghi đè dữ liệu.
+void WriteFile(unordered_map<Account*, Player*> hashmap, fstream& jav, fstream& editor);
+void CleanHashmap(unordered_map<Account*, Player*>& hashmap);
 
 // hàm login.
 void Login(unordered_map<Account*, Player*> hashmap);
