@@ -23,12 +23,9 @@ void Login(unordered_map<Account*, Player*> hashmap) {
 	do {
 
 		do {
-			if (get_gura(gura) == 0 && flag != 0) {
-				cout << "Function unrecognized! Please re-enter";
-				cout << "Your choice: ";
-			}
-			else 
-				cout << "Your choice: ";
+			if (get_gura(gura) == 0 && flag != 0) 
+				cout << "Function unrecognized! Please re-enter";	
+			cout << "Your choice: ";
 			getline(cin, gura);
 			cout << endl;
 			flag++;
