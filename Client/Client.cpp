@@ -11,23 +11,18 @@ int main() {
 
 		hexgate.ConnectSocket();
 
-		hexgate.recvThread = thread([&] { hexgate.ThreadRecv(); });
-
 		while (true) {
+			cout << "> ";
 			getline(cin, msg);
-			string messageToSend;
-			if (hexgate.joinChat == false) {
-				std::ostringstream ss;
-				ss << username << ": " << msg;
-				messageToSend = ss.str();
-			}
-			else if (hexgate.joinChat == true) {
-				std::ostringstream ss;
-				ss << username << " joined the chat!";
-				messageToSend = ss.str();
-				hexgate.joinChat = false;
-			}
+			string messageToSend = username + ": " + msg;
+
 			hexgate.Sending(messageToSend);
+			string rec = hexgate.Receive();
+			if (rec != "")
+			{
+				cout << rec << endl;
+			}
+			Sleep(5);
 		}
 	}
 	return 0;

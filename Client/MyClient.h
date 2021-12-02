@@ -6,7 +6,6 @@
 #include<sstream>
 #include<WinSock2.h>
 #include<WS2tcpip.h>
-#include<thread>
 #pragma comment(lib, "WS2_32.lib")
 using namespace std;
 
@@ -16,14 +15,11 @@ private:
 	int portNumber;
 	sockaddr_in hint;
 	SOCKET serverSocket;
-	bool recvThreadRunning;
+	char receivebuffer[1024] = { '\0' };
 
 public:
-	thread recvThread;
-	bool joinChat = true;
 
 	Client() {
-		recvThreadRunning = false;
 		ServerIP = "127.0.0.1";
 		portNumber = 54010;
 	}
@@ -53,6 +49,7 @@ public:
 	}
 
 	void ConnectSocket() {
+
 		CreateSocket();
 		int connResult = connect(serverSocket, (sockaddr*)&hint, sizeof(hint));
 
@@ -66,32 +63,43 @@ public:
 			cout << "Connected to Server.\n";
 	}
 
-	void ThreadRecv() {
-		recvThreadRunning = true;
-		while (recvThreadRunning) {
 
-			char buf[4096];
-			ZeroMemory(buf, 4096);
-
-			int bytesReceived = recv(serverSocket, buf, 4096, 0);
-			if (bytesReceived > 0)		//If client disconnects, bytesReceived = 0; if error, bytesReceived = -1;
-				cout << string(buf, 0, bytesReceived) << endl;
-
-		}
-	}
 
 	void Sending(string text) {
-		if (!text.empty() && serverSocket != INVALID_SOCKET) 
-			send(serverSocket, text.c_str(), text.size() + 1, 0);
+		if (!text.empty() && serverSocket != INVALID_SOCKET)
+		{
+			int result = send(serverSocket, text.c_str(), text.size() + 1, 0);
+
+			if (result == SOCKET_ERROR) {
+				cout << "send fail with error: " << WSAGetLastError() << endl;
+				closesocket(serverSocket);
+				WSACleanup();
+				exit(1);
+			}
+		}
+
 	}
 
-	~Client(){
+	string Receive() {
+		ZeroMemory(receivebuffer, 1024);
+
+		string reply;
+		int receive_result = recv(serverSocket, receivebuffer, 1024, 0);
+		if (receive_result < 0)
+		{
+			cout << "receive failed!" << WSAGetLastError() << endl;
+			closesocket(serverSocket);
+			WSACleanup();
+			exit(1);
+
+		}
+		string s(receivebuffer);
+		return s;
+	}
+
+	~Client() {
 		closesocket(serverSocket);
 		WSACleanup();
-		if (recvThreadRunning) {
-			recvThreadRunning = false;
-			recvThread.join();	//Destroy safely to thread. 
-		}
 	}
 
 };
