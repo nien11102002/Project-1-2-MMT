@@ -137,7 +137,7 @@ public:
 								//sending to others client in a chat server
 							Sleep(10);
 							
-							int rep = send(socialcredit[cs].client_gate, buffer, receivers + 1, 0);// gui k đc
+							int rep = send(socialcredit[cs].client_gate, buffer, receivers + 1, 0);
 							if (rep == SOCKET_ERROR)
 							{
 								cout << "LOI\n";
