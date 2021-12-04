@@ -1,4 +1,4 @@
-#ifndef MYCLIENT_H
+﻿#ifndef MYCLIENT_H
 #define MYCLIENT_H
 
 #include<iostream>
@@ -15,7 +15,6 @@ private:
 	int portNumber;
 	sockaddr_in hint;
 	SOCKET serverSocket;
-	char receivebuffer[1024] = { '\0' };
 
 public:
 
@@ -64,7 +63,6 @@ public:
 	}
 
 
-
 	void Sending(string text) {
 		if (!text.empty() && serverSocket != INVALID_SOCKET)
 		{
@@ -81,20 +79,15 @@ public:
 	}
 
 	string Receive() {
-		ZeroMemory(receivebuffer, 1024);
-
+		char buffer[1024] = {};
 		string reply;
-		int receive_result = recv(serverSocket, receivebuffer, 1024, 0);
-		if (receive_result < 0)
+		if (recv(serverSocket, buffer, 1024, 0) < 0)// teo
 		{
-			cout << "receive failed!" << WSAGetLastError() << endl;
-			closesocket(serverSocket);
-			WSACleanup();
-			exit(1);
-
+			cout << "receive failed!" << endl;
+			return "loi";
 		}
-		string s(receivebuffer);
-		return s;
+		reply = string(buffer);
+		return reply;
 	}
 
 	~Client() {

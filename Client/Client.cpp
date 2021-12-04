@@ -14,7 +14,7 @@ int main() {
 		while (true) {
 			cout << "> ";
 			getline(cin, msg);
-			string messageToSend = username + ": " + msg;
+			string messageToSend = msg;
 
 			hexgate.Sending(messageToSend);
 			string rec = hexgate.Receive();
