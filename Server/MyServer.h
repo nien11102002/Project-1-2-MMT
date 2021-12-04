@@ -91,7 +91,6 @@ public:
 
 	void Run() {
 		CreateSocket();
-		int connected_clients = 0;
 		vector<client_table> socialcredit;
 
 		while (true) {
@@ -104,16 +103,15 @@ public:
 
 				temp.client_gate = connectionline;
 				temp.connected = true;
-				connected_clients++;
-
+			
 				socialcredit.push_back(temp);
 				cout << "New client: " << connectionline << endl;
-				cout << "Online client(s): " << connected_clients << endl;
+				cout << "Online client(s): " << socialcredit.size() << endl;
 			}
 
 			Sleep(1);
 
-			if (connected_clients > 0) {// there are connected clients available.
+			if (socialcredit.size() > 0) {// there are connected clients available.
 
 				for (int cs = 0; cs < socialcredit.size(); cs++) {
 
@@ -124,28 +122,30 @@ public:
 						int receivers = recv(socialcredit[cs].client_gate, buffer, 1024, 0);
 
 						// closing a client connection.
-						if (Exit(buffer)) {
+						if (Exit(buffer)) 
+						{
 							cout << "An ally has disconnected.\n";
 							socialcredit[cs].connected = false;
 							auto iter = socialcredit.begin() + cs;
 							socialcredit.erase(iter);
-							connected_clients--;
 						}
 						else if (receivers > 0) 
 						{
 							cout << "Client data received: " << buffer << endl;
 								//sending to others client in a chat server
 							Sleep(10);
-							
-							int rep = send(socialcredit[cs].client_gate, buffer, receivers + 1, 0);
-							if (rep == SOCKET_ERROR)
+							for (int i = 0; i < socialcredit.size(); i++) 
 							{
-								cout << "LOI\n";
+								if (i != cs && socialcredit[i].connected) 
+								{
+									int rep = send(socialcredit[i].client_gate, buffer, receivers + 1, 0);
+									if (rep == SOCKET_ERROR)
+										cout << "LOI\n";
+								}
 							}
-														
+																					
 						}
 							
-
 					}
 
 				}
