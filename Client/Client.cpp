@@ -13,16 +13,16 @@ int main() {
 
 		while (true) {
 			cout << "> ";
-			getline(cin, msg);
+			getline(cin, msg); // nhập tin nhắn muốn gửi
 			string messageToSend = msg;
 
-			hexgate.Sending(messageToSend);
-			string rec = hexgate.Receive();
+			hexgate.Sending(messageToSend); // gửi gói tin cho server
+			string rec = hexgate.Receive(); // nhận gói tin từ server
 			if (rec != "")
 			{
 				cout << rec << endl;
 			}
-			Sleep(5);
+			Sleep(5); // hàm này dùng để dồng bộ giữa thời gian chạy giữa client và server để tránh lệch 
 		}
 	}
 	return 0;
