@@ -131,16 +131,25 @@ public:
 						}
 						else if (receivers > 0) // kiểm tra xem nó có nhận được tin từ client k?
 						{
-							cout << "Client data received: " << buffer << endl;
+							cout << "<Client> " << buffer << endl;
 								//sending to others client in a chat server
 							Sleep(10);
+							string msg;
+							string messagetosend;
+							do {
+								cout << "> ";
+								getline(cin, msg); // nhập tin nhắn muốn gửi
+								messagetosend = msg;
+							} while (msg == "");
+
 							for (int i = 0; i < socialcredit.size(); i++) 
 							{
-								if (i != cs && socialcredit[i].connected) // gửi tin nhắn cho các client đang kết nối, như ứng dụng chat
-								{
-									int rep = send(socialcredit[i].client_gate, buffer, receivers + 1, 0);
+								if (/*i != cs && ? t chưa hiểu sao phải khác cs ?*/ socialcredit[i].connected) // gửi tin nhắn cho các client đang kết nối, như ứng dụng chat
+								{	
+									int rep = send(socialcredit[i].client_gate, messagetosend.c_str(), 1024, 0);
 									if (rep == SOCKET_ERROR) // kiểm tra xem có gửi cho client được không?
 										cout << "LOI\n";
+									
 								}
 							}
 																					
