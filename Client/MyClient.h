@@ -23,9 +23,9 @@ public:
 		portNumber = 54010;
 	}
 
-	bool initSocket() {
+	bool initSocket() {// khởi tạo các thông tin cơ bản của socket
 		WSADATA hextech;
-		WORD version = MAKEWORD(2, 2);
+		WORD version = MAKEWORD(2, 2); // phiên bản 2.2.
 		int result = WSAStartup(version, &hextech);
 		if (result != 0) {
 			cout << "Error: can't start Winsock." << endl;
@@ -35,22 +35,22 @@ public:
 	}
 
 	void CreateSocket() {
-		serverSocket = socket(AF_INET, SOCK_STREAM, 0);
+		serverSocket = socket(AF_INET, SOCK_STREAM, 0); // tạo socket
 		if (serverSocket == INVALID_SOCKET) {
 			cout << "Error: can't create socket." << endl;
 			WSACleanup();
 			exit(-1);
 		}
 
-		hint.sin_family = AF_INET;
-		hint.sin_port = htons(portNumber);
-		inet_pton(AF_INET, ServerIP.c_str(), &hint.sin_addr);
+		hint.sin_family = AF_INET; // gán IPv4
+		hint.sin_port = htons(portNumber); // gán port number
+		inet_pton(AF_INET, ServerIP.c_str(), &hint.sin_addr);// thiết lập nội dung
 	}
 
 	void ConnectSocket() {
 
 		CreateSocket();
-		int connResult = connect(serverSocket, (sockaddr*)&hint, sizeof(hint));
+		int connResult = connect(serverSocket, (sockaddr*)&hint, sizeof(hint));// kết nốserverserver
 
 		if (connResult == SOCKET_ERROR) {
 			cout << "Error: can't connect to server." << endl;
@@ -64,7 +64,7 @@ public:
 
 
 	void Sending(string text) {
-		if (!text.empty() && serverSocket != INVALID_SOCKET)
+		if (!text.empty() && serverSocket != INVALID_SOCKET)// gửi gói tiserverserver
 		{
 			int result = send(serverSocket, text.c_str(), text.size() + 1, 0);
 
@@ -78,10 +78,10 @@ public:
 
 	}
 
-	string Receive() {
+	string Receive() { // nhận gói tin từ server
 		char buffer[1024] = {};
 		string reply;
-		if (recv(serverSocket, buffer, 1024, 0) < 0)// teo
+		if (recv(serverSocket, buffer, 1024, 0) < 0)// kiểm tra xem có nhận đc k?
 		{
 			cout << "receive failed!" << endl;
 			return "loi";
