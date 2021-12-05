@@ -79,12 +79,12 @@ public:
 	}
 
 	string Receive() { // nhận gói tin từ server
-		char buffer[1024] = {};
+		char buffer[1024] = { '\0' };
 		string reply;
 		if (recv(serverSocket, buffer, 1024, 0) < 0)// kiểm tra xem có nhận đc k?
 		{
 			cout << "receive failed!" << endl;
-			return "loi";
+			return "LOI";
 		}
 		reply = string(buffer);
 		return reply;

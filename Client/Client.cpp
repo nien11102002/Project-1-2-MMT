@@ -12,16 +12,20 @@ int main() {
 		hexgate.ConnectSocket();
 
 		while (true) {
-			cout << "> ";
+			string messageToSend;
+			do{
+				cout << "> ";
 			getline(cin, msg); // nhập tin nhắn muốn gửi
-			string messageToSend = msg;
-
+			messageToSend = msg;
+			} while (msg == "");
+			
 			hexgate.Sending(messageToSend); // gửi gói tin cho server
 			string rec = hexgate.Receive(); // nhận gói tin từ server
-			if (rec != "")
+			if (rec != "" || rec != "LOI")
 			{
-				cout << rec << endl;
+				cout << "<Server> " << rec << endl;
 			}
+			else cout << "<Server> Error message";
 			Sleep(5); // hàm này dùng để dồng bộ giữa thời gian chạy giữa client và server để tránh lệch 
 		}
 	}
