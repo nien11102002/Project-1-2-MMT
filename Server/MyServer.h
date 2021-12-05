@@ -6,8 +6,8 @@
 #include<string>
 #include<vector>
 #include<sstream>
-#include<WinSock2.h>
-#include<WS2tcpip.h>
+#include<WinSock2.h> // thư viện cho socket
+#include<WS2tcpip.h> // thư viện cho socket loại 
 //#include them cai database header vao nha
 #pragma comment (lib,"WS2_32.lib")
 using namespace std;
@@ -20,10 +20,10 @@ struct client_table {
 class Server {
 private:
 	SOCKET clientSocket;// socket de nhan va ket noi voi client.
-	sockaddr_in hint;
+	sockaddr_in hint; // lõsocketsocket
 	string listenIP;
 	int listenPortNum;
-	char buffer[1024] = { '\0' };
+	char buffer[1024] = { '\0' }; // buffer nhận tin nhắn từ Client
 
 public:
 	Server(string IP, int portnumber) {
@@ -31,7 +31,7 @@ public:
 		this->listenPortNum = portnumber;
 	}
 
-	bool initSocket() {
+	bool initSocket() {  // giống hàm khởi tạo socket của Client
 		WSADATA hextech;
 		WORD version = MAKEWORD(2, 2);
 		int result = WSAStartup(version, &hextech);
@@ -45,20 +45,20 @@ public:
 	void CreateSocket() {
 
 		int i = 1;
-		clientSocket = socket(AF_INET, SOCK_STREAM, 0);
+		clientSocket = socket(AF_INET, SOCK_STREAM, 0); // tạo socket
 
 		if (clientSocket != INVALID_SOCKET) {
 
-			setsockopt(clientSocket, SOL_SOCKET, SO_REUSEADDR, (char*)&i, sizeof(i));
+			setsockopt(clientSocket, SOL_SOCKET, SO_REUSEADDR, (char*)&i, sizeof(i)); // setup loại socket
 
 			
-			hint.sin_family = AF_INET;
-			hint.sin_port = htons(listenPortNum);
-			inet_pton(AF_INET, listenIP.c_str(), &hint.sin_addr);
+			hint.sin_family = AF_INET; // gán IPv4
+			hint.sin_port = htons(listenPortNum); // gán số port
+			inet_pton(AF_INET, listenIP.c_str(), &hint.sin_addr); // hoàn chỉnh nội dung
 
 
-			int bindCheck = bind(clientSocket, (sockaddr*)&hint, sizeof(hint));
-
+			int bindCheck = bind(clientSocket, (sockaddr*)&hint, sizeof(hint)); // bind socket.
+ 
 			if (bindCheck != SOCKET_ERROR) {//If bind OK:
 
 				int listenCheck = listen(clientSocket, SOMAXCONN);	//Tell the socket is for listening. 
@@ -91,13 +91,13 @@ public:
 
 	void Run() {
 		CreateSocket();
-		vector<client_table> socialcredit;
+		vector<client_table> socialcredit; // mảng các client đang kết nối với server
 
 		while (true) {
 			int len = sizeof(hint);
-			SOCKET connectionline = accept(clientSocket, (sockaddr*)&hint, &len);
+			SOCKET connectionline = accept(clientSocket, (sockaddr*)&hint, &len); // tiếp nhận các socket muốn kết nối server
 
-			if (connectionline != INVALID_SOCKET) 
+			if (connectionline != INVALID_SOCKET) // add vào mảng các client mới đã kết nối với server
 			{
 				client_table temp;
 
@@ -117,9 +117,9 @@ public:
 
 					ZeroMemory(buffer, 1024);// reset buffer.
 
-					if (socialcredit[cs].connected == true) {
+					if (socialcredit[cs].connected == true) { // kiểm tra coi nó có kết nối k? trường hợp rớt mạng
 
-						int receivers = recv(socialcredit[cs].client_gate, buffer, 1024, 0);
+						int receivers = recv(socialcredit[cs].client_gate, buffer, 1024, 0); // nhận tin từ client
 
 						// closing a client connection.
 						if (Exit(buffer)) 
@@ -129,17 +129,17 @@ public:
 							auto iter = socialcredit.begin() + cs;
 							socialcredit.erase(iter);
 						}
-						else if (receivers > 0) 
+						else if (receivers > 0) // kiểm tra xem nó có nhận được tin từ client k?
 						{
 							cout << "Client data received: " << buffer << endl;
 								//sending to others client in a chat server
 							Sleep(10);
 							for (int i = 0; i < socialcredit.size(); i++) 
 							{
-								if (i != cs && socialcredit[i].connected) 
+								if (i != cs && socialcredit[i].connected) // gửi tin nhắn cho các client đang kết nối, như ứng dụng chat
 								{
 									int rep = send(socialcredit[i].client_gate, buffer, receivers + 1, 0);
-									if (rep == SOCKET_ERROR)
+									if (rep == SOCKET_ERROR) // kiểm tra xem có gửi cho client được không?
 										cout << "LOI\n";
 								}
 							}
@@ -156,7 +156,7 @@ public:
 
 	bool Exit(char buffer[]) {
 		string msg = string(buffer);
-		if (msg=="disconnected") {
+		if (msg=="disconnected") { // nếu có chữ disconnect thì 
 			return true;
 		}
 		return false;
