@@ -1,4 +1,4 @@
-﻿#include"DataCore.h"
+#include"DataCore.h"
 
 void Login(unordered_map<Account*, Player*> hashmap) {
 	string account, password;
@@ -8,7 +8,7 @@ void Login(unordered_map<Account*, Player*> hashmap) {
 		cout << ">>Account: ";
 		getline(cin, account);
 		cout << ">>Password: ";
-		getline(cin, password);
+		inputMaskedPassword(password);
 	} while (isMatch(hashmap, account, password, user) != true);
 	system("cls");
 	cout << "Welcome to BattleShip Online.\n";
