@@ -11,7 +11,7 @@ void Register(unordered_map<Account*, Player*>& hashmap, string Command)
 	}
 	cout << ">> Password: ";
 	string pass;
-	getline(cin, pass);
+	inputMaskedPassword(pass);
 	cout << "Do you want to encrypt your message before sending?\n";
 
 	char answer;
@@ -84,4 +84,28 @@ void writeAtBottomOfNewOne(Player P, Account A)
 	f << P.Win() << endl;
 	f << P.Loss() << endl;
 	f.close();
+}
+
+void inputMaskedPassword(string& pass)
+{
+	pass = "";
+	char ch;
+	ch = _getch();
+	while (ch != 13)
+	{
+		if (ch == '\b')
+		{
+			if (pass.size() != 0)
+			{
+				cout << "\b \b";
+				pass.erase(pass.size() - 1, 1);
+			}
+		}
+		else
+		{
+			pass.push_back(ch);
+			cout << "*";
+		}
+		ch = _getch();
+	}
 }
