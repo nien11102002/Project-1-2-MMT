@@ -142,6 +142,8 @@ void Readfile(unordered_map<Account*, Player*>& hashmap, fstream& jav, fstream& 
 //hàm ghi đè dữ liệu.
 void WriteFile(unordered_map<Account*, Player*> hashmap, fstream& jav, fstream& editor);
 void CleanHashmap(unordered_map<Account*, Player*>& hashmap);
+// hàm che pass khi nhập vào
+void inputMaskedPassword(string& pass);
 
 // hàm login.
 void Login(unordered_map<Account*, Player*> hashmap);
