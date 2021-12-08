@@ -41,7 +41,7 @@ void PrintTableCloth(vector<vector<char>>stat) {
 
 void PrintPlayBoard(vector<vector<char>> cloth, vector<vector<char>> map)
 {
-	cout << setw(25) << "Your Field" << setw(50) << "Enemy's Field" << endl;
+	cout <<setfill(' ')<< setw(25)<<right << "Your Field" << setfill(' ') << setw(50) << "Enemy's Field" << endl;
 
 	cout << setw(4) << 1;
 	for (int i = 2; i <= 15; i++)
