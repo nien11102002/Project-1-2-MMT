@@ -15,7 +15,7 @@ using namespace std;
 struct client_table {
 	bool connected;
 	SOCKET client_gate;
-	bool logged;
+	bool logged; // phần kiểm tra có đăng nhập hay chưa?
 };
 
 class Server {
@@ -139,7 +139,7 @@ public:
 						else if (receivers > 0)
 						{
 							cout << "Client data received: " << buffer << endl;
-							if (!socialcredit[cs].logged) {
+							if (!socialcredit[cs].logged) { // Nếu chưa đăng nhập thì làm 3 hàm sau đây.
 								string type = string(buffer);
 								if (type == "login" || type == "Login"){
 									Login(hashmap);
@@ -154,7 +154,7 @@ public:
 										cout << "Loi.\n";
 								}
 							}
-							else {
+							else { // Nếu đăng nhập rồi thì làm các hàm của Minh và chơi game của Niên.
 
 							}
 						}
