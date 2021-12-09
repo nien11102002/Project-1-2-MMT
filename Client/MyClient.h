@@ -10,7 +10,7 @@
 using namespace std;
 
 class Client {
-private:
+protected:
 	string ServerIP;
 	int portNumber;
 	sockaddr_in hint;
@@ -77,6 +77,7 @@ public:
 		}
 
 	}
+
 
 	string Receive() { // nhận gói tin từ server
 		char buffer[1024] = { '\0' };

@@ -120,7 +120,7 @@ public:
 					if (socialcredit[cs].connected == true) { // kiểm tra coi nó có kết nối k? trường hợp rớt mạng
 
 						int receivers = recv(socialcredit[cs].client_gate, buffer, 1024, 0); // nhận tin từ client
-
+						string temp;
 						// closing a client connection.
 						if (Exit(buffer)) 
 						{
@@ -132,27 +132,30 @@ public:
 						else if (receivers > 0) // kiểm tra xem nó có nhận được tin từ client k?
 						{
 							cout << "<Client> " << buffer << endl;
-								//sending to others client in a chat server
+						
+							//sending to others client in a chat server
+
 							Sleep(10);
 							string msg;
 							string messagetosend;
 							do {
-								cout << "> ";
+								cout << "<Server> ";
 								getline(cin, msg); // nhập tin nhắn muốn gửi
-								messagetosend = msg;
+									messagetosend = msg;
 							} while (msg == "");
 
-							for (int i = 0; i < socialcredit.size(); i++) 
-							{
-								if (/*i != cs && ? t chưa hiểu sao phải khác cs ?*/ socialcredit[i].connected) // gửi tin nhắn cho các client đang kết nối, như ứng dụng chat
-								{	
+							for (int i = 0; i < socialcredit.size(); i++) {
+								if (i == cs &&  socialcredit[i].connected) // gửi tin nhắn cho các client đang kết nối, như ứng dụng chat
+								{
 									int rep = send(socialcredit[i].client_gate, messagetosend.c_str(), 1024, 0);
 									if (rep == SOCKET_ERROR) // kiểm tra xem có gửi cho client được không?
-										cout << "LOI\n";
-									
+									cout << "LOI\n";
 								}
+
 							}
-																					
+
+								
+																																			
 						}
 							
 					}
@@ -160,6 +163,7 @@ public:
 				}
 
 			}
+
 		}
 	}
 

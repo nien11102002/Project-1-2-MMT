@@ -13,12 +13,12 @@ int main() {
 
 		while (true) {
 			string messageToSend;
-			do{
+			do {
 				cout << "> ";
-			getline(cin, msg); // nhập tin nhắn muốn gửi
-			messageToSend = msg;
+				getline(cin, msg); // nhập tin nhắn muốn gửi
+				messageToSend = msg;
 			} while (msg == "");
-			
+
 			hexgate.Sending(messageToSend); // gửi gói tin cho server
 			string rec = hexgate.Receive(); // nhận gói tin từ server
 			if (rec != "" || rec != "LOI")
