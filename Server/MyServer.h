@@ -9,14 +9,24 @@
 #include<WinSock2.h>
 #include<WS2tcpip.h>
 #include"DataBase.h"
+//#include"Function Header.h"
 #pragma comment (lib,"WS2_32.lib")
 using namespace std;
 
 struct client_table {
 	bool connected;
 	SOCKET client_gate;
-	bool logged; // phần kiểm tra có đăng nhập hay chưa?
+	bool logged;
+	string account;
+	string pass;
+	string re_confirm;
+	Player citizen;
 };
+
+void Login(unordered_map<Account*, Player*> hashmap, client_table& the_wok, char buffer[]);
+bool isMatch(unordered_map<Account*, Player*> hashmap, string account, string password, Player& user);
+void Send_Request(client_table& the_wok, int signal);
+bool Recieve_Info(unordered_map<Account*, Player*> hashmap, client_table& the_wok, char buffer[]);
 
 class Server {
 private:
@@ -139,11 +149,10 @@ public:
 						else if (receivers > 0)
 						{
 							cout << "Client data received: " << buffer << endl;
-							if (!socialcredit[cs].logged) { // Nếu chưa đăng nhập thì làm 3 hàm sau đây.
+							if (!socialcredit[cs].logged) {
 								string type = string(buffer);
-								if (type == "login" || type == "Login"){
-									Login(hashmap);
-								}
+								if (type == "login" || type == "Login")
+									Login(hashmap, socialcredit[cs], buffer);
 								else if (type == "register" || type == "Register") {
 
 								}
@@ -154,7 +163,7 @@ public:
 										cout << "Loi.\n";
 								}
 							}
-							else { // Nếu đăng nhập rồi thì làm các hàm của Minh và chơi game của Niên.
+							else {
 
 							}
 						}
@@ -183,5 +192,6 @@ public:
 	}
 
 };
+
 
 #endif

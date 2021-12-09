@@ -143,41 +143,5 @@ void Readfile(unordered_map<Account*, Player*>& hashmap, fstream& jav, fstream& 
 void WriteFile(unordered_map<Account*, Player*> hashmap, fstream& jav, fstream& editor);
 void CleanHashmap(unordered_map<Account*, Player*>& hashmap);
 
-// hàm login.
-void Login(unordered_map<Account*, Player*> hashmap, SOCKET client, char buffer[]);
-bool isMatch(unordered_map<Account*, Player*>& hashmap, string account, string password, Player& user);
 
-// hàm đổi password.
-void ChangePass(unordered_map<Account*, Player*>& hashmap);
-
-// hàm tạo tài khoản mới cho ng chơi.
-void Register(unordered_map<Account*, Player*>& hashmap, string Command);
-bool isAvailableUsername(unordered_map<Account*, Player*>& hashmap, string S);
-void writeAtBottomOfNewOne(Player P, Account A);
-//hàm bổ trợ cho check_user và setup_info;
-int get_gura(string input);
-void show_help_checkuser();
-void show_help_setup();
-void check_user_menu(unordered_map<Account*, Player*>& hashmap, string opt);
-int getoption(string opt);
-string getname(string opt);
-void dispatch(unordered_map<Account*, Player*>& hashmap, int option, string username);
-bool find_Name(unordered_map<Account*, Player*>& hashmap, string username);
-bool check_Online(unordered_map<Account*, Player*>& hashmap, string username);
-void show_DOB(unordered_map<Account*, Player*>& hashmap, string username);
-void show_Fullname(unordered_map<Account*, Player*>& hashmap, string username);
-void show_Note(unordered_map<Account*, Player*>& hashmap, string username);
-void show_All(unordered_map<Account*, Player*>& hashmap, string username);
-void show_Point(unordered_map<Account*, Player*>& hashmap, string username);
-
-void setup_info_menu(unordered_map<Account*, Player*>& hashmap, string opt_setup, string username);
-int getoption_setup(string opt);
-string getelement_setup(string opt);
-void dispatch_setup(unordered_map<Account*, Player*>& hashmap, int option, string element, string username);
-void change_Fullname(unordered_map<Account*, Player*>& hashmap, int option, string element, string username);
-void change_Dob(unordered_map<Account*, Player*>& hashmap, int option, string element, string username);
-void change_Note(unordered_map<Account*, Player*>& hashmap, int option, string element, string username);
-
-void inputMaskedPassword(string& pass);
-void PrintOnlinePlayers(unordered_map<Account*, Player*> hashmap);
 #endif
