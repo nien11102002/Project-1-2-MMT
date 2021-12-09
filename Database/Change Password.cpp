@@ -1,16 +1,16 @@
-﻿#include"DataCore.h"
+#include"DataCore.h"
 
 void ChangePass(unordered_map<Account*, Player*>& hashmap) {
-	string str, str2;
+	string str, str2,oldpass;
 	bool check = true;
 	int flag;
 
 	do {
 		cout << "Account: ";
 		getline(cin, str);
-
+		inputMaskedPassword(oldpass);
 		for (auto ptr = hashmap.begin(); ptr != hashmap.end(); ptr++)
-			if (ptr->first->Account_name() == str) {
+			if (ptr->first->Account_name() == str && ptr->first->Pass() == oldpass) {
 				cout << "New Password: ";
 				getline(cin, str);
 				cout << "Confirm your new password: ";
@@ -30,11 +30,11 @@ void ChangePass(unordered_map<Account*, Player*>& hashmap) {
 					flag = 0;
 
 				cout << "Your password has been changed successfully.\n";
-				ptr->first->setPassword(str,flag);
+				ptr->first->setPassword(str, flag);
 				check = false;
 				cin.ignore();
 			}
-
+			else cout << "Wrong account or password!!!";
 	} while (check);
 	
 }

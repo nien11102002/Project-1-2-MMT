@@ -25,5 +25,9 @@ int count(vector<vector<char>>enermystat);
 void Attack(vector<vector<char>>& map, vector<vector<char>>& allystat, vector<vector<char>>& enermystat, bool& flag, int player,string Directive);
 void DFS(vector<vector<char>>enermystat, int i, int j, int n, vector<vector<bool>>& visited);
 void PrintPlayBoard(vector<vector<char>> cloth, vector<vector<char>> map);
+void StartGame(int& ID, string& Player2);
+
+//server
+void SendInvite(bool& choice);
 #endif
 

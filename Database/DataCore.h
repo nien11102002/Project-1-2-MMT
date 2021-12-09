@@ -7,6 +7,7 @@
 #include<sstream>
 #include<string>
 #include<vector>
+#include<conio.h>
 #include<regex>
 
 using namespace std;
@@ -141,6 +142,8 @@ void Readfile(unordered_map<Account*, Player*>& hashmap, fstream& jav, fstream& 
 //hàm ghi đè dữ liệu.
 void WriteFile(unordered_map<Account*, Player*> hashmap, fstream& jav, fstream& editor);
 void CleanHashmap(unordered_map<Account*, Player*>& hashmap);
+// hàm che pass khi nhập vào
+void inputMaskedPassword(string& pass);
 
 // hàm login.
 void Login(unordered_map<Account*, Player*> hashmap);
@@ -176,4 +179,6 @@ void dispatch_setup(unordered_map<Account*, Player*>& hashmap, int option, strin
 void change_Fullname(unordered_map<Account*, Player*>& hashmap, int option, string element, string username);
 void change_Dob(unordered_map<Account*, Player*>& hashmap, int option, string element, string username);
 void change_Note(unordered_map<Account*, Player*>& hashmap, int option, string element, string username);
+
+void PrintOnlinePlayers(unordered_map<Account*, Player*> hashmap);
 #endif
