@@ -22,12 +22,12 @@ void LoginHandle(Client& hexgate, string& messagetosend) {
 			inputMaskedPassword(send);
 			hexgate.Sending(send);
 		}
-		else if (recvmsg == "Login successfully.") {
+		else if (recvmsg == "\nLogin successfully!\n") {
 			cout << recvmsg;
 			run = false;
 		}
 		else {
-			cout << "Invalid user.\n";
+			cout << "\nInvalid user.\n";
 			run = false;
 		}
 	}

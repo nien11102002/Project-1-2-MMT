@@ -33,6 +33,6 @@ void Readfile(unordered_map<Account*, Player*>& hashmap, fstream& jav, fstream& 
 		editor.ignore(); jav.ignore(); jav.ignore();
 
 		hashmap.insert(make_pair(new Account(name_acc, enflag, password),
-			new Player(player_name, victory, loss, DOB)));
+		new Player(player_name, victory, loss, DOB)));
 	}
 }

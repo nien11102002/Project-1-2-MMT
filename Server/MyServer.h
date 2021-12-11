@@ -187,8 +187,8 @@ public:
 		send(the_wok.client_gate, sendmsg.c_str(), sendmsg.size(), 0);
 
 		ZeroMemory(buffer, 1024);
-		while (!recv(the_wok.client_gate, buffer, 1024, 0)) {
-			Sleep(20);
+		while (recv(the_wok.client_gate, buffer, 1024, 0) == -1) {
+			Sleep(100);
 		}
 
 		string var = string(buffer);
@@ -204,8 +204,8 @@ public:
 		send(the_wok.client_gate, sendmsg.c_str(), sendmsg.size(), 0);
 
 		ZeroMemory(buffer, 1024);
-		while (!recv(the_wok.client_gate, buffer, 1024, 0)) {
-			Sleep(20);
+		while (recv(the_wok.client_gate, buffer, 1024, 0) == -1) { // neu client socket disconenct cho nay thi MAYBE chuong trinh co vong lap vo tan
+			Sleep(100);
 		}
 
 		var = string(buffer);
@@ -216,8 +216,12 @@ public:
 
 		the_wok.pass = var;
 
+
+		
+
 		if (isMatch(hashmap, the_wok.account, the_wok.pass, the_wok.citizen)) {
-			sendmsg = "Login successfully.";
+			sendmsg = "\nLogin successfully!\n";
+			Sleep(500);
 			send(the_wok.client_gate, sendmsg.c_str(), sendmsg.size(), 0);
 		}
 		/*else {
