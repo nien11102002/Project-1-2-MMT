@@ -21,6 +21,7 @@ private:
 	string DOB;
 	string Note;
 public:
+
 	Player(string name, long vic, long los, string birthday) {
 		this->name = name;
 		this->win = vic;
@@ -143,5 +144,7 @@ void Readfile(unordered_map<Account*, Player*>& hashmap, fstream& jav, fstream& 
 void WriteFile(unordered_map<Account*, Player*> hashmap, fstream& jav, fstream& editor);
 void CleanHashmap(unordered_map<Account*, Player*>& hashmap);
 
+// Login
+bool isMatch(unordered_map<Account*, Player*> hashmap, string account, string password, Player& user);
 
 #endif

@@ -9,24 +9,9 @@
 #include<WinSock2.h>
 #include<WS2tcpip.h>
 #include"DataBase.h"
-//#include"Function Header.h"
 #pragma comment (lib,"WS2_32.lib")
 using namespace std;
 
-struct client_table {
-	bool connected;
-	SOCKET client_gate;
-	bool logged;
-	string account;
-	string pass;
-	string re_confirm;
-	Player citizen;
-};
-
-void Login(unordered_map<Account*, Player*> hashmap, client_table& the_wok, char buffer[]);
-bool isMatch(unordered_map<Account*, Player*> hashmap, string account, string password, Player& user);
-void Send_Request(client_table& the_wok, int signal);
-bool Recieve_Info(unordered_map<Account*, Player*> hashmap, client_table& the_wok, char buffer[]);
 
 class Server {
 private:
@@ -37,6 +22,17 @@ private:
 	char buffer[1024] = { '\0' };
 
 public:
+
+	struct client_table {
+		bool connected;
+		SOCKET client_gate;
+		bool logged;
+		string account;
+		string pass;
+		string re_confirm;
+		Player citizen;
+	};
+
 	unordered_map<Account*, Player*> hashmap;
 	fstream jav, editor;
 
@@ -115,10 +111,11 @@ public:
 			if (connectionline != INVALID_SOCKET)
 			{
 				client_table temp;
-
+				
 				temp.client_gate = connectionline;
 				temp.connected = true;
 				temp.logged = false;
+				
 
 				socialcredit.push_back(temp);
 				cout << "New client: " << connectionline << endl;
@@ -184,6 +181,12 @@ public:
 		return false;
 	}
 
+	void Login(unordered_map<Account*, Player*> hashmap, client_table& the_wok, char buffer[])
+	{
+
+	}
+
+
 	~Server() {
 		WriteFile(hashmap, jav, editor);
 		CleanHashmap(hashmap);
@@ -192,6 +195,4 @@ public:
 	}
 
 };
-
-
 #endif
