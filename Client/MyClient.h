@@ -6,9 +6,13 @@
 #include<sstream>
 #include<WinSock2.h>
 #include<WS2tcpip.h>
-#include"Backup.h"
+#include<conio.h>
+#include<regex>
+
 #pragma comment(lib, "WS2_32.lib")
 using namespace std;
+
+static string player;
 
 class Client {
 private:
@@ -95,4 +99,11 @@ public:
 
 };
 
+void LoginHandle(Client& hexgate, string& messagetosend);
+void inputMaskedPassword(string& pass);
+
+void Display(string p);
+
+void show_help_checkuser();
+void show_help_setup();
 #endif

@@ -22,11 +22,13 @@ int main() {
 				cout << "See you next time.\n";
 				break;
 			}
+			else if (msg == "Login" || msg == "login")
+				LoginHandle(hexgate, messageToSend);
 				
 			string rec = hexgate.Receive(); // nhận gói tin từ server
 			if (rec != "" || rec != "LOI")
 			{
-				cout << "<Server> " << rec << endl;
+				cout << rec << endl;
 			}
 			else cout << "<Server> Error message";
 
