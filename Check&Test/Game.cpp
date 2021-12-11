@@ -1,5 +1,8 @@
 #include "DataBase.h"
 #include "MyServer.h"
+
+//Mục đích để xử lí chung cho các yêu cầu của user
+// Phân biệt như Operator này chỉ xử lí cái yêu cầu khi đã đăng nhập, không có trong khi chơi game
 bool Operator(unordered_map<Account*, Player*> hashmap, client_table& the_wok, char buffer[],
 				vector<client_table> socialcredit)
 {
@@ -64,9 +67,11 @@ void FindUser(string name, vector<client_table> socialcredit,int& isOnline,clien
 	isOnline = 2;
 }
 
+//Hàm của Server để xử lí về create_room khi user gọi
 void Server_CreateRoom(unordered_map<Account*, Player*> hashmap, client_table the_wok,vector<client_table> socialcredit,
 							string message)
 {
+	//Kiểm tra RoomID, tại t quy room ID chỉ là số nên kiểm tra nếu user có nhập sai j hay k
 	CheckValidRoomID(hashmap, the_wok, socialcredit, message);
 
 	int SpaceIndex = message.find_last_of(" ");
@@ -81,17 +86,18 @@ void Server_CreateRoom(unordered_map<Account*, Player*> hashmap, client_table th
 		builder << "Do you want to join game ? (Y / N)";
 		string reply = builder.str();
 
+		//Gửi lời mời cho User khác
 		int rep = send(Opponent.client_gate, reply.c_str(), reply.size(), 0);
 		if (rep == SOCKET_ERROR)
 			cout << "Error to send.\n";
 
-		char buffer[100];
+		char buffer[100];//Nhận tin nhắn của User được mời chơi
 		if (recv(Opponent.client_gate, buffer, 1024, 0) == SOCKET_ERROR) {
 			cout << "Error in recv.\n";
 			return;
 		}
 		message = string(buffer);
-		do {
+		do {// Check Y/N hay sai cú pháp rồi rep lại
 			if (message == "Y")
 			{
 				string reply = "Game start";
