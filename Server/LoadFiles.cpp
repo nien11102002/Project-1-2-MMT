@@ -2,7 +2,7 @@
 #include"MyServer.h"
 
 void LoadData(fstream& editor, fstream& jav, unordered_map<Account*, Player*>& hashmap) {
-	editor.open("Acc and Pass.txt", ios::in);
+	editor.open("Acc_and_Pass.txt", ios::in);
 	jav.open("Player.txt", ios::in);
 
 
