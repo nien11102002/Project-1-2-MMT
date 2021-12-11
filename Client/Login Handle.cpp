@@ -55,4 +55,5 @@ void inputMaskedPassword(string& pass)
 		}
 		ch = _getch();
 	}
+	cout<<endl;
 } 
