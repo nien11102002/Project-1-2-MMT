@@ -35,6 +35,7 @@ public:
 
 	unordered_map<Account*, Player*> hashmap;
 	fstream jav, editor;
+	vector<client_table> socialcredit;
 
 	Server(string IP, int portnumber) {
 		this->listenIP = IP;
@@ -102,7 +103,6 @@ public:
 
 	void Run() {
 		CreateSocket();
-		vector<client_table> socialcredit;
 
 		while (true) {
 			int len = sizeof(hint);
@@ -183,6 +183,47 @@ public:
 
 	void Login(unordered_map<Account*, Player*> hashmap, client_table& the_wok, char buffer[])
 	{
+		string sendmsg = "Account: ";
+		send(the_wok.client_gate, sendmsg.c_str(), sendmsg.size(), 0);
+
+		ZeroMemory(buffer, 1024);
+		while (!recv(the_wok.client_gate, buffer, 1024, 0)) {
+			Sleep(20);
+		}
+
+		string var = string(buffer);
+		if (var == "Error in recv msg") {
+			cout << var << endl;
+			return;
+		}
+			
+
+		the_wok.account = var;
+
+		sendmsg = "Password: ";
+		send(the_wok.client_gate, sendmsg.c_str(), sendmsg.size(), 0);
+
+		ZeroMemory(buffer, 1024);
+		while (!recv(the_wok.client_gate, buffer, 1024, 0)) {
+			Sleep(20);
+		}
+
+		var = string(buffer);
+		if (var == "Error in recv msg") {
+			cout << var << endl;
+			return;
+		}
+
+		the_wok.pass = var;
+
+		if (isMatch(hashmap, the_wok.account, the_wok.pass, the_wok.citizen)) {
+			sendmsg = "Login successfully.";
+			send(the_wok.client_gate, sendmsg.c_str(), sendmsg.size(), 0);
+		}
+		/*else {
+			sendmsg = "Error, do not match any username.";
+			send(the_wok.client_gate, sendmsg.c_str(), sendmsg.size(), 0);
+		}*/
 
 	}
 

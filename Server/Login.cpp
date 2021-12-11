@@ -1,8 +1,6 @@
 #include"DataBase.h"
 #include"MyServer.h"
 
-
-
 bool isMatch(unordered_map<Account*, Player*> hashmap, string account, string password, Player& user)
 {
 	for (auto it = hashmap.begin(); it != hashmap.end(); it++)
