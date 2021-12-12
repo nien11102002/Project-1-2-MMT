@@ -254,9 +254,9 @@ public:
 
 		the_wok.pass = var;
 
-		sendmsg = "Do you want to encrypt your message before sending?\n";
-		SendTo(the_wok.client_gate, sendmsg); Sleep(100);
-		var = ReceiveFrom(the_wok.client_gate); // chay debug toi day bi treo may.
+		sendmsg = "Do you want to encrypt your message before sending?";
+		SendTo(the_wok.client_gate, sendmsg); 
+		var = ReceiveFrom(the_wok.client_gate);
 		if (var == "Error in recv msg") {
 			cout << var << endl;
 			return;
@@ -265,13 +265,13 @@ public:
 		int encrypted = 0;
 		if (var == "Y") 
 		{ 
-			encrypted = 1; sendmsg = "Register successfully and Message was encrypted\n";
+			encrypted = 1; sendmsg = "Register successfully and Message was encrypted.";
 			Sleep(100);
 			SendTo(the_wok.client_gate, sendmsg);
 		}
 		else 
 		{
-			encrypted = 0; sendmsg = "Register successfully and Message was not encrypted\n";
+			encrypted = 0; sendmsg = "Register successfully and Message was not encrypted.";
 			Sleep(100);
 			SendTo(the_wok.client_gate, sendmsg);
 		}
@@ -280,7 +280,7 @@ public:
 		Player C;
 
 		sendmsg = "What is your fullname: ";
-		SendTo(the_wok.client_gate, sendmsg); Sleep(100);
+		SendTo(the_wok.client_gate, sendmsg);
 		var = ReceiveFrom(the_wok.client_gate);
 		if (var == "Error in recv msg") {
 			cout << var << endl;
@@ -289,7 +289,7 @@ public:
 		C.setName(var);
 
 		sendmsg = "What is your Date of Birth: ";
-		SendTo(the_wok.client_gate, sendmsg); Sleep(100);
+		SendTo(the_wok.client_gate, sendmsg);
 		var = ReceiveFrom(the_wok.client_gate);
 		if (var == "Error in recv msg") {
 			cout << var << endl;
