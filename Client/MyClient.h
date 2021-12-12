@@ -8,6 +8,9 @@
 #include<WS2tcpip.h>
 #include<conio.h>
 #include<regex>
+#include<vector>
+#include<fstream>
+#include<iomanip>
 
 #pragma comment(lib, "WS2_32.lib")
 using namespace std;
