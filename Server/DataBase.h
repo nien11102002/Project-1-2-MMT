@@ -144,7 +144,9 @@ void Readfile(unordered_map<Account*, Player*>& hashmap, fstream& jav, fstream& 
 void WriteFile(unordered_map<Account*, Player*> hashmap, fstream& jav, fstream& editor);
 void CleanHashmap(unordered_map<Account*, Player*>& hashmap);
 
-// Login
+// Login and Register.
 bool isMatch(unordered_map<Account*, Player*> hashmap, string account, string password, Player& user);
+bool isAvailableUsername(unordered_map<Account*, Player*> hashmap, string S);
+void writeAtBottomOfNewOne(Player P, Account A);
 
 #endif

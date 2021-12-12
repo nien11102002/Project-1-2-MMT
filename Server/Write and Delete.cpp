@@ -2,7 +2,7 @@
 #include"MyServer.h"
 
 void WriteFile(unordered_map<Account*, Player*> hashmap, fstream& jav, fstream& editor) {
-	editor.open("Acc_and_Pass.txt", ios::out);
+	editor.open("Acc and Pass.txt", ios::out);
 	jav.open("Player.txt", ios::out);
 
 

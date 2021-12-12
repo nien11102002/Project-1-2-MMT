@@ -92,6 +92,10 @@ public:
 		return reply;
 	}
 
+	SOCKET Socket() {
+		return this->serverSocket;
+	}
+
 	~Client() {
 		closesocket(serverSocket);
 		WSACleanup();
@@ -101,8 +105,7 @@ public:
 
 void LoginHandle(Client& hexgate, string& messagetosend);
 void inputMaskedPassword(string& pass);
-
-void Display(string p);
+void RegisterHandle(Client& hexgate, string& messagetosend);
 
 void show_help_checkuser();
 void show_help_setup();
