@@ -149,8 +149,9 @@ public:
 							if (!socialcredit[cs].logged) {
 								string type = string(buffer);
 								if (type == "login" || type == "Login"){
-									Login(hashmap, socialcredit[cs], buffer);
-									socialcredit[cs].logged = true;
+									bool flag = false;
+									Login(hashmap, socialcredit[cs], buffer,flag);
+									socialcredit[cs].logged = flag;
 								}
 								else if (type == "register" || type == "Register") {
 
@@ -183,7 +184,7 @@ public:
 		return false;
 	}
 
-	void Login(unordered_map<Account*, Player*> hashmap, client_table& the_wok, char buffer[])
+	void Login(unordered_map<Account*, Player*> hashmap, client_table& the_wok, char buffer[], bool& flag)
 	{
 		string sendmsg = "Account: ";
 		send(the_wok.client_gate, sendmsg.c_str(), sendmsg.size(), 0);
@@ -225,6 +226,7 @@ public:
 			sendmsg = "\nLogin successfully!\n";
 			Sleep(500);
 			send(the_wok.client_gate, sendmsg.c_str(), sendmsg.size(), 0);
+			flag = true;
 		}
 		/*else {
 			sendmsg = "Error, do not match any username.";
