@@ -8,9 +8,6 @@
 #include<WS2tcpip.h>
 #include<conio.h>
 #include<regex>
-#include<vector>
-#include<fstream>
-#include<iomanip>
 
 #pragma comment(lib, "WS2_32.lib")
 using namespace std;
@@ -95,6 +92,10 @@ public:
 		return reply;
 	}
 
+	SOCKET Socket() {
+		return this->serverSocket;
+	}
+
 	~Client() {
 		closesocket(serverSocket);
 		WSACleanup();
@@ -104,8 +105,7 @@ public:
 
 void LoginHandle(Client& hexgate, string& messagetosend);
 void inputMaskedPassword(string& pass);
-
-void Display(string p);
+void RegisterHandle(Client& hexgate, string& messagetosend);
 
 void show_help_checkuser();
 void show_help_setup();

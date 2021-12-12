@@ -1,8 +1,8 @@
-#include"MyClient.h"
+﻿#include"MyClient.h"
 
 void LoginHandle(Client& hexgate, string& messagetosend) {
 	bool run = true;
-	while (run) 
+	while (run)
 	{
 		string send;
 		string recvmsg = hexgate.Receive();
@@ -55,5 +55,57 @@ void inputMaskedPassword(string& pass)
 		}
 		ch = _getch();
 	}
-	cout<<endl;
-} 
+	cout << endl;
+}
+
+void RegisterHandle(Client& hexgate, string& messagetosend)
+{
+	bool run = true;
+	while (run)
+	{
+		string send;
+		string recvmsg = hexgate.Receive(); // bị crash ở đây sau câu hỏi encrypt Password.
+		if (recvmsg == "") {
+			cout << "Error in recv msg";
+			send = "Error in recv msg";
+			hexgate.Sending(send);
+			run = false;
+		}
+		else if (recvmsg == "Account: ") {
+			cout << recvmsg;
+			getline(cin, send);
+			hexgate.Sending(send);
+		}
+		else if (recvmsg == "Password: ") {
+			cout << recvmsg;
+			inputMaskedPassword(send);
+			hexgate.Sending(send);
+		}
+		else if (recvmsg == "Do you want to encrypt your message before sending?\n") {
+			cout << recvmsg;
+			char letter;
+			do {
+				cout << "(Y/N): ";
+				cin >> letter;
+				letter = toupper(letter);
+			} while (letter != 'Y' && letter != 'N');
+		}
+		else if (recvmsg == "What is your fullname: ") {
+			cout << recvmsg;
+			getline(cin, send);
+			hexgate.Sending(send);
+		}
+		else if (recvmsg == "What is your Date of Birth: ") {
+			cout << recvmsg;
+			getline(cin, send);
+			hexgate.Sending(send);
+		}
+		else if (recvmsg == "Registered successfully.\n") {
+			cout << recvmsg;
+			run = false;
+		}
+		else {
+			cout << recvmsg;
+		}
+	}
+}

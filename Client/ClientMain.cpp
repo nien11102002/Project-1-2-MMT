@@ -10,27 +10,32 @@ int main() {
 
 		while (true)
 		{
+			bool logged = false;
 			string messageToSend;
-			do {
-				cout << "> ";
-				getline(cin, msg); // nhập tin nhắn muốn gửi
-				messageToSend = msg;
-			} while (msg == "");
-			hexgate.Sending(messageToSend); // gửi gói tin cho server
+			if (!logged) {
+				do {
+					cout << "> ";
+					getline(cin, msg); // nhập tin nhắn muốn gửi
+					messageToSend = msg;
+				} while (msg == "");
+				hexgate.Sending(messageToSend); // gửi gói tin cho server
 
-			if (msg == "Logout" || msg == "logout") {
-				cout << "See you next time.\n";
-				break;
+				if (msg == "Logout" || msg == "logout") {
+					cout << "See you next time.\n";
+					break;
+				}
+				else if (msg == "Login" || msg == "login") {
+					LoginHandle(hexgate, messageToSend);
+					logged = true;
+				}
+				else if (msg == "Register" || msg == "register")
+					RegisterHandle(hexgate, messageToSend);
 			}
-			else if (msg == "Login" || msg == "login")
-				LoginHandle(hexgate, messageToSend);
-				
-			string rec = hexgate.Receive(); // nhận gói tin từ server
-			if (rec != "" || rec != "LOI")
-			{
-				cout << rec << endl;
+			else {
+				// da login
+				cout << "da login thanh cong.\n";
 			}
-			else cout << "<Server> Error message";
+			
 
 			Sleep(5); // hàm này dùng để dồng bộ giữa thời gian chạy giữa client và server để tránh lệch 
 		}
