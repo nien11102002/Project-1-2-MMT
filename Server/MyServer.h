@@ -148,8 +148,10 @@ public:
 							cout << "Client data received: " << buffer << endl;
 							if (!socialcredit[cs].logged) {
 								string type = string(buffer);
-								if (type == "login" || type == "Login")
+								if (type == "login" || type == "Login"){
 									Login(hashmap, socialcredit[cs], buffer);
+									socialcredit[cs].logged = true;
+								}
 								else if (type == "register" || type == "Register") {
 
 								}
