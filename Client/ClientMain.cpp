@@ -7,10 +7,12 @@ int main() {
 	if (hexgate.initSocket()) {
 
 		hexgate.ConnectSocket();
+		
+		bool logged = false;
 
 		while (true)
 		{
-			bool logged = false;
+			
 			string messageToSend;
 			if (!logged) {
 				do {
