@@ -111,11 +111,11 @@ public:
 			if (connectionline != INVALID_SOCKET)
 			{
 				client_table temp;
-				
+
 				temp.client_gate = connectionline;
 				temp.connected = true;
 				temp.logged = false;
-				
+
 
 				socialcredit.push_back(temp);
 				cout << "New client: " << connectionline << endl;
@@ -145,16 +145,16 @@ public:
 						}
 						else if (receivers > 0)
 						{
-							cout << "Client data received: " << buffer << endl;
+							cout << "Client "<<socialcredit[cs].client_gate << " data received : " << buffer << endl;
 							if (!socialcredit[cs].logged) {
 								string type = string(buffer);
-								if (type == "login" || type == "Login"){
+								if (type == "login" || type == "Login") {
 									bool flag = false;
-									Login(hashmap, socialcredit[cs], buffer,flag);
+									Login(hashmap, socialcredit[cs],flag);
 									socialcredit[cs].logged = flag;
 								}
 								else if (type == "register" || type == "Register") {
-
+									Register(hashmap, socialcredit[cs]);
 								}
 								else {
 									string warning = "not match any type.\n";
@@ -178,40 +178,28 @@ public:
 
 	bool Exit(char buffer[]) {
 		string msg = string(buffer);
-		if (msg == "Logout"|| msg == "logout") {
+		if (msg == "Logout" || msg == "logout") {
 			return true;
 		}
 		return false;
 	}
 
-	void Login(unordered_map<Account*, Player*> hashmap, client_table& the_wok, char buffer[], bool& flag)
+	void Login(unordered_map<Account*, Player*> hashmap, client_table& the_wok, bool& flag)
 	{
 		string sendmsg = "Account: ";
-		send(the_wok.client_gate, sendmsg.c_str(), sendmsg.size(), 0);
+		SendTo(the_wok.client_gate, sendmsg);
 
-		ZeroMemory(buffer, 1024);
-		while (recv(the_wok.client_gate, buffer, 1024, 0) == -1) {
-			Sleep(100);
-		}
-
-		string var = string(buffer);
+		string var = ReceiveFrom(the_wok.client_gate);
 		if (var == "Error in recv msg") {
 			cout << var << endl;
 			return;
 		}
-			
 
 		the_wok.account = var;
 
 		sendmsg = "Password: ";
-		send(the_wok.client_gate, sendmsg.c_str(), sendmsg.size(), 0);
-
-		ZeroMemory(buffer, 1024);
-		while (recv(the_wok.client_gate, buffer, 1024, 0) == -1) { // neu client socket disconenct cho nay thi MAYBE chuong trinh co vong lap vo tan
-			Sleep(100);
-		}
-
-		var = string(buffer);
+		SendTo(the_wok.client_gate, sendmsg);
+		var = ReceiveFrom(the_wok.client_gate);
 		if (var == "Error in recv msg") {
 			cout << var << endl;
 			return;
@@ -219,22 +207,120 @@ public:
 
 		the_wok.pass = var;
 
-
-		
-
-		if (isMatch(hashmap, the_wok.account, the_wok.pass, the_wok.citizen)) {
+		if (isMatch(hashmap, the_wok.account, the_wok.pass, the_wok.citizen)) 
+		{
 			sendmsg = "\nLogin successfully!\n";
 			Sleep(500);
-			send(the_wok.client_gate, sendmsg.c_str(), sendmsg.size(), 0);
+			SendTo(the_wok.client_gate, sendmsg);
 			flag = true;
 		}
-		/*else {
+		else 
+		{
 			sendmsg = "Error, do not match any username.";
-			send(the_wok.client_gate, sendmsg.c_str(), sendmsg.size(), 0);
-		}*/
+			Sleep(500);
+			SendTo(the_wok.client_gate, sendmsg);
+		}
 
 	}
 
+	void Register(unordered_map<Account*, Player*>& hashmap, client_table& the_wok) 
+	{
+		string sendmsg = "Account: ";
+		SendTo(the_wok.client_gate, sendmsg);
+		Sleep(500);
+		string var = ReceiveFrom(the_wok.client_gate);
+		if (var == "Error in recv msg") {
+			cout << var << endl;
+			return;
+		}
+
+		if (isAvailableUsername(hashmap, var) == true)
+		{
+			sendmsg = "\nThis username is already exist!!!\n";
+			Sleep(500);
+			SendTo(the_wok.client_gate, sendmsg);
+			return;
+		}
+
+		the_wok.account = var;
+
+		sendmsg = "Password: ";
+		SendTo(the_wok.client_gate, sendmsg);
+		var = ReceiveFrom(the_wok.client_gate);
+		if (var == "Error in recv msg") {
+			cout << var << endl;
+			return;
+		}
+
+		the_wok.pass = var;
+
+		sendmsg = "Do you want to encrypt your message before sending?\n";
+		SendTo(the_wok.client_gate, sendmsg); Sleep(100);
+		var = ReceiveFrom(the_wok.client_gate); // chay debug toi day bi treo may.
+		if (var == "Error in recv msg") {
+			cout << var << endl;
+			return;
+		}
+
+		int encrypted = 0;
+		if (var == "Y") 
+		{ 
+			encrypted = 1; sendmsg = "Register successfully and Message was encrypted\n";
+			Sleep(100);
+			SendTo(the_wok.client_gate, sendmsg);
+		}
+		else 
+		{
+			encrypted = 0; sendmsg = "Register successfully and Message was not encrypted\n";
+			Sleep(100);
+			SendTo(the_wok.client_gate, sendmsg);
+		}
+
+		// Dien thong tin nguoi dung luc moi dang ky.
+		Player C;
+
+		sendmsg = "What is your fullname: ";
+		SendTo(the_wok.client_gate, sendmsg); Sleep(100);
+		var = ReceiveFrom(the_wok.client_gate);
+		if (var == "Error in recv msg") {
+			cout << var << endl;
+			return;
+		}
+		C.setName(var);
+
+		sendmsg = "What is your Date of Birth: ";
+		SendTo(the_wok.client_gate, sendmsg); Sleep(100);
+		var = ReceiveFrom(the_wok.client_gate);
+		if (var == "Error in recv msg") {
+			cout << var << endl;
+			return;
+		}
+		C.setBirthday(var);
+		C.setWin(0); C.setLoss(0);
+
+		Account A(the_wok.account, encrypted, the_wok.pass);
+		writeAtBottomOfNewOne(C, A);
+
+		hashmap.insert(make_pair(new Account(the_wok.account, encrypted, the_wok.pass), 
+			new Player(C.Name(),0,0,C.Birthday())));
+
+		sendmsg = "Registered successfully.\n"; Sleep(500);
+		SendTo(the_wok.client_gate, sendmsg);
+	}
+
+
+	string ReceiveFrom(SOCKET sock_id) {
+		ZeroMemory(buffer, 1024);
+		while (recv(sock_id, buffer, 1024, 0) == -1) {
+			Sleep(100);
+		}
+		string response = string(buffer);
+		return response;
+	}
+
+	void SendTo(SOCKET sock_id, string package) {
+		send(sock_id, package.c_str(), package.size(), 0);
+	}
 
 	~Server() {
 		WriteFile(hashmap, jav, editor);

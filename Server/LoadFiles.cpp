@@ -2,7 +2,7 @@
 #include"MyServer.h"
 
 void LoadData(fstream& editor, fstream& jav, unordered_map<Account*, Player*>& hashmap) {
-	editor.open("Acc_and_Pass.txt", ios::in);
+	editor.open("Acc and Pass.txt", ios::in);
 	jav.open("Player.txt", ios::in);
 
 
@@ -33,6 +33,6 @@ void Readfile(unordered_map<Account*, Player*>& hashmap, fstream& jav, fstream& 
 		editor.ignore(); jav.ignore(); jav.ignore();
 
 		hashmap.insert(make_pair(new Account(name_acc, enflag, password),
-		new Player(player_name, victory, loss, DOB)));
+			new Player(player_name, victory, loss, DOB)));
 	}
 }
