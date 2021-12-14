@@ -7,7 +7,7 @@ int main() {
 	if (hexgate.initSocket()) {
 
 		hexgate.ConnectSocket();
-		
+
 		bool logged = false;
 
 		while (true)
@@ -21,6 +21,9 @@ int main() {
 					messageToSend = msg;
 				} while (msg == "");
 				hexgate.Sending(messageToSend); // gửi gói tin cho server
+
+				int pos = messageToSend.find_first_of(' ');
+				msg = messageToSend.substr(0, pos);
 
 				if (msg == "Logout" || msg == "logout") {
 					cout << "See you next time.\n";
