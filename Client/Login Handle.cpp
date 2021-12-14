@@ -12,11 +12,6 @@ void LoginHandle(Client& hexgate, string& messagetosend) {
 			hexgate.Sending(send);
 			run = false;
 		}
-		else if (recvmsg == "Account: ") {
-			cout << recvmsg;
-			getline(cin, send);
-			hexgate.Sending(send);
-		}
 		else if (recvmsg == "Password: ") {
 			cout << recvmsg;
 			inputMaskedPassword(send);
@@ -70,11 +65,6 @@ void RegisterHandle(Client& hexgate, string& messagetosend)
 			send = "Error in recv msg";
 			hexgate.Sending(send);
 			run = false;
-		}
-		else if (recvmsg == "Account: ") {
-			cout << recvmsg;
-			getline(cin, send);
-			hexgate.Sending(send);
 		}
 		else if (recvmsg == "Password: ") {
 			cout << recvmsg;
