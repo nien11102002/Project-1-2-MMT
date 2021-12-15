@@ -145,21 +145,30 @@ public:
 						}
 						else if (receivers > 0)
 						{
-							cout << "Client "<<socialcredit[cs].client_gate << " data received : " << buffer << endl;
+							cout << "Client " << socialcredit[cs].client_gate << " data received : " << buffer << endl;
 							if (!socialcredit[cs].logged) {
 								string m = string(buffer);
 								auto first = m.find_first_of(' ');
 
-								string type = m.substr(0, first);
-								string content = m.substr(first + 1, m.size() - first - 1);
+								string type, content;
+								if (first != -1)
+								{
+									type = m.substr(0, first);
+									content = m.substr(first + 1, m.size() - first - 1);
+								}
+								else type = m;
 
 								if (type == "login" || type == "Login") {
 									bool flag = false;
-									Login(hashmap, socialcredit[cs],flag, content);
+									Login(hashmap, socialcredit[cs], flag, content);
 									socialcredit[cs].logged = flag;
 								}
 								else if (type == "register" || type == "Register") {
 									Register(hashmap, socialcredit[cs], content);
+								}
+								else if (type == "change_password" || type == "Change_password")
+								{
+									ChangePassword(hashmap, socialcredit[cs]);
 								}
 								else {
 									string warning = "not match any type.\n";
@@ -203,14 +212,14 @@ public:
 
 		the_wok.pass = var;
 
-		if (isMatch(hashmap, the_wok.account, the_wok.pass, the_wok.citizen)) 
+		if (isMatch(hashmap, the_wok.account, the_wok.pass, the_wok.citizen))
 		{
 			sendmsg = "\nLogin successfully!\n";
 			Sleep(500);
 			SendTo(the_wok.client_gate, sendmsg);
 			flag = true;
 		}
-		else 
+		else
 		{
 			sendmsg = "Error, do not match any username.";
 			Sleep(500);
@@ -219,7 +228,7 @@ public:
 
 	}
 
-	void Register(unordered_map<Account*, Player*>& hashmap, client_table& the_wok, string content) 
+	void Register(unordered_map<Account*, Player*>& hashmap, client_table& the_wok, string content)
 	{
 		string sendmsg, var;
 		if (isAvailableUsername(hashmap, content) == true)
@@ -243,7 +252,7 @@ public:
 		the_wok.pass = var;
 
 		sendmsg = "Do you want to encrypt your message before sending?";
-		SendTo(the_wok.client_gate, sendmsg); 
+		SendTo(the_wok.client_gate, sendmsg);
 		var = ReceiveFrom(the_wok.client_gate);
 		if (var == "Error in recv msg") {
 			cout << var << endl;
@@ -251,13 +260,13 @@ public:
 		}
 
 		int encrypted = 0;
-		if (var == "Y") 
-		{ 
+		if (var == "Y")
+		{
 			encrypted = 1; sendmsg = "Register successfully and Message was encrypted.";
 			Sleep(100);
 			SendTo(the_wok.client_gate, sendmsg);
 		}
-		else 
+		else
 		{
 			encrypted = 0; sendmsg = "Register successfully and Message was not encrypted.";
 			Sleep(100);
@@ -289,13 +298,67 @@ public:
 		Account A(the_wok.account, encrypted, the_wok.pass);
 		writeAtBottomOfNewOne(C, A);
 
-		hashmap.insert(make_pair(new Account(the_wok.account, encrypted, the_wok.pass), 
-			new Player(C.Name(),0,0,C.Birthday())));
+		hashmap.insert(make_pair(new Account(the_wok.account, encrypted, the_wok.pass),
+			new Player(C.Name(), 0, 0, C.Birthday())));
 
 		sendmsg = "Registered successfully.\n"; Sleep(500);
 		SendTo(the_wok.client_gate, sendmsg);
 	}
 
+	void ChangePassword(unordered_map<Account*, Player*> hashmap, client_table& the_wok)
+	{
+		string sendmsg = ">> password: ";
+		SendTo(the_wok.client_gate, sendmsg);
+
+		string var = ReceiveFrom(the_wok.client_gate);
+		if (var == "Error in recv msg") {
+			cout << var << endl;
+			return;
+		}
+
+		while (var != the_wok.pass)
+		{
+			string rep = "Your pass is wrong. Please try again.\n >> password: ";
+			SendTo(the_wok.client_gate, rep);
+		}
+
+		sendmsg = "Do you want to encrypt your message before sending?";
+		SendTo(the_wok.client_gate, sendmsg);
+
+		var = ReceiveFrom(the_wok.client_gate);
+		if (var == "Error in recv msg") {
+			cout << var << endl;
+			return;
+		}
+		string flag = var;
+
+		sendmsg = ">> new password: ";
+		SendTo(the_wok.client_gate, sendmsg);
+		
+		var = ReceiveFrom(the_wok.client_gate);
+		if (var == "Error in recv msg") {
+			cout << var << endl;
+			return;
+		}
+
+		the_wok.pass = var;
+
+		if (flag == "Y")
+			sendmsg = "Changepassword successfully and Message was encrypted.";
+		else sendmsg = "Changepassword successfully and Message wasn't encrypted.";
+		SendTo(the_wok.client_gate, sendmsg);
+
+		for (auto it = hashmap.begin(); it != hashmap.end(); it++)
+		{
+			if (it->first->Account_name() == the_wok.account)
+			{
+				if (flag == "Y")
+					it->first->setPassword(the_wok.pass, 1);
+				else it->first->setPassword(the_wok.pass, 0);
+				break;
+			}
+		}
+	}
 
 	string ReceiveFrom(SOCKET sock_id) {
 		ZeroMemory(buffer, 1024);
