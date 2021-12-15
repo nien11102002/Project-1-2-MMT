@@ -1,4 +1,6 @@
-﻿#include"MyClient.h"
+#include"MyClient.h"
+#include"Backup.h"
+#include "Game.h"
 
 int main() {
 	Client hexgate;
@@ -12,7 +14,7 @@ int main() {
 
 		while (true)
 		{
-			
+
 			string messageToSend;
 			if (!logged) {
 				do {
@@ -22,8 +24,9 @@ int main() {
 				} while (msg == "");
 				hexgate.Sending(messageToSend); // gửi gói tin cho server
 
-				int pos = messageToSend.find_first_of(' ');
-				msg = messageToSend.substr(0, pos);
+				int SpaceIndex = msg.find_first_of(" ");
+				if (SpaceIndex != -1)
+					msg = msg.substr(0, SpaceIndex);
 
 				if (msg == "Logout" || msg == "logout") {
 					cout << "See you next time.\n";
@@ -35,15 +38,31 @@ int main() {
 				}
 				else if (msg == "Register" || msg == "register")
 					RegisterHandle(hexgate, messageToSend);
+				
 			}
 			else {
 				// da login
 				cout << "da login thanh cong.\n";
+
+				do {
+					cout << "> ";
+					getline(cin, msg); // nhập tin nhắn muốn gửi
+					messageToSend = msg;
+				} while (msg == "");
+				hexgate.Sending(messageToSend); // gửi gói tin cho server
+
+				int SpaceIndex = msg.find_first_of(" ");
+				if (SpaceIndex != -1)
+					msg = msg.substr(0, SpaceIndex);
+
+				if (msg == "change_password")
+					ChangePasswordHandle(hexgate, messageToSend);
 			}
-			
+
 
 			Sleep(5); // hàm này dùng để dồng bộ giữa thời gian chạy giữa client và server để tránh lệch 
 		}
 	}
+
 	return 0;
-}
+}	
