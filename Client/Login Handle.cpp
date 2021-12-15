@@ -1,4 +1,4 @@
-﻿#include"MyClient.h"
+#include  "MyClient.h"
 
 void LoginHandle(Client& hexgate, string& messagetosend) {
 	bool run = true;
@@ -98,6 +98,41 @@ void RegisterHandle(Client& hexgate, string& messagetosend)
 		else if (recvmsg == "Registered successfully.\n") {
 			cout << recvmsg;
 			run = false;
+		}
+		else {
+			cout << recvmsg << endl;
+		}
+	}
+}
+
+void ChangePasswordHandle(Client& hexgate, string& messagetosend)
+{
+	bool run = true;
+	while (run)
+	{
+		string send;
+		string recvmsg = hexgate.Receive();
+		if (recvmsg == "") {
+			cout << "Error in recv msg";
+			send = "Error in recv msg";
+			hexgate.Sending(send);
+			run = false;
+		}
+		else if (recvmsg == "password: "||recvmsg=="new password: ") {
+			cout <<">>"<< recvmsg;
+			inputMaskedPassword(send);
+			hexgate.Sending(send);
+		}
+		else if (recvmsg == "Do you want to encrypt your message before sending?") {
+			cout << recvmsg << endl;
+			char letter;
+			do {
+				cout << "(Y/N): ";
+				cin >> letter;
+				letter = toupper(letter);
+			} while (letter != 'Y' && letter != 'N');
+			send = ""; send += letter;
+			hexgate.Sending(send);
 		}
 		else {
 			cout << recvmsg << endl;
