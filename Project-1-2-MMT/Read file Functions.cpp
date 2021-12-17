@@ -21,32 +21,15 @@ void ReadData(ifstream& file, vector<vector<char>>& stat) {
 }
 
 
-void PrintMap(vector<vector<char>>map) {
-	for (int i = 0; i < map.size(); i++)
-	{
-		for (int j = 0; j < map[i].size(); j++)
-			cout << map[i][j];
-		cout << endl;
-	}
-}
-
-void PrintTableCloth(vector<vector<char>>stat) {
-	for (int i = 0; i < stat.size(); i++)
-	{
-		for (int j = 0; j < stat[i].size(); j++)
-			cout << stat[i][j];
-		cout << endl;
-	}
-}
 
 void PrintPlayBoard(vector<vector<char>> cloth, vector<vector<char>> map)
 {
-	cout <<setfill(' ')<< setw(25)<<right << "Your Field" << setfill(' ') << setw(50) << "Enemy's Field" << endl;
+	cout << setfill(' ') << setw(25) << right << "Your Field" << setfill(' ') << setw(50) << "Enemy's Field" << endl;
 
 	cout << setw(4) << 1;
 	for (int i = 2; i <= 15; i++)
 		cout << setw(3) << i;
-	cout << setw(6)<<" || "  ;
+	cout << setw(6) << " || ";
 	cout << setw(4) << 1;
 	for (int i = 2; i <= 15; i++)
 		cout << setw(3) << i;
@@ -55,11 +38,11 @@ void PrintPlayBoard(vector<vector<char>> cloth, vector<vector<char>> map)
 	{
 		cout << left << setw(3) << i + 1;
 		for (int j = 0; j < 15; j++)
-			cout << setw(3) << cloth[i][j];
+			cout << setw(3) << map[i][j];
 		cout << " || ";
 		cout << left << setw(3) << i + 1;
 		for (int j = 0; j < 15; j++)
-			cout << setw(3) << map[i][j];
+			cout << setw(3) << cloth[i][j];
 		cout << endl;
 	}
 }
