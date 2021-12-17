@@ -9,7 +9,7 @@ int Random() {
 }
 
 void RunGame(vector<vector<char>>& map1, vector<vector<char>>& map2,
-	vector<vector<char>>& stat1, vector<vector<char>>& stat2,string Directive) {
+	vector<vector<char>>& stat1, vector<vector<char>>& stat2, string Directive) {
 	int number = Random();
 
 	cout << "\nPlayer #" << number << " go first.\n";
@@ -21,14 +21,14 @@ void RunGame(vector<vector<char>>& map1, vector<vector<char>>& map2,
 			int temp = number + 1;
 			do {
 				cout << "\nPlayer #" << number << " turn.\n";
-				Attack(map1, stat1, stat2, flag, number,Directive);
+				Attack(map1, stat1, stat2, flag, number, Directive);
 			} while (flag);
 
 			flag = true;
 
 			do {
 				cout << "\nPlayer #" << temp << " turn.\n";
-				Attack(map2, stat2, stat1, flag, temp,Directive);
+				Attack(map2, stat2, stat1, flag, temp, Directive);
 			} while (flag);
 		}
 
@@ -36,15 +36,15 @@ void RunGame(vector<vector<char>>& map1, vector<vector<char>>& map2,
 		{
 			int temp = number - 1;
 			do {
-				cout << "\nPlayer #" << number << " turn.\n";
-				Attack(map2, stat2, stat1, flag, number,Directive);
+				cout << "Player #" << number << " turn.\n";
+				Attack(map2, stat2, stat1, flag, number, Directive);
 			} while (flag);
 
 			flag = true;
 
 			do {
-				cout << "\nPlayer #" << temp << " turn.\n";
-				Attack(map1, stat1, stat2, flag, temp,Directive);
+				cout << "Player #" << temp << " turn.\n";
+				Attack(map1, stat1, stat2, flag, temp, Directive);
 			} while (flag);
 		}
 
@@ -54,28 +54,28 @@ void RunGame(vector<vector<char>>& map1, vector<vector<char>>& map2,
 void Attack(vector<vector<char>>& map, vector<vector<char>>& allystat,
 	vector<vector<char>>& enemystat, bool& flag, int player, string Directive)
 {
-	PrintPlayBoard(map, enemystat);
-	cout<<endl;
+	PrintPlayBoard(map, allystat);
+	cout << endl;
 	cout << ">>";
 	getline(cin, Directive);
-	int a = Directive.find_last_of(" ") - Directive.find_first_of(" ")-1;
-	int x = stoi(Directive.substr(12,a ));
+	int a = Directive.find_last_of(" ") - Directive.find_first_of(" ") - 1;
+	int x = stoi(Directive.substr(12, a));
 	int y = stoi(Directive.substr(13 + a, Directive.size() - Directive.find_last_of(" ") - 1));
 	x--; y--;
-	if (x < 1 || x > 20 || y < 1 || y > 20 || enemystat[x][y] == 'o')
+	if (x < 0 || x > 14 || y < 0 || y > 14 || enemystat[x][y] == 'o')
 	{
 		cout << "Stat is not available. Re-input: " << endl;
 		getline(cin, Directive);
 		return;
 	}
-	
+
 	if (enemystat[x][y] == 'x') {
 		cout << "\n\nYou have hit enemy  ship.\n";
 		enemystat[x][y] = 'o';
 		map[x][y] = 'O';
 		int army = count(enemystat);
 		if (army < quantity)
-			cout << "\nYou have destroy" << quantity - army << " enemy ship(s).\n";
+			cout << "\nYou have destroy " << quantity - army << " enemy ship(s).\n";
 		if (army == 0) {
 			cout << "Game over! Player #" << player << " win the game." << endl;
 			game_over = true;
