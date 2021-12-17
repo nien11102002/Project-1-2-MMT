@@ -110,4 +110,7 @@ int get_option(string input);
 
 void show_help_checkuser();
 void show_help_setup();
+
+void CreateRoomHandle(Client& hexgate, string& messagetosend, int& flag);
+void UploadFileHandle(Client& hexgate, string& messagetosend, vector<vector<char>>& map, vector<vector<char>>& stat);
 #endif
