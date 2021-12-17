@@ -106,6 +106,7 @@ public:
 void LoginHandle(Client& hexgate, string& messagetosend);
 void inputMaskedPassword(string& pass);
 void RegisterHandle(Client& hexgate, string& messagetosend);
+int get_option(string input);
 
 void show_help_checkuser();
 void show_help_setup();

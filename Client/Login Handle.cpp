@@ -104,3 +104,17 @@ void RegisterHandle(Client& hexgate, string& messagetosend)
 		}
 	}
 }
+
+int get_option(string input) {
+	const regex quit_pattern("[Qq][Uu][Ii][Tt]");
+	if (regex_match(input, quit_pattern)) return -1;
+	string gura_choice = input.substr(0, input.find_first_of(' '));
+	if (gura_choice == "check_user") return 1;
+	else if (gura_choice == "setup_info") return 2;
+	else if (gura_choice == "/help") {
+		string function_string = input.substr(input.find_first_of(' ') + 1, input.size() - (input.find_first_of(' ') + 1));
+		if (function_string == "check_user") return 3;
+		else if (function_string == "setup_info") return 4;
+	}
+	return 0;
+}
