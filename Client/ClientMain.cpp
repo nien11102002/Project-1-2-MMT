@@ -63,7 +63,11 @@ int main() {
 					switch (get_option(option))
 					{
 					case 1:
+					{
 						hexgate.Sending(option);
+						string res = hexgate.Receive();
+						cout << res;
+					}
 						break;
 					case 2:
 						hexgate.Sending(option);
