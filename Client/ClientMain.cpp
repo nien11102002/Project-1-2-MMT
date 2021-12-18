@@ -70,7 +70,11 @@ int main() {
 					}
 						break;
 					case 2:
+					{
 						hexgate.Sending(option);
+						string res = hexgate.Receive();
+						cout << res;
+					}						
 						break;
 					case 3:
 						show_help_checkuser();
