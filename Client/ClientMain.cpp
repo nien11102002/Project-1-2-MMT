@@ -84,8 +84,10 @@ int main() {
 						show_help_setup();
 						break;
 					case -1:
-						cout << "Logging out! See you next time.";
-						break;
+						{
+							cout << "Logging out! See you next time."; 
+							exit(0);
+						}
 					default:
 						break;
 					}
