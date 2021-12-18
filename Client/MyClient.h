@@ -103,7 +103,7 @@ public:
 
 };
 
-void LoginHandle(Client& hexgate, string& messagetosend);
+void LoginHandle(Client& hexgate, string& messagetosend, bool& logged);
 void inputMaskedPassword(string& pass);
 void RegisterHandle(Client& hexgate, string& messagetosend);
 int get_option(string input);

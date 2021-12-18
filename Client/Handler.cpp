@@ -1,6 +1,6 @@
 ﻿#include"MyClient.h"
 
-void LoginHandle(Client& hexgate, string& messagetosend) {
+void LoginHandle(Client& hexgate, string& messagetosend, bool& logged) {
 	bool run = true;
 	while (run)
 	{
@@ -19,6 +19,7 @@ void LoginHandle(Client& hexgate, string& messagetosend) {
 		}
 		else if (recvmsg == "\nLogin successfully!\n") {
 			cout << recvmsg;
+			logged = true;
 			run = false;
 		}
 		else {

@@ -12,9 +12,6 @@ int main() {
 
 		while (true)
 		{
-			regex input_login("[Ll][Oo][Gg][Ii][Nn]");
-			regex input_logout("[Ll][Oo][Gg][Oo][Uu][Tt]");
-			regex input_register("[Rr][Ee][Gg][Ii][Ss][Tt][Ee]Rr]");
 			string messageToSend;
 			if (!logged) {
 				do {
@@ -27,15 +24,14 @@ int main() {
 				int pos = messageToSend.find_first_of(' ');
 				msg = messageToSend.substr(0, pos);
 
-				if (regex_match(msg, input_logout)) {
+				if (msg== "Logout" ||msg == "logout") {
 					cout << "See you next time.\n";
 					break;
 				}
-				else if (regex_match(msg, input_login)) {
-					LoginHandle(hexgate, messageToSend);
-					logged = true;
+				else if (msg == "Login" || msg == "login") {
+					LoginHandle(hexgate, messageToSend, logged);
 				}
-				else if (regex_match(msg, input_register))
+				else if (msg == "Register" || msg == "register")
 					RegisterHandle(hexgate, messageToSend);
 			}
 			else {
@@ -50,11 +46,11 @@ int main() {
 				string option;
 				int flag = 0;
 				do {
-					Sleep(100);
-					string var = hexgate.Receive();
-					if (var != "") {
-						// moi vo game
-					}
+					//Sleep(100);
+					//string var = hexgate.Receive();
+					//if (var != "") {
+					//	// moi vo game
+					//}
 
 					do {
 						if (get_option(option) == 0 && flag != 0)
