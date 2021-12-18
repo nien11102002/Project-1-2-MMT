@@ -27,15 +27,15 @@ int main() {
 				int pos = messageToSend.find_first_of(' ');
 				msg = messageToSend.substr(0, pos);
 
-				if (regex_match(msg,input_logout)) {
+				if (regex_match(msg, input_logout)) {
 					cout << "See you next time.\n";
 					break;
 				}
-				else if (regex_match(msg,input_login)) {
+				else if (regex_match(msg, input_login)) {
 					LoginHandle(hexgate, messageToSend);
 					logged = true;
 				}
-				else if (regex_match(msg,input_register))
+				else if (regex_match(msg, input_register))
 					RegisterHandle(hexgate, messageToSend);
 			}
 			else {
@@ -50,10 +50,15 @@ int main() {
 				string option;
 				int flag = 0;
 				do {
+					Sleep(100);
+					string var = hexgate.Receive();
+					if (var != "") {
+						// moi vo game
+					}
 
 					do {
-						if (get_option(option) == 0 && flag != 0) 
-							cout << "> Function unrecognized! Please re-enter";	
+						if (get_option(option) == 0 && flag != 0)
+							cout << "> Function unrecognized! Please re-enter";
 						cout << "> Your choice: ";
 						getline(cin, option);
 						cout << endl;
@@ -68,14 +73,14 @@ int main() {
 						string res = hexgate.Receive();
 						cout << res;
 					}
-						break;
+					break;
 					case 2:
 					{
 						hexgate.Sending(option);
 						string res = hexgate.Receive();
 						cout << res;
-					}						
-						break;
+					}
+					break;
 					case 3:
 						show_help_checkuser();
 						break;
