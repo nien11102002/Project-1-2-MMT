@@ -129,7 +129,7 @@ public:
 				for (int cs = 0; cs < socialcredit.size(); cs++) {
 
 					ZeroMemory(buffer, 1024);// reset buffer.
-					
+
 
 					if (socialcredit[cs].connected == true) {
 
@@ -146,7 +146,7 @@ public:
 						}
 						else if (receivers > 0)
 						{
-							cout << "Client "<<socialcredit[cs].client_gate << " data received : " << buffer << endl;
+							cout << "Client " << socialcredit[cs].client_gate << " data received : " << buffer << endl;
 							if (!socialcredit[cs].logged) {
 								string m = string(buffer);
 								auto first = m.find_first_of(' ');
@@ -155,8 +155,8 @@ public:
 								string content = m.substr(first + 1, m.size() - first - 1);
 								user = content;
 								if (type == "login" || type == "Login") {
-									bool flag = false;									
-									Login(hashmap, socialcredit[cs],flag, content);
+									bool flag = false;
+									Login(hashmap, socialcredit[cs], flag, content);
 									socialcredit[cs].logged = flag;
 								}
 								else if (type == "register" || type == "Register") {
@@ -176,7 +176,7 @@ public:
 								if (option == "check_user") {
 									check_user_menu(hashmap, socialcredit[cs], mess);
 								}
-								else if (option == "setup_info"){
+								else if (option == "setup_info") {
 									setup_info_menu(hashmap, socialcredit[cs], mess, user);
 								}
 							}
@@ -226,14 +226,14 @@ public:
 
 		the_wok.pass = var;
 
-		if (isMatch(hashmap, the_wok.account, the_wok.pass, the_wok.citizen)) 
+		if (isMatch(hashmap, the_wok.account, the_wok.pass, the_wok.citizen))
 		{
 			sendmsg = "\nLogin successfully!\n";
 			Sleep(500);
 			SendTo(the_wok.client_gate, sendmsg);
 			flag = true;
 		}
-		else 
+		else
 		{
 			sendmsg = "Error, do not match any username.";
 			Sleep(500);
@@ -242,7 +242,7 @@ public:
 
 	}
 
-	void Register(unordered_map<Account*, Player*>& hashmap, client_table& the_wok, string content) 
+	void Register(unordered_map<Account*, Player*>& hashmap, client_table& the_wok, string content)
 	{
 		string sendmsg, var;
 		if (isAvailableUsername(hashmap, content) == true)
@@ -266,7 +266,7 @@ public:
 		the_wok.pass = var;
 
 		sendmsg = "Do you want to encrypt your message before sending?";
-		SendTo(the_wok.client_gate, sendmsg); 
+		SendTo(the_wok.client_gate, sendmsg);
 		var = ReceiveFrom(the_wok.client_gate);
 		if (var == "Error in recv msg") {
 			cout << var << endl;
@@ -274,13 +274,13 @@ public:
 		}
 
 		int encrypted = 0;
-		if (var == "Y") 
-		{ 
+		if (var == "Y")
+		{
 			encrypted = 1; sendmsg = "Register successfully and Message was encrypted.";
 			Sleep(100);
 			SendTo(the_wok.client_gate, sendmsg);
 		}
-		else 
+		else
 		{
 			encrypted = 0; sendmsg = "Register successfully and Message was not encrypted.";
 			Sleep(100);
@@ -312,8 +312,8 @@ public:
 		Account A(the_wok.account, encrypted, the_wok.pass);
 		writeAtBottomOfNewOne(C, A);
 
-		hashmap.insert(make_pair(new Account(the_wok.account, encrypted, the_wok.pass), 
-			new Player(C.Name(),0,0,C.Birthday())));
+		hashmap.insert(make_pair(new Account(the_wok.account, encrypted, the_wok.pass),
+			new Player(C.Name(), 0, 0, C.Birthday())));
 
 		sendmsg = "Registered successfully.\n"; Sleep(500);
 		SendTo(the_wok.client_gate, sendmsg);
@@ -379,7 +379,7 @@ public:
 	}
 
 
-	void dispatch(unordered_map<Account*,Player*>& hashmap, client_table& the_wok, int option, string username) {
+	void dispatch(unordered_map<Account*, Player*>& hashmap, client_table& the_wok, int option, string username) {
 		const int find_name = 1;
 		const int check_online = 2;
 		const int show_dob = 3;
@@ -390,16 +390,16 @@ public:
 		switch (option)
 		{
 		case find_name:
-			{
+		{
 			stringstream builder;
 			if (find_Name(hashmap, username)) builder << "Player " << username << " exists!\n\n";
 			else builder << "Player " << username << " does not exist!\n\n";
 			string mts = builder.str();
 			SendTo(the_wok.client_gate, mts);
 			break;
-			}			
+		}
 		case check_online:
-			{
+		{
 			stringstream builder;
 			if (check_Online(hashmap, username)) builder << "Player " << username << " is online\n\n";
 			else if (!find_Name(hashmap, username)) builder << "Player " << username << " does not exist!\n\n";
@@ -407,7 +407,7 @@ public:
 			string mts = builder.str();
 			SendTo(the_wok.client_gate, mts);
 			break;
-			}
+		}
 		case show_dob:
 			show_DOB(hashmap, the_wok, username);
 			break;

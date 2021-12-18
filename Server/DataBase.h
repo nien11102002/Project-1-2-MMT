@@ -149,7 +149,4 @@ bool isMatch(unordered_map<Account*, Player*> hashmap, string account, string pa
 bool isAvailableUsername(unordered_map<Account*, Player*> hashmap, string S);
 void writeAtBottomOfNewOne(Player P, Account A);
 
-//Game
-string PrintOnlinePlayers(unordered_map<Account*, Player*> hashmap);
-
 #endif
