@@ -45,12 +45,13 @@ int main() {
 				cout << "> NOTE: If you need help, just type: /help [funciton]" << endl << endl;
 				string option;
 				int flag = 0;
+				bool running = true;
 				do {
-					//Sleep(100);
-					//string var = hexgate.Receive();
-					//if (var != "") {
-					//	// moi vo game
-					//}
+					Sleep(100);
+					string var = hexgate.Receive();
+					if (var != "none") {
+						// moi vo game
+					}
 
 					do {
 						if (get_option(option) == 0 && flag != 0)
@@ -83,16 +84,16 @@ int main() {
 					case 4:
 						show_help_setup();
 						break;
-					case -1:
-						{
-							cout << "Logging out! See you next time."; 
-							exit(0);
+					case -1:{
+						cout << "Logging out! See you next time."; 
+						exit(0);
 						}
+						
 					default:
 						break;
 					}
 					flag = 0;
-				} while (true);
+				} while (running);
 			}
 
 			Sleep(5); // hàm này dùng để dồng bộ giữa thời gian chạy giữa client và server để tránh lệch 

@@ -86,7 +86,7 @@ public:
 	string Receive() {
 		char buffer[1024] = {};
 		string reply;
-		if (recv(serverSocket, buffer, 1024, 0) < 0)// teo
+		if (recv(serverSocket, buffer, 1024, 0) == -1)// teo
 			return "";
 		reply = string(buffer);
 		return reply;
