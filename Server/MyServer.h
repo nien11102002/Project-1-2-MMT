@@ -133,6 +133,14 @@ public:
 
 					if (socialcredit[cs].connected == true) {
 
+						/*string flag = "none";
+						if (flag == "none")
+							SendFlag(socialcredit[cs].client_gate, flag);
+						else{
+							SendFlag(socialcredit[cs].client_gate, flag);
+							ReceiveFrom(socialcredit[cs].client_gate);
+						}*/
+
 						int receivers = recv(socialcredit[cs].client_gate, buffer, 1024, 0);
 						string user;
 						// closing a client connection.
@@ -333,13 +341,11 @@ public:
 		send(sock_id, package.c_str(), package.size(), 0);
 	}
 
-	~Server() {
-		WriteFile(hashmap, jav, editor);
-		CleanHashmap(hashmap);
-		closesocket(clientSocket);
-		WSACleanup();
+	void SendFlag(SOCKET sock_id, string flag) {
+		send(sock_id, flag.c_str(), flag.size(), 0);
 	}
 
+	
 	void check_user_menu(unordered_map<Account*, Player*>& hashmap, client_table& the_wok, string opt) {
 		int option = getoption(opt);
 		string username = getname(opt);
@@ -592,7 +598,12 @@ public:
 				SendTo(the_wok.client_gate, mts);
 			}
 	}
+
+	~Server() {
+		WriteFile(hashmap, jav, editor);
+		CleanHashmap(hashmap);
+		closesocket(clientSocket);
+		WSACleanup();
+	}
 };
-
-
 #endif
