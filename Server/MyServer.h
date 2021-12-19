@@ -1,4 +1,4 @@
-﻿#ifndef MYSERVER_H
+#ifndef MYSERVER_H
 #define MYSERVER_H
 
 #define WIN32_LEAN_AND_MEAN
@@ -103,7 +103,7 @@ public:
 
 	void Run() {
 		CreateSocket();
-
+		client_table opponent;
 		while (true) {
 			int len = sizeof(hint);
 			SOCKET connectionline = accept(clientSocket, (sockaddr*)&hint, &len);
@@ -155,6 +155,7 @@ public:
 						else if (receivers > 0)
 						{
 							cout << "Client " << socialcredit[cs].client_gate << " data received : " << buffer << endl;
+
 							if (!socialcredit[cs].logged) {
 								string m = string(buffer);
 								auto first = m.find_first_of(' ');
@@ -186,6 +187,30 @@ public:
 								}
 								else if (option == "setup_info") {
 									setup_info_menu(hashmap, socialcredit[cs], mess, user);
+								}
+								else if (option == "change_password" || option == "Change_password")
+								{
+									ChangePassword(hashmap, socialcredit[cs]);
+								}
+								else if (option == "start_game")
+								{
+									string msg = PrintOnlinePlayers(socialcredit,socialcredit[cs]);
+									SendTo(socialcredit[cs].client_gate, msg);
+								}
+								else if (option == "create_room")
+								{
+									Server_CreateRoom(hashmap, socialcredit[cs], socialcredit, mess, opponent);
+								}
+								else if (option == "upload_file")
+								{
+									StartGame(socialcredit[cs], opponent,mess);
+									GameHandle(socialcredit[cs], opponent);
+								}
+								else {
+									string warning = "not match any type.\n";
+									int rep = send(socialcredit[cs].client_gate, warning.c_str(), warning.size(), 0);
+									if (rep == SOCKET_ERROR)
+										cout << "Loi.\n";
 								}
 							}
 						}
@@ -327,6 +352,214 @@ public:
 		SendTo(the_wok.client_gate, sendmsg);
 	}
 
+	void ChangePassword(unordered_map<Account*, Player*> hashmap, client_table& the_wok)
+	{
+		string sendmsg = "password: ";
+		SendTo(the_wok.client_gate, sendmsg);
+		string var;
+		do
+		{
+			var = ReceiveFrom(the_wok.client_gate);
+			if (var == "Error in recv msg") {
+				cout << var << endl;
+				return;
+			}
+
+			if (var != the_wok.pass)
+			{
+				string rep = "password: ";
+				SendTo(the_wok.client_gate, rep);
+			}
+		} while (var != the_wok.pass);
+		sendmsg = "Do you want to encrypt your message before sending?";
+		SendTo(the_wok.client_gate, sendmsg);
+
+		var = ReceiveFrom(the_wok.client_gate);
+		if (var == "Error in recv msg") {
+			cout << var << endl;
+			return;
+		}
+		string flag = var;
+
+		sendmsg = "new password: ";
+		SendTo(the_wok.client_gate, sendmsg);
+
+		var = ReceiveFrom(the_wok.client_gate);
+		if (var == "Error in recv msg") {
+			cout << var << endl;
+			return;
+		}
+
+		the_wok.pass = var;
+
+		if (flag == "Y")
+			sendmsg = "Changepassword successfully and Message was encrypted.";
+		else sendmsg = "Changepassword successfully and Message wasn't encrypted.";
+		SendTo(the_wok.client_gate, sendmsg);
+
+		for (auto it = hashmap.begin(); it != hashmap.end(); it++)
+		{
+			if (it->first->Account_name() == the_wok.account)
+			{
+				if (flag == "Y")
+					it->first->setPassword(the_wok.pass, 1);
+				else it->first->setPassword(the_wok.pass, 0);
+				break;
+			}
+		}
+	}
+
+	void Server_CreateRoom(unordered_map<Account*, Player*> hashmap, client_table the_wok, vector<client_table> socialcredit,
+		string message, client_table& oppo)
+	{
+		string var;
+		int SpaceIndex = message.find_last_of(" ");
+		string OpponentName = message.substr(SpaceIndex + 1, message.length() - SpaceIndex - 1);
+		int isOnline = 0;
+		client_table Opponent;
+		FindUser(OpponentName, socialcredit, isOnline, Opponent);
+		stringstream builder;
+		if (isOnline == 1)//1 la online, 0 la offline, 2 la không tồn tại username
+		{
+			builder << "Invitation User " + the_wok.account + " has sent you an invitation to a match.\n";
+			builder << "";
+			string reply = builder.str();
+
+			SendTo(Opponent.client_gate, reply);
+			var = ReceiveFrom(Opponent.client_gate);
+			if (var == "Error in recv msg") {
+				cout << var << endl;
+				return;
+			}
+
+			
+			do {
+				var = ReceiveFrom(Opponent.client_gate);
+				message = var.substr(0, 1);
+				if (message == "Y")
+				{
+					string reply = "Game start";
+					SendTo(the_wok.client_gate, reply);
+
+					SendTo(Opponent.client_gate, reply);
+				}
+				else if (message == "N")
+				{
+					string reply = "Opponent refuse to play.";
+					SendTo(the_wok.client_gate, reply);
+
+					reply = "Has sent your refuse.";
+					SendTo(Opponent.client_gate, reply);
+				}
+				else
+				{
+					string reply = "Invitation Invalid answer!!! Please correctly resend!!!";
+					SendTo(Opponent.client_gate, reply);
+				}
+			} while (message != "Y" && message != "N");
+		}
+		else if (isOnline == 0)
+		{
+			string reply = "Username is offline.";
+			SendTo(the_wok.client_gate, reply);
+		}
+		else
+		{
+			string reply = "Wrong username.";
+			SendTo(the_wok.client_gate, reply);
+		}
+		oppo = Opponent;
+	}
+
+	void FindUser(string name, vector<client_table> socialcredit, int& isOnline, client_table& c)
+	{
+		for (auto i = 0; i < socialcredit.size(); i++)
+		{
+			if (socialcredit[i].account == name)
+			{
+				c = socialcredit[i];
+				isOnline = c.logged;
+				return;
+			}
+		}
+		isOnline = 2;
+	}
+
+	void StartGame(client_table the_wok, client_table opponent,string mess)
+	{
+		string var1, var2;
+		bool flag = 1;
+		do
+		{
+			var1 = mess;
+			var2 = ReceiveFrom(opponent.client_gate);
+
+			string tmp1 = var1.substr(0, var1.find(" "));
+			string tmp2 = var2.substr(0, var2.find(" "));
+			if (tmp1 == "upload_file" && tmp2 == "upload_file")
+			{
+				string rep = "Your turn";
+				SendTo(the_wok.client_gate, rep);
+				rep = "Next turn";
+				SendTo(opponent.client_gate, rep);
+				flag = 0;
+			}
+			else
+			{
+				if (tmp1 != "upload_file")
+				{
+					string rep = "Wrong format";
+					SendTo(the_wok.client_gate, rep);
+				}
+				if (tmp2 != "upload_file")
+				{
+					string rep = "Wrong format";
+					SendTo(opponent.client_gate, rep);
+				}
+			}
+		} while (flag);
+	}
+
+	void GameHandle(client_table the_wok, client_table opponent)
+	{
+		string var;
+		do
+		{
+			do
+			{
+				var = ReceiveFrom(the_wok.client_gate);//receive attack 
+				SendTo(opponent.client_gate, var);
+
+				var = ReceiveFrom(opponent.client_gate);//receive "hit" or "miss" or "game over"
+				SendTo(the_wok.client_gate, var);
+			} while (var == "hit");
+
+			do
+			{
+				var = ReceiveFrom(opponent.client_gate);
+				SendTo(the_wok.client_gate, var);
+
+				var = ReceiveFrom(the_wok.client_gate);
+				SendTo(opponent.client_gate, var);
+			} while (var == "hit");
+		} while (var != "game over");
+	}
+
+	string PrintOnlinePlayers(vector<client_table> socialcredit,client_table the_wok)
+	{
+		stringstream builder;
+		builder << "List users are online: ";
+		for (int i = 0; i < socialcredit.size(); i++)
+		{
+			if (socialcredit[i].logged&&socialcredit[i].account!=the_wok.account)
+			{
+				builder << socialcredit[i].account << ",";
+			}
+		}
+
+		string result = builder.str();
+		return result;
+	}
 
 	string ReceiveFrom(SOCKET sock_id) {
 		ZeroMemory(buffer, 1024);
@@ -345,7 +578,6 @@ public:
 		send(sock_id, flag.c_str(), flag.size(), 0);
 	}
 
-	
 	void check_user_menu(unordered_map<Account*, Player*>& hashmap, client_table& the_wok, string opt) {
 		int option = getoption(opt);
 		string username = getname(opt);
@@ -383,7 +615,6 @@ public:
 		user_string = match[1];
 		return user_string;
 	}
-
 
 	void dispatch(unordered_map<Account*, Player*>& hashmap, client_table& the_wok, int option, string username) {
 		const int find_name = 1;
@@ -433,7 +664,6 @@ public:
 			break;
 		}
 	}
-
 
 	bool find_Name(unordered_map<Account*, Player*>& hashmap, string username) {
 		for (auto it = hashmap.begin(); it != hashmap.end(); it++)
@@ -540,7 +770,6 @@ public:
 		return element_string;
 	}
 
-
 	void dispatch_setup(unordered_map<Account*, Player*>& hashmap, client_table& the_wok, int option, string element, string username) {
 		const int change_fullname = 1;
 		const int change_dob = 2;
@@ -560,7 +789,6 @@ public:
 			break;
 		}
 	}
-
 
 	void change_Fullname(unordered_map<Account*, Player*>& hashmap, client_table& the_wok, int option, string element, string username) {
 		stringstream builder;
