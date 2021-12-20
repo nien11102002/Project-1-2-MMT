@@ -8,8 +8,7 @@
 #include<WS2tcpip.h>
 #include<conio.h>
 #include<regex>
-#include <iomanip>
-#include "Game.h"
+#include"Game.h"
 #pragma comment(lib, "WS2_32.lib")
 using namespace std;
 
@@ -87,7 +86,7 @@ public:
 	string Receive() {
 		char buffer[1024] = {};
 		string reply;
-		if (recv(serverSocket, buffer, 1024, 0) < 0)// teo
+		if (recv(serverSocket, buffer, 1024, 0) == -1)// teo
 			return "";
 		reply = string(buffer);
 		return reply;
@@ -117,5 +116,4 @@ void CreateRoomHandle(Client& hexgate, string& messagetosend, int& flag);
 void UploadFileHandle(Client& hexgate, string& messagetosend, vector<vector<char>>& map, vector<vector<char>>& stat);
 void Attack(Client& hexgate, string& messagetosend, int turn, vector<vector<char>> map, vector<vector<char>> stat);
 void getAttacked(Client& hexgate, vector<vector<char>>& stat, int& SHIP);
-
 #endif
