@@ -149,6 +149,7 @@ int main() {
 									cout << "Next turn" << endl;
 									Attack(hexgate, messageToSend, 1, map, stat);
 								}
+								flag=0;
 							}
 
 						}
