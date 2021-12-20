@@ -70,7 +70,7 @@ void UploadFileHandle(Client& hexgate, string& messagetosend,vector<vector<char>
 void Attack(Client& hexgate, string& messagetosend,int turn,vector<vector<char>> map, vector<vector<char>> stat)
 {
 	string tmp,var;
-	int SHIP = 5;
+	int SHIP = 55;
 	game_over = false;
 	if (turn != 0)//0 means go first
 	{
