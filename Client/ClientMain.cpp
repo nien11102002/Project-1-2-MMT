@@ -26,18 +26,18 @@ int main() {
 					msg = msg.substr(0, SpaceIndex);
 
 				if (msg == "Logout" || msg == "logout") {
-					cout << "See you next time.\n";
+					Sleep(1);
+					cout << hexgate.Receive() << endl;
 					break;
 				}
 				else if (msg == "Login" || msg == "login") {
 					LoginHandle(hexgate, messageToSend, logged);
-					logged = true;
 				}
 				else if (msg == "Register" || msg == "register")
 					RegisterHandle(hexgate, messageToSend);
 				else
 					cout << "Not Match any types.\n";
-					
+
 			}
 			else {
 				// da login
@@ -49,29 +49,33 @@ int main() {
 					// làm các hàm check user sau khi login tại đây.
 					cout << "> What do you want to do?" << endl;
 					cout << "> 1. Check the status of other players and Change your personal information" << endl;
-					cout << "> 2. Start game" << endl;
+					cout << "> 2. Start_game" << endl;
 					cout << "> 3. Change pass.\n";
 					cout << "> 4. Exit" << endl;
 					cout << "> NOTE: type search to check status and change information. " << endl
-						<< "OR type start game to play game." << endl
+						<< "OR type start_game to play game." << endl
 						<< "change_password to change pass." << endl;
 					cout << "Type exit to loggout.\n";
 					string option;
 					int flag = 0;
-					cout << "Your Choice: ";
+					cout << ">Your Choice: ";
 					getline(cin, option);
 
-					if (option == "search") 
+					/*int SpaceIndex = option.find_first_of(" ");
+					if (SpaceIndex != -1)
+						option = option.substr(0, SpaceIndex);*/
+
+					if (option == "search")
 					{
 						cout << "> What do you want to do?" << endl;
 						cout << "> 1. Check the status of other players: check_user [-option] [username]" << endl;
 						cout << "> 2. Change your personal information: setup_info [-option] [element]" << endl;
-						cout << "> NOTE: If you need help, just type: /help [funciton]" << endl << endl;
+						cout << "> NOTE: If you need help, just type: /help [function]" << endl << endl;
 						bool running = true;
 						string opt;
 						do
 						{
-						
+
 							do {
 								if (get_option(opt) == 0 && flag != 0)
 									cout << "> Function unrecognized! Please re-enter";
@@ -114,11 +118,13 @@ int main() {
 							default:
 								break;
 							}
-							flag = 0;
+							flag = 0; // create_room [id] with [username]
 						} while (running);
 					}
-					else if (option == "start_game") 
+					else if (option == "start_game")
 					{
+						hexgate.Sending(option);
+						messageToSend = option;
 						int flag = 0; int turn = 0;
 						CreateRoomHandle(hexgate, messageToSend, flag);
 						while (flag == 1)
@@ -149,22 +155,22 @@ int main() {
 									cout << "Next turn" << endl;
 									Attack(hexgate, messageToSend, 1, map, stat);
 								}
-								flag=0;
+								flag = 0;
 							}
 
 						}
 					}
-					else if (option=="change_password") {
+					else if (option == "change_password") {
 						ChangePasswordHandle(hexgate, messageToSend);
 					}
 					else if (option == "exit" || option == "Exit") {
-						operation = false;
-						logged = false;
-						cout << "Bye bye see you next time.\n";
+						hexgate.Sending(option);
+						Sleep(1);
+						cout << hexgate.Receive() << endl;
 						exit(0);
 					}
 				}
-							
+
 			}
 
 			Sleep(5); // hàm này dùng để dồng bộ giữa thời gian chạy giữa client và server để tránh lệch 

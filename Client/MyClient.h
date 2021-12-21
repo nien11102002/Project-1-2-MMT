@@ -115,5 +115,5 @@ void show_help_setup();
 void CreateRoomHandle(Client& hexgate, string& messagetosend, int& flag);
 void UploadFileHandle(Client& hexgate, string& messagetosend, vector<vector<char>>& map, vector<vector<char>>& stat);
 void Attack(Client& hexgate, string& messagetosend, int turn, vector<vector<char>> map, vector<vector<char>> stat);
-void getAttacked(Client& hexgate, vector<vector<char>>& stat, vector<vector<char>>& map, int& SHIP);
+void getAttacked(Client& hexgate, vector<vector<char>>& stat, vector<vector<char>>& mapt, int& SHIP);
 #endif

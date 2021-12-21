@@ -1,6 +1,6 @@
 #include "MyClient.h"
 
-void CreateRoomHandle(Client& hexgate, string& messagetosend,int& flag)
+void CreateRoomHandle(Client& hexgate, string& messagetosend, int& flag)
 {
 	bool run = true;
 	string send;
@@ -48,10 +48,10 @@ void CreateRoomHandle(Client& hexgate, string& messagetosend,int& flag)
 	}
 }
 
-void UploadFileHandle(Client& hexgate, string& messagetosend,vector<vector<char>>& map, vector<vector<char>>& stat)
+void UploadFileHandle(Client& hexgate, string& messagetosend, vector<vector<char>>& map, vector<vector<char>>& stat)
 {
-	int pos = messagetosend.find(" ");
-	string tmp = messagetosend.substr(pos+1,messagetosend.length()-pos-1);
+	auto pos = messagetosend.find(" ");
+	string tmp = messagetosend.substr(pos + 1, messagetosend.length() - pos - 1);
 
 	ifstream file;
 	file.open("map.txt", ios::out);
@@ -67,14 +67,14 @@ void UploadFileHandle(Client& hexgate, string& messagetosend,vector<vector<char>
 		ReadData(file, stat);
 }
 
-void Attack(Client& hexgate, string& messagetosend,int turn,vector<vector<char>> map, vector<vector<char>> stat)
+void Attack(Client& hexgate, string& messagetosend, int turn, vector<vector<char>> map, vector<vector<char>> stat)
 {
-	string tmp,var;
+	string tmp, var;
 	int SHIP = 55;
 	game_over = false;
 	if (turn != 0)//0 means go first
 	{
-		getAttacked(hexgate, stat,map, SHIP);
+		getAttacked(hexgate, stat, map, SHIP);
 	}
 
 	do
@@ -83,16 +83,16 @@ void Attack(Client& hexgate, string& messagetosend,int turn,vector<vector<char>>
 		do
 		{
 			PrintPlayBoard(stat, map);
-			
+
 			do
 			{
 				cout << ">>";
 				getline(cin, tmp);
-				int a = tmp.find_last_of(" ") - tmp.find_first_of(" ") - 1;
+				auto a = tmp.find_last_of(" ") - tmp.find_first_of(" ") - 1;
 				x = stoi(tmp.substr(12, a));
 				y = stoi(tmp.substr(13 + a, tmp.size() - tmp.find_last_of(" ") - 1));
 				x--; y--;
-			} while (x < 0 || x > 20 || y < 0 || y > 20 || map[x][y] == 'o'||map[x][y]=='~');
+			} while (x < 0 || x > 20 || y < 0 || y > 20 || map[x][y] == 'o' || map[x][y] == '~');
 			hexgate.Sending(tmp);
 			var = hexgate.Receive();
 			if (var == "hit")
@@ -104,7 +104,7 @@ void Attack(Client& hexgate, string& messagetosend,int turn,vector<vector<char>>
 		if (var == "miss")
 		{
 			map[x][y] = '~';
-			getAttacked(hexgate, stat,map, SHIP);
+			getAttacked(hexgate, stat, map, SHIP);
 		}
 		else if (var == "game over")
 		{
@@ -114,7 +114,7 @@ void Attack(Client& hexgate, string& messagetosend,int turn,vector<vector<char>>
 	} while (!game_over);
 }
 
-void getAttacked(Client& hexgate, vector<vector<char>>& stat, vector<vector<char>>& map,int& SHIP)
+void getAttacked(Client& hexgate, vector<vector<char>>& stat, vector<vector<char>>& map, int& SHIP)
 {
 	string msg;
 	do
@@ -127,9 +127,9 @@ void getAttacked(Client& hexgate, vector<vector<char>>& stat, vector<vector<char
 			return;
 		}
 		cout << "Enemy " << tmp << endl;
-		int a = tmp.find_last_of(" ") - tmp.find_first_of(" ") - 1;
-		int x = stoi(tmp.substr(12, a));
-		int y = stoi(tmp.substr(13 + a, tmp.size() - tmp.find_last_of(" ") - 1));
+		auto pos = tmp.find_last_of(" ") - tmp.find_first_of(" ") - 1;
+		int x = stoi(tmp.substr(12, pos));
+		int y = stoi(tmp.substr(13 + pos, tmp.size() - tmp.find_last_of(" ") - 1));
 		x--; y--;
 
 		if (stat[x][y] == 'x')
