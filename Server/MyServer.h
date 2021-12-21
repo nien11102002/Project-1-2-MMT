@@ -1,4 +1,4 @@
-﻿#ifndef MYSERVER_H
+#ifndef MYSERVER_H
 #define MYSERVER_H
 
 #define WIN32_LEAN_AND_MEAN
@@ -194,7 +194,7 @@ public:
 								}
 								else if (option == "start_game")
 								{
-									string msg = PrintOnlinePlayers(socialcredit, socialcredit[cs]);
+									string msg = PrintOnlinePlayers(socialcredit,socialcredit[cs]);
 									SendTo(socialcredit[cs].client_gate, msg);
 								}
 								else if (option == "create_room")
@@ -203,7 +203,7 @@ public:
 								}
 								else if (option == "upload_file")
 								{
-									StartGame(socialcredit[cs], opponent, mess);
+									StartGame(socialcredit[cs], opponent,mess);
 									GameHandle(socialcredit[cs], opponent);
 								}
 								else {
@@ -413,7 +413,7 @@ public:
 		string message, client_table& oppo)
 	{
 		string var;
-		auto SpaceIndex = message.find_last_of(" ");
+		int SpaceIndex = message.find_last_of(" ");
 		string OpponentName = message.substr(SpaceIndex + 1, message.length() - SpaceIndex - 1);
 		int isOnline = 0;
 		client_table Opponent;
@@ -431,8 +431,8 @@ public:
 				cout << var << endl;
 				return;
 			}
-							
 
+			
 			do {
 				var = ReceiveFrom(Opponent.client_gate);
 				message = var.substr(0, 1);
@@ -485,7 +485,7 @@ public:
 		isOnline = 2;
 	}
 
-	void StartGame(client_table the_wok, client_table opponent, string mess)
+	void StartGame(client_table the_wok, client_table opponent,string mess)
 	{
 		string var1, var2;
 		bool flag = 1;
@@ -545,13 +545,13 @@ public:
 		} while (var != "game over");
 	}
 
-	string PrintOnlinePlayers(vector<client_table> socialcredit, client_table the_wok)
+	string PrintOnlinePlayers(vector<client_table> socialcredit,client_table the_wok)
 	{
 		stringstream builder;
 		builder << "List users are online: ";
 		for (int i = 0; i < socialcredit.size(); i++)
 		{
-			if (socialcredit[i].logged && socialcredit[i].account != the_wok.account)
+			if (socialcredit[i].logged&&socialcredit[i].account!=the_wok.account)
 			{
 				builder << socialcredit[i].account << ",";
 			}
