@@ -10,7 +10,6 @@ bool isMatch(unordered_map<Account*, Player*> hashmap, string account, string pa
 			user.setOnline(true);
 			user.setWin(it->second->Win());
 			user.setLoss(it->second->Loss());
-			it->second->setOnline(true);
 			return true;
 		}
 

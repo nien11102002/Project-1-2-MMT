@@ -1,4 +1,4 @@
-#ifndef MYSERVER_H
+﻿#ifndef MYSERVER_H
 #define MYSERVER_H
 
 #define WIN32_LEAN_AND_MEAN
@@ -29,7 +29,6 @@ public:
 		bool logged;
 		string account;
 		string pass;
-		string re_confirm;
 		Player citizen;
 	};
 
@@ -129,32 +128,33 @@ public:
 				for (int cs = 0; cs < socialcredit.size(); cs++) {
 
 					ZeroMemory(buffer, 1024);// reset buffer.
-
+					Sleep(100);
 
 					if (socialcredit[cs].connected == true) {
 
-						/*string flag = "none";
-						if (flag == "none")
-							SendFlag(socialcredit[cs].client_gate, flag);
-						else{
-							SendFlag(socialcredit[cs].client_gate, flag);
-							ReceiveFrom(socialcredit[cs].client_gate);
-						}*/
-
 						int receivers = recv(socialcredit[cs].client_gate, buffer, 1024, 0);
 						string user;
-						// closing a client connection.
-						if (Exit(buffer))
-						{
-							cout << "An ally has disconnected.\n";
-							socialcredit[cs].connected = false;
-							socialcredit[cs].logged = false;
-							auto iter = socialcredit.begin() + cs;
-							socialcredit.erase(iter);
-						}
-						else if (receivers > 0)
+						if (receivers > 0)
 						{
 							cout << "Client " << socialcredit[cs].client_gate << " data received : " << buffer << endl;
+							string flee = string(buffer);
+							if (flee == "logout" || flee == "Logout" || flee == "exit" || flee == "Exit") {
+								string out = "Bye bye, see u next time";
+								SendTo(socialcredit[cs].client_gate, out);
+								socialcredit[cs].account = socialcredit[cs].pass = "";
+								socialcredit[cs].logged = false;
+								socialcredit[cs].connected = false;
+								socialcredit[cs].citizen.setOnline(false);
+								socialcredit[cs].client_gate = NULL;
+								vector<client_table>::iterator it;
+								if (socialcredit.size() > 1)
+									it = socialcredit.begin() + cs;
+								else
+									it = socialcredit.begin();
+								socialcredit.erase(it);
+								cout << "Disconnected.\n";
+								break;
+							}
 
 							if (!socialcredit[cs].logged) {
 								string m = string(buffer);
@@ -194,7 +194,7 @@ public:
 								}
 								else if (option == "start_game")
 								{
-									string msg = PrintOnlinePlayers(socialcredit,socialcredit[cs]);
+									string msg = PrintOnlinePlayers(socialcredit, socialcredit[cs]);
 									SendTo(socialcredit[cs].client_gate, msg);
 								}
 								else if (option == "create_room")
@@ -203,7 +203,7 @@ public:
 								}
 								else if (option == "upload_file")
 								{
-									StartGame(socialcredit[cs], opponent,mess);
+									StartGame(socialcredit[cs], opponent, mess);
 									GameHandle(socialcredit[cs], opponent);
 								}
 								else {
@@ -237,11 +237,9 @@ public:
 		return 0;
 	}
 
-	bool Exit(char buffer[]) {
-		string msg = string(buffer);
-		if (msg == "Logout" || msg == "logout") {
+	bool Exit(string user) {
+		if (user == "Logout" || user == "logout" || user=="Exit"||user=="exit")
 			return true;
-		}
 		return false;
 	}
 
@@ -432,7 +430,7 @@ public:
 				return;
 			}
 
-			
+
 			do {
 				var = ReceiveFrom(Opponent.client_gate);
 				message = var.substr(0, 1);
@@ -485,7 +483,7 @@ public:
 		isOnline = 2;
 	}
 
-	void StartGame(client_table the_wok, client_table opponent,string mess)
+	void StartGame(client_table the_wok, client_table opponent, string mess)
 	{
 		string var1, var2;
 		bool flag = 1;
@@ -545,13 +543,13 @@ public:
 		} while (var != "game over");
 	}
 
-	string PrintOnlinePlayers(vector<client_table> socialcredit,client_table the_wok)
+	string PrintOnlinePlayers(vector<client_table> socialcredit, client_table the_wok)
 	{
 		stringstream builder;
 		builder << "List users are online: ";
 		for (int i = 0; i < socialcredit.size(); i++)
 		{
-			if (socialcredit[i].logged&&socialcredit[i].account!=the_wok.account)
+			if (socialcredit[i].logged && socialcredit[i].account != the_wok.account)
 			{
 				builder << socialcredit[i].account << ",";
 			}
@@ -572,10 +570,6 @@ public:
 
 	void SendTo(SOCKET sock_id, string package) {
 		send(sock_id, package.c_str(), package.size(), 0);
-	}
-
-	void SendFlag(SOCKET sock_id, string flag) {
-		send(sock_id, flag.c_str(), flag.size(), 0);
 	}
 
 	void check_user_menu(unordered_map<Account*, Player*>& hashmap, client_table& the_wok, string opt) {
@@ -638,7 +632,7 @@ public:
 		case check_online:
 		{
 			stringstream builder;
-			if (check_Online(hashmap, username)) builder << "Player " << username << " is online\n\n";
+			if (check_Online(socialcredit, username)) builder << "Player " << username << " is online\n\n";
 			else if (!find_Name(hashmap, username)) builder << "Player " << username << " does not exist!\n\n";
 			else builder << "Player " << username << " is not online!\n\n";
 			string mts = builder.str();
@@ -671,10 +665,10 @@ public:
 		return false;
 	}
 
-	bool check_Online(unordered_map<Account*, Player*>& hashmap, string username) {
-		for (auto it = hashmap.begin(); it != hashmap.end(); it++)
-			if (it->first->Account_name() == username)
-				if (it->second->Online()) return true;
+	bool check_Online(vector<client_table> socialcredit, string username) {
+		for (int i = 0; i < socialcredit.size(); i++)
+			if (socialcredit[i].account== username)
+				if (socialcredit[i].citizen.Online()) return true;
 		return false;
 	}
 
