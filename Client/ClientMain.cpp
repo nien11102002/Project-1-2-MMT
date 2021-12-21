@@ -61,10 +61,6 @@ int main() {
 					cout << ">Your Choice: ";
 					getline(cin, option);
 
-					/*int SpaceIndex = option.find_first_of(" ");
-					if (SpaceIndex != -1)
-						option = option.substr(0, SpaceIndex);*/
-
 					if (option == "search")
 					{
 						cout << "> What do you want to do?" << endl;
@@ -161,6 +157,7 @@ int main() {
 						}
 					}
 					else if (option == "change_password") {
+						hexgate.Sending(option);
 						ChangePasswordHandle(hexgate, messageToSend);
 					}
 					else if (option == "exit" || option == "Exit") {

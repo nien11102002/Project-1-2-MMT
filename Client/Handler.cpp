@@ -1,4 +1,4 @@
-﻿#include"MyClient.h"
+#include"MyClient.h"
 
 void LoginHandle(Client& hexgate, string& messagetosend, bool& logged) {
 	bool run = true;
