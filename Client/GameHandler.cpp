@@ -92,7 +92,7 @@ void Attack(Client& hexgate, string& messagetosend, int turn, vector<vector<char
 				x = stoi(tmp.substr(12, a));
 				y = stoi(tmp.substr(13 + a, tmp.size() - tmp.find_last_of(" ") - 1));
 				x--; y--;
-			} while (x < 0 || x > 20 || y < 0 || y > 20 || map[x][y] == 'o' || map[x][y] == '~');
+			} while (x < 0 || x > 14 || y < 0 || y > 14 || map[x][y] == 'o' || map[x][y] == '~');
 			hexgate.Sending(tmp);
 			var = hexgate.Receive();
 			if (var == "hit")
@@ -127,7 +127,7 @@ void getAttacked(Client& hexgate, vector<vector<char>>& stat, vector<vector<char
 			return;
 		}
 		cout << "Enemy " << tmp << endl;
-		int a = tmp.find_last_of(" ") - tmp.find_first_of(" ") - 1;
+		auto a = tmp.find_last_of(" ") - tmp.find_first_of(" ") - 1;
 		int x = stoi(tmp.substr(12, a));
 		int y = stoi(tmp.substr(13 + a, tmp.size() - tmp.find_last_of(" ") - 1));
 		x--; y--;
