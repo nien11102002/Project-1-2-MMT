@@ -17,6 +17,17 @@ void LoginHandle(Client& hexgate, string& messagetosend, bool& logged) {
 			inputMaskedPassword(send);
 			hexgate.Sending(send);
 		}
+		else if (recvmsg == "Do you want to encrypt your password?") {
+			cout << recvmsg << endl;
+			char letter;
+			do {
+				cout << "(Y/N): ";
+				cin >> letter;
+				letter = toupper(letter);
+			} while (letter != 'Y' && letter != 'N');
+			send = ""; send += letter;
+			hexgate.Sending(send);
+		}
 		else if (recvmsg == "\nLogin successfully!\n") {
 			cout << recvmsg;
 			logged = true;

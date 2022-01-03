@@ -111,6 +111,7 @@ void Attack(Client& hexgate, string& messagetosend, int turn, vector<vector<char
 			game_over = true;
 			cout << "You win" << endl;
 		}
+		/// nhap
 	} while (!game_over);
 }
 
