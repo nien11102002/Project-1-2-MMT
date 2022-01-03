@@ -15,7 +15,6 @@ void WriteFile(unordered_map<Account*, Player*> hashmap, fstream& jav, fstream& 
 		for (auto it = hashmap.begin(); it != hashmap.end(); it++)
 		{
 			editor << it->first->Account_name() << endl;
-			editor << it->first->encryption() << endl;
 			editor << it->first->Pass() << endl;
 
 			jav << it->second->Name() << endl;
@@ -27,7 +26,7 @@ void WriteFile(unordered_map<Account*, Player*> hashmap, fstream& jav, fstream& 
 				editor << endl;
 				jav << endl;
 			}
-				
+
 		}
 	}
 }

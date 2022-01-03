@@ -37,7 +37,6 @@ void writeAtBottomOfNewOne(Player P, Account A)
 	f.open("Acc and Pass.txt", ios::out | ios::app);
 	f << endl;
 	f << A.Account_name() << endl;;
-	f << A.encryption() << endl;
 	f << A.Pass() << endl;
 	f.close();
 

@@ -19,20 +19,16 @@ void LoadData(fstream& editor, fstream& jav, unordered_map<Account*, Player*>& h
 void Readfile(unordered_map<Account*, Player*>& hashmap, fstream& jav, fstream& editor) {
 	while (!(jav.eof() && editor.eof())) {
 		string name_acc, password, player_name, DOB;
-		int victory = 0, loss = 0, enflag = 0;
+		int victory = 0, loss = 0;
 
-		getline(editor, name_acc); getline(jav, player_name);
-		getline(jav, DOB);
-
-		editor >> enflag; jav >> victory;
-
+		getline(editor, name_acc); getline(editor, password);
 		editor.ignore();
+		
+		getline(jav, player_name); getline(jav, DOB);
+		jav >> victory; jav >> loss;
+		jav.ignore(); jav.ignore();
 
-		getline(editor, password); jav >> loss;
-
-		editor.ignore(); jav.ignore(); jav.ignore();
-
-		hashmap.insert(make_pair(new Account(name_acc, enflag, password),
+		hashmap.insert(make_pair(new Account(name_acc, password),
 			new Player(player_name, victory, loss, DOB)));
 	}
 }

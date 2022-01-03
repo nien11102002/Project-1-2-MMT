@@ -180,7 +180,7 @@ public:
 							}
 							else {
 								string mess = string(buffer);
-								int first_space = mess.find_first_of(' ');
+								auto first_space = mess.find_first_of(' ');
 								string option = mess.substr(0, first_space);
 								if (option == "check_user") {
 									check_user_menu(hashmap, socialcredit[cs], mess);
@@ -208,7 +208,7 @@ public:
 								}
 								else {
 									string warning = "not match any type.\n";
-									int rep = send(socialcredit[cs].client_gate, warning.c_str(), warning.size(), 0);
+									auto rep = send(socialcredit[cs].client_gate, warning.c_str(), warning.size(), 0);
 									if (rep == SOCKET_ERROR)
 										cout << "Loi.\n";
 								}
@@ -238,9 +238,16 @@ public:
 	}
 
 	bool Exit(string user) {
-		if (user == "Logout" || user == "logout" || user=="Exit"||user=="exit")
+		if (user == "Logout" || user == "logout" || user == "Exit" || user == "exit")
 			return true;
 		return false;
+	}
+
+	string EncryptPass(string in) {
+		string temp;
+		for (int i = 0; i < in.length(); i++)
+			temp += in[i] + 3;
+		return temp;
 	}
 
 	void Login(unordered_map<Account*, Player*> hashmap, client_table& the_wok, bool& flag, string content)
@@ -256,6 +263,18 @@ public:
 		}
 
 		the_wok.pass = var;
+
+		sendmsg = "Do you want to encrypt your password?";
+		SendTo(the_wok.client_gate, sendmsg);
+		var = ReceiveFrom(the_wok.client_gate);
+		if (var == "Error in recv msg") {
+			cout << var << endl;
+			return;
+		}
+		else if (var == "Y") {
+			string en = EncryptPass(the_wok.pass);
+			the_wok.pass = en;
+		}
 
 		if (isMatch(hashmap, the_wok.account, the_wok.pass, the_wok.citizen))
 		{
@@ -304,16 +323,17 @@ public:
 			return;
 		}
 
-		int encrypted = 0;
 		if (var == "Y")
 		{
-			encrypted = 1; sendmsg = "Register successfully and Message was encrypted.";
+			string en = EncryptPass(the_wok.pass);
+			the_wok.pass = en;
+			sendmsg = "Register successfully and Message was encrypted.";
 			Sleep(100);
 			SendTo(the_wok.client_gate, sendmsg);
 		}
 		else
 		{
-			encrypted = 0; sendmsg = "Register successfully and Message was not encrypted.";
+			sendmsg = "Register successfully and Message was not encrypted.";
 			Sleep(100);
 			SendTo(the_wok.client_gate, sendmsg);
 		}
@@ -340,10 +360,10 @@ public:
 		C.setBirthday(var);
 		C.setWin(0); C.setLoss(0);
 
-		Account A(the_wok.account, encrypted, the_wok.pass);
+		Account A(the_wok.account, the_wok.pass);
 		writeAtBottomOfNewOne(C, A);
 
-		hashmap.insert(make_pair(new Account(the_wok.account, encrypted, the_wok.pass),
+		hashmap.insert(make_pair(new Account(the_wok.account, the_wok.pass),
 			new Player(C.Name(), 0, 0, C.Birthday())));
 
 		sendmsg = "Registered successfully.\n"; Sleep(500);
@@ -392,16 +412,21 @@ public:
 
 		if (flag == "Y")
 			sendmsg = "Changepassword successfully and Message was encrypted.";
-		else sendmsg = "Changepassword successfully and Message wasn't encrypted.";
+		else 
+			sendmsg = "Changepassword successfully and Message wasn't encrypted.";
 		SendTo(the_wok.client_gate, sendmsg);
 
 		for (auto it = hashmap.begin(); it != hashmap.end(); it++)
 		{
 			if (it->first->Account_name() == the_wok.account)
 			{
-				if (flag == "Y")
-					it->first->setPassword(the_wok.pass, 1);
-				else it->first->setPassword(the_wok.pass, 0);
+				if (flag == "Y") {
+					string encode = EncryptPass(the_wok.pass);
+					the_wok.pass = encode;
+					it->first->setPassword(the_wok.pass);
+				}
+				else 
+					it->first->setPassword(the_wok.pass);
 				break;
 			}
 		}
@@ -411,7 +436,7 @@ public:
 		string message, client_table& oppo)
 	{
 		string var;
-		int SpaceIndex = message.find_last_of(" ");
+		auto SpaceIndex = message.find_last_of(" ");
 		string OpponentName = message.substr(SpaceIndex + 1, message.length() - SpaceIndex - 1);
 		int isOnline = 0;
 		client_table Opponent;
@@ -667,7 +692,7 @@ public:
 
 	bool check_Online(vector<client_table> socialcredit, string username) {
 		for (int i = 0; i < socialcredit.size(); i++)
-			if (socialcredit[i].account== username)
+			if (socialcredit[i].account == username)
 				if (socialcredit[i].citizen.Online()) return true;
 		return false;
 	}
