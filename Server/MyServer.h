@@ -1,4 +1,4 @@
-﻿#ifndef MYSERVER_H
+#ifndef MYSERVER_H
 #define MYSERVER_H
 
 #define WIN32_LEAN_AND_MEAN
@@ -204,7 +204,7 @@ public:
 								else if (option == "upload_file")
 								{
 									StartGame(socialcredit[cs], opponent, mess);
-									GameHandle(socialcredit[cs], opponent);
+									GameHandle(hashmap, socialcredit[cs], opponent);
 								}
 								else {
 									string warning = "not match any type.\n";
@@ -412,7 +412,7 @@ public:
 
 		if (flag == "Y")
 			sendmsg = "Changepassword successfully and Message was encrypted.";
-		else 
+		else
 			sendmsg = "Changepassword successfully and Message wasn't encrypted.";
 		SendTo(the_wok.client_gate, sendmsg);
 
@@ -425,7 +425,7 @@ public:
 					the_wok.pass = encode;
 					it->first->setPassword(the_wok.pass);
 				}
-				else 
+				else
 					it->first->setPassword(the_wok.pass);
 				break;
 			}
@@ -543,7 +543,7 @@ public:
 		} while (flag);
 	}
 
-	void GameHandle(client_table the_wok, client_table opponent)
+	void GameHandle(unordered_map<Account*, Player*>& hashmap,client_table the_wok, client_table opponent)
 	{
 		string var;
 		do
@@ -556,6 +556,9 @@ public:
 				var = ReceiveFrom(opponent.client_gate);//receive "hit" or "miss" or "game over"
 				SendTo(the_wok.client_gate, var);
 			} while (var == "hit");
+			
+			if (var == "game over")
+				UpdateScore(hashmap, the_wok, opponent);
 
 			do
 			{
@@ -565,7 +568,47 @@ public:
 				var = ReceiveFrom(the_wok.client_gate);
 				SendTo(opponent.client_gate, var);
 			} while (var == "hit");
+
+			if (var == "game over")
+				UpdateScore(hashmap, opponent, the_wok);
 		} while (var != "game over");
+
+		string var1, var2;
+		var1 = ReceiveFrom(the_wok.client_gate);
+		var2 = ReceiveFrom(opponent.client_gate);
+		if (var1 == "Y" && var2 == "Y")
+		{
+			string msg = "Play again";
+			SendTo(the_wok.client_gate,msg);
+			SendTo(opponent.client_gate,msg);
+		}
+		else
+		{
+			string msg = "Room break";
+			SendTo(the_wok.client_gate, msg);
+			SendTo(opponent.client_gate, msg);
+		}
+	}
+
+	void UpdateScore(unordered_map<Account*, Player*>& hashmap,client_table winner, client_table loser)
+	{
+		for (auto it = hashmap.begin(); it != hashmap.end(); it++)
+		{
+			if (winner.account == it->first->Account_name())
+			{
+				it->second->setWin(it->second->Win() + 1);
+				break;
+			}
+		}
+
+		for (auto it = hashmap.begin(); it != hashmap.end(); it++)
+		{
+			if (loser.account == it->first->Account_name())
+			{
+				it->second->setLoss(it->second->Loss() + 1);
+				break;
+			}
+		}
 	}
 
 	string PrintOnlinePlayers(vector<client_table> socialcredit, client_table the_wok)
