@@ -1,8 +1,37 @@
-﻿#include"MyClient.h"
+#include "MyClient.h"
 
 int main() {
 	Client hexgate;
 	string msg, username;
+
+	bool flag1 = false;
+	do
+	{
+		string tmp;
+		cout << ">> ";
+		getline(cin, tmp);
+		msg = tmp;
+		int SpaceIndex = msg.find_first_of(" ");
+		if (SpaceIndex != -1)
+			msg = msg.substr(0, SpaceIndex);
+		if (msg == "connect")
+		{
+			string sub = tmp.substr(SpaceIndex + 1, tmp.length() - SpaceIndex - 1);
+			SpaceIndex = sub.find_first_of(" ");
+			string ip = sub.substr(0, SpaceIndex);
+
+			SpaceIndex = sub.find_last_of(" ");
+			int port = stoi(sub.substr(SpaceIndex + 1, sub.length() - SpaceIndex - 1));
+			hexgate.setPortNumber(port);
+			hexgate.setServerIP(ip);
+			if (hexgate.initSocket())
+				flag1 = true;
+			else cout << "Invalid Server IP or Port number.\n";
+		}
+		else if (msg == "close")
+			exit(0);
+		else cout << "Invalid command.\n";
+	} while (!flag1);
 
 	if (hexgate.initSocket()) {
 
@@ -144,14 +173,13 @@ int main() {
 								if (msg == "Your turn")
 								{
 									cout << "Your turn" << endl;
-									Attack(hexgate, messageToSend, 0, map, stat);
+									Attack(hexgate, messageToSend, 0, map, stat,flag);
 								}
 								else if (msg == "Next turn")
 								{
 									cout << "Next turn" << endl;
-									Attack(hexgate, messageToSend, 1, map, stat);
+									Attack(hexgate, messageToSend, 1, map, stat,flag);
 								}
-								flag = 0;
 							}
 
 						}
