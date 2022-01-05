@@ -243,10 +243,10 @@ public:
 		return false;
 	}
 
-	string EncryptPass(string in) {
+	string DecryptPass(string in) {
 		string temp;
 		for (int i = 0; i < in.length(); i++)
-			temp += in[i] + 3;
+			temp += in[i] - 3;
 		return temp;
 	}
 
@@ -262,17 +262,13 @@ public:
 			return;
 		}
 
-		the_wok.pass = var;
-
-		sendmsg = "Do you want to encrypt your password?";
-		SendTo(the_wok.client_gate, sendmsg);
-		var = ReceiveFrom(the_wok.client_gate);
-		if (var == "Error in recv msg") {
-			cout << var << endl;
-			return;
-		}
-		else if (var == "Y") {
-			string en = EncryptPass(the_wok.pass);
+		string mushroom = var;
+		int posit = mushroom.find_first_of(" ");
+		string letter = mushroom.substr(0, posit);
+		string secrete = mushroom.substr(posit + 1, mushroom.size() - posit - 1);
+		
+		if (letter == "Y") {
+			string en = DecryptPass(secrete);
 			the_wok.pass = en;
 		}
 
@@ -313,19 +309,13 @@ public:
 			return;
 		}
 
-		the_wok.pass = var;
+		string mushroom = var;
+		int posit = mushroom.find_first_of(" ");
+		string letter = mushroom.substr(0, posit);
+		string secrete = mushroom.substr(posit + 1, mushroom.size() - posit - 1);
 
-		sendmsg = "Do you want to encrypt your message before sending?";
-		SendTo(the_wok.client_gate, sendmsg);
-		var = ReceiveFrom(the_wok.client_gate);
-		if (var == "Error in recv msg") {
-			cout << var << endl;
-			return;
-		}
-
-		if (var == "Y")
-		{
-			string en = EncryptPass(the_wok.pass);
+		if (letter == "Y") {
+			string en = DecryptPass(secrete);
 			the_wok.pass = en;
 			sendmsg = "Register successfully and Message was encrypted.";
 			Sleep(100);
@@ -333,6 +323,7 @@ public:
 		}
 		else
 		{
+			the_wok.pass = secrete;
 			sendmsg = "Register successfully and Message was not encrypted.";
 			Sleep(100);
 			SendTo(the_wok.client_gate, sendmsg);
@@ -389,16 +380,7 @@ public:
 				SendTo(the_wok.client_gate, rep);
 			}
 		} while (var != the_wok.pass);
-		sendmsg = "Do you want to encrypt your message before sending?";
-		SendTo(the_wok.client_gate, sendmsg);
-
-		var = ReceiveFrom(the_wok.client_gate);
-		if (var == "Error in recv msg") {
-			cout << var << endl;
-			return;
-		}
-		string flag = var;
-
+		
 		sendmsg = "new password: ";
 		SendTo(the_wok.client_gate, sendmsg);
 
@@ -408,7 +390,10 @@ public:
 			return;
 		}
 
-		the_wok.pass = var;
+		string mushroom = var;
+		int posit = mushroom.find_first_of(" ");
+		string flag = mushroom.substr(0, posit);
+		string secrete = mushroom.substr(posit + 1, mushroom.size() - posit - 1);
 
 		if (flag == "Y")
 			sendmsg = "Changepassword successfully and Message was encrypted.";
@@ -421,12 +406,14 @@ public:
 			if (it->first->Account_name() == the_wok.account)
 			{
 				if (flag == "Y") {
-					string encode = EncryptPass(the_wok.pass);
+					string encode = DecryptPass(secrete);
 					the_wok.pass = encode;
 					it->first->setPassword(the_wok.pass);
 				}
-				else
+				else {
+					the_wok.pass = secrete;
 					it->first->setPassword(the_wok.pass);
+				}
 				break;
 			}
 		}
