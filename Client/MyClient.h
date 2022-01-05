@@ -124,6 +124,7 @@ void LoginHandle(Client& hexgate, string& messagetosend, bool& logged);
 void inputMaskedPassword(string& pass);
 void RegisterHandle(Client& hexgate, string& messagetosend);
 void ChangePasswordHandle(Client& hexgate, string& messagetosend);
+void EncryptPassword(string& pass);
 
 int get_option(string input);
 void show_help_checkuser();
