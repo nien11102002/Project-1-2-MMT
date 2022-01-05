@@ -8,7 +8,8 @@
 #include<WS2tcpip.h>
 #include<conio.h>
 #include<regex>
-#include"Game.h"
+#include <iomanip>
+#include "Game.h"
 #pragma comment(lib, "WS2_32.lib")
 using namespace std;
 
@@ -24,8 +25,24 @@ private:
 public:
 
 	Client() {
-		ServerIP = "127.0.0.1";
-		portNumber = 54010;
+	/*	ServerIP = "127.0.0.1";
+		portNumber = 54010;*/
+	}
+
+	Client(string ip, int port)
+	{
+		ServerIP = ip;
+		portNumber = port;
+	}
+
+	void setServerIP(string ip)
+	{
+		this->ServerIP = ip;
+	}
+
+	void setPortNumber(int port)
+	{
+		this->portNumber = port;
 	}
 
 	bool initSocket() {
@@ -86,7 +103,7 @@ public:
 	string Receive() {
 		char buffer[1024] = {};
 		string reply;
-		if (recv(serverSocket, buffer, 1024, 0) == -1)// teo
+		if (recv(serverSocket, buffer, 1024, 0) < 0)// teo
 			return "";
 		reply = string(buffer);
 		return reply;
@@ -114,6 +131,7 @@ void show_help_setup();
 
 void CreateRoomHandle(Client& hexgate, string& messagetosend, int& flag);
 void UploadFileHandle(Client& hexgate, string& messagetosend, vector<vector<char>>& map, vector<vector<char>>& stat);
-void Attack(Client& hexgate, string& messagetosend, int turn, vector<vector<char>> map, vector<vector<char>> stat);
-void getAttacked(Client& hexgate, vector<vector<char>>& stat, vector<vector<char>>& mapt, int& SHIP);
+void Attack(Client& hexgate, string& messagetosend, int turn, vector<vector<char>> map, vector<vector<char>> stat,int& flag);
+void getAttacked(Client& hexgate, vector<vector<char>>& stat, vector<vector<char>>& map, int& SHIP);
+
 #endif
