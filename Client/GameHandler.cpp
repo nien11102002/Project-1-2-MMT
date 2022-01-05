@@ -11,7 +11,7 @@ void CreateRoomHandle(Client& hexgate, string& messagetosend,int& flag)
 		string tmp = recvmsg.substr(0, SpaceIndex);
 
 		if (tmp != "Invitation")
-			tmp == recvmsg;
+			tmp = recvmsg;
 		if (tmp == "") {
 			cout << "Error in recv msg";
 			send = "Error in recv msg";
