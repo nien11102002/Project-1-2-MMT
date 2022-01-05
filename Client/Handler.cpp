@@ -5,6 +5,7 @@ void LoginHandle(Client& hexgate, string& messagetosend, bool& logged) {
 	while (run)
 	{
 		string send;
+		string pass;
 		string recvmsg = hexgate.Receive();
 		if (recvmsg == "") {
 			cout << "Error in recv msg";
@@ -15,17 +16,20 @@ void LoginHandle(Client& hexgate, string& messagetosend, bool& logged) {
 		else if (recvmsg == "Password: ") {
 			cout << recvmsg;
 			inputMaskedPassword(send);
-			hexgate.Sending(send);
-		}
-		else if (recvmsg == "Do you want to encrypt your password?") {
-			cout << recvmsg << endl;
+			pass = send;
+
+			cout << "Do you want to encrypt your password?" << endl;
 			char letter;
 			do {
 				cout << "(Y/N): ";
 				cin >> letter;
 				letter = toupper(letter);
 			} while (letter != 'Y' && letter != 'N');
-			send = ""; send += letter;
+
+			if (letter == 'Y') 
+				EncryptPassword(pass);
+			string comp = ""; comp += letter;
+			send = ""; send = comp + " " + pass;
 			hexgate.Sending(send);
 		}
 		else if (recvmsg == "\nLogin successfully!\n") {
@@ -36,6 +40,7 @@ void LoginHandle(Client& hexgate, string& messagetosend, bool& logged) {
 		else {
 			cout << "\nInvalid user.\n";
 			run = false;
+			cin.ignore();
 		}
 	}
 }
@@ -71,6 +76,7 @@ void RegisterHandle(Client& hexgate, string& messagetosend)
 	while (run)
 	{
 		string send;
+		string pass;
 		string recvmsg = hexgate.Receive();
 		if (recvmsg == "") {
 			cout << "Error in recv msg";
@@ -81,17 +87,20 @@ void RegisterHandle(Client& hexgate, string& messagetosend)
 		else if (recvmsg == "Password: ") {
 			cout << recvmsg;
 			inputMaskedPassword(send);
-			hexgate.Sending(send);
-		}
-		else if (recvmsg == "Do you want to encrypt your message before sending?") {
-			cout << recvmsg << endl;
+			pass = send;
+
+			cout << "Do you want to encrypt your password?" << endl;
 			char letter;
 			do {
 				cout << "(Y/N): ";
 				cin >> letter;
 				letter = toupper(letter);
 			} while (letter != 'Y' && letter != 'N');
-			send = ""; send += letter;
+
+			if (letter == 'Y')
+				EncryptPassword(pass);
+			string comp = ""; comp += letter;
+			send = ""; send = comp + " " + pass;
 			hexgate.Sending(send);
 		}
 		else if (recvmsg == "What is your fullname: ") {
@@ -124,6 +133,7 @@ void ChangePasswordHandle(Client& hexgate, string& messagetosend)
 	while (run)
 	{
 		string send;
+		string pass;
 		string recvmsg = hexgate.Receive();
 		if (recvmsg == "") {
 			cout << "Error in recv msg";
@@ -131,20 +141,29 @@ void ChangePasswordHandle(Client& hexgate, string& messagetosend)
 			hexgate.Sending(send);
 			run = false;
 		}
-		else if (recvmsg == "password: " || recvmsg == "new password: ") {
+		else if (recvmsg == "password: ") {
 			cout << ">>" << recvmsg;
 			inputMaskedPassword(send);
 			hexgate.Sending(send);
 		}
-		else if (recvmsg == "Do you want to encrypt your message before sending?") {
-			cout << recvmsg << endl;
+		else if (recvmsg == "new password: ") {
+
+			cout << recvmsg;
+			inputMaskedPassword(send);
+			pass = send;
+
+			cout << "Do you want to encrypt your password?" << endl;
 			char letter;
 			do {
 				cout << "(Y/N): ";
 				cin >> letter;
 				letter = toupper(letter);
 			} while (letter != 'Y' && letter != 'N');
-			send = ""; send += letter;
+
+			if (letter == 'Y')
+				EncryptPassword(pass);
+			string comp = ""; comp += letter;
+			send = ""; send = comp + " " + pass;
 			hexgate.Sending(send);
 		}
 		else {
@@ -152,6 +171,12 @@ void ChangePasswordHandle(Client& hexgate, string& messagetosend)
 			run = false;
 		}
 	}
+}
+
+void EncryptPassword(string& pass)
+{
+	for (int i = 0; i < pass.size(); i++)
+		pass[i] += 3;
 }
 
 int get_option(string input) {
