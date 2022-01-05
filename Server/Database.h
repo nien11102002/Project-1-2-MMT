@@ -1,4 +1,4 @@
-﻿#ifndef DATACORE_H
+#ifndef DATACORE_H
 #define DATACORE_H
 
 #include<iostream>
@@ -77,6 +77,7 @@ public:
 
 	Account(string acc_name, string password) {
 		this->account_name = acc_name;
+
 		this->pass = password;
 	}
 
