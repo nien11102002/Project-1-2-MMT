@@ -179,6 +179,7 @@ public:
 								}
 							}
 							else {
+								user = socialcredit[cs].account;
 								string mess = string(buffer);
 								auto first_space = mess.find_first_of(' ');
 								string option = mess.substr(0, first_space);
@@ -845,11 +846,12 @@ public:
 		stringstream builder;
 		string mts;
 		for (auto it = hashmap.begin(); it != hashmap.end(); it++)
-			if (it->second->Name() == username) {
+			if (it->first->Account_name() == username) {
 				it->second->setName(element);
-				builder << "Name of player " << username << " has been changed to" << it->second->Name() << endl << endl;
+				builder << "Name of player " << username << " has been changed to " << it->second->Name() << endl << endl;
 				mts = builder.str();
 				SendTo(the_wok.client_gate, mts);
+				break;
 			}
 
 	}
@@ -858,11 +860,12 @@ public:
 		stringstream builder;
 		string mts;
 		for (auto it = hashmap.begin(); it != hashmap.end(); it++)
-			if (it->second->Name() == username) {
+			if (it->first->Account_name() == username) {
 				it->second->setBirthday(element);
-				builder << "Birthday of player " << username << " has been changed to" << it->second->Name() << endl << endl;
+				builder << "Birthday of player " << username << " has been changed to " << it->second->Birthday() << endl << endl;
 				mts = builder.str();
 				SendTo(the_wok.client_gate, mts);
+				break;
 			}
 	}
 
@@ -870,11 +873,12 @@ public:
 		stringstream builder;
 		string mts;
 		for (auto it = hashmap.begin(); it != hashmap.end(); it++)
-			if (it->second->Name() == username) {
-				it->second->setBirthday(element);
-				builder << "Birthday of player " << username << " has been changed to" << it->second->Name() << endl << endl;
+			if (it->first->Account_name() == username) {
+				it->second->setNote(element);
+				builder << "Note of player " << username << " has been changed to " << it->second->getNote() << endl << endl;
 				mts = builder.str();
 				SendTo(the_wok.client_gate, mts);
+				break;
 			}
 	}
 
