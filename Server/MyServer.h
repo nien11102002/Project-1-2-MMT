@@ -271,6 +271,8 @@ public:
 			string en = DecryptPass(secrete);
 			the_wok.pass = en;
 		}
+		else
+			the_wok.pass = secrete;
 
 		if (isMatch(hashmap, the_wok.account, the_wok.pass, the_wok.citizen))
 		{
