@@ -39,11 +39,11 @@ void PrintPlayBoard(vector<vector<char>> cloth, vector<vector<char>> map)
 	{
 		cout << left << setw(3) << i + 1;
 		for (int j = 0; j < 15; j++)
-			cout << setw(3) << map[i][j];
+			cout << setw(3) << cloth[i][j];
 		cout << " || ";
 		cout << left << setw(3) << i + 1;
 		for (int j = 0; j < 15; j++)
-			cout << setw(3) << cloth[i][j];
+			cout << setw(3) << map[i][j];
 		cout << endl;
 	}
 }
