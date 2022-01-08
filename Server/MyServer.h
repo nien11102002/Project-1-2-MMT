@@ -202,7 +202,7 @@ public:
 								{
 									Server_CreateRoom(hashmap, socialcredit[cs], socialcredit, mess, opponent);
 								}
-								else if (option == "upload_file")
+								else if (option == "upload_ships")
 								{
 									StartGame(socialcredit[cs], opponent, mess);
 									GameHandle(hashmap, socialcredit[cs], opponent);
@@ -509,7 +509,7 @@ public:
 
 			string tmp1 = var1.substr(0, var1.find(" "));
 			string tmp2 = var2.substr(0, var2.find(" "));
-			if (tmp1 == "upload_file" && tmp2 == "upload_file")
+			if (tmp1 == "upload_ships" && tmp2 == "upload_ships")
 			{
 				string rep = "Your turn";
 				SendTo(the_wok.client_gate, rep);
@@ -519,12 +519,12 @@ public:
 			}
 			else
 			{
-				if (tmp1 != "upload_file")
+				if (tmp1 != "upload_ships")
 				{
 					string rep = "Wrong format";
 					SendTo(the_wok.client_gate, rep);
 				}
-				if (tmp2 != "upload_file")
+				if (tmp2 != "upload_ships")
 				{
 					string rep = "Wrong format";
 					SendTo(opponent.client_gate, rep);
@@ -548,7 +548,10 @@ public:
 			} while (var == "hit");
 			
 			if (var == "game over")
+			{
 				UpdateScore(hashmap, the_wok, opponent);
+				break;
+			}
 
 			do
 			{
