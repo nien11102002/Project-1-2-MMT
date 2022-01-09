@@ -1,7 +1,7 @@
 #include"DataBase.h"
 #include"MyServer.h"
 
-bool isMatch(unordered_map<Account*, Player*> hashmap, string account, string password, Player& user)
+bool isMatch(map<Account*, Player*> hashmap, string account, string password, Player& user)
 {
 	for (auto it = hashmap.begin(); it != hashmap.end(); it++)
 		if (it->first->Account_name() == account && it->first->Pass() == password) {
@@ -16,7 +16,7 @@ bool isMatch(unordered_map<Account*, Player*> hashmap, string account, string pa
 	return false;
 }
 
-bool isAvailableUsername(unordered_map<Account*, Player*> hashmap, string S)
+bool isAvailableUsername(map<Account*, Player*> hashmap, string S)
 {
 	bool result = false;
 	for (auto i = hashmap.begin(); i != hashmap.end(); i++)

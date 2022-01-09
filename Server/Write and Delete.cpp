@@ -1,7 +1,7 @@
 #include"DataBase.h"
 #include"MyServer.h"
 
-void WriteFile(unordered_map<Account*, Player*> hashmap, fstream& jav, fstream& editor) {
+void WriteFile(map<Account*, Player*> hashmap, fstream& jav, fstream& editor) {
 	editor.open("Acc and Pass.txt", ios::out);
 	jav.open("Player.txt", ios::out);
 
@@ -12,27 +12,27 @@ void WriteFile(unordered_map<Account*, Player*> hashmap, fstream& jav, fstream& 
 		return;
 	}
 	else {
-		for (auto it = hashmap.begin(); it != hashmap.end(); it++)
+		for (auto it = begin(hashmap); it != end(hashmap); it++)
 		{
 			editor << it->first->Account_name() << endl;
-			editor << it->first->Pass() << endl;
+			editor << it->first->Pass();
+			if (it != hashmap.end()--)
+				editor << endl;
 
 			jav << it->second->Name() << endl;
 			jav << it->second->Birthday() << endl;
 			jav << it->second->Win() << endl;
-			jav << it->second->Loss() << endl << endl;
-
-			if (it != hashmap.end()) {
-				editor << endl;
+			jav << it->second->Loss();
+			if (it != hashmap.end()--)
 				jav << endl;
-			}
-
+			
 		}
 	}
+	jav.close(); editor.close();
 }
 
 
-void CleanHashmap(unordered_map<Account*, Player*>& hashmap) {
+void CleanHashmap(map<Account*, Player*>& hashmap) {
 	for (auto it = hashmap.begin(); it != hashmap.end(); it++)
 	{
 		delete it->first;

@@ -1,4 +1,4 @@
-#ifndef MYSERVER_H
+﻿#ifndef MYSERVER_H
 #define MYSERVER_H
 
 #define WIN32_LEAN_AND_MEAN
@@ -32,7 +32,7 @@ public:
 		Player citizen;
 	};
 
-	unordered_map<Account*, Player*> hashmap;
+	map<Account*, Player*> hashmap;
 	fstream jav, editor;
 	vector<client_table> socialcredit;
 
@@ -188,10 +188,12 @@ public:
 								}
 								else if (option == "setup_info") {
 									setup_info_menu(hashmap, socialcredit[cs], mess, user);
+									WriteFile(hashmap, jav, editor);
 								}
 								else if (option == "change_password" || option == "Change_password")
 								{
 									ChangePassword(hashmap, socialcredit[cs]);
+									WriteFile(hashmap, jav, editor);
 								}
 								else if (option == "start_game")
 								{
@@ -206,6 +208,7 @@ public:
 								{
 									StartGame(socialcredit[cs], opponent, mess);
 									GameHandle(hashmap, socialcredit[cs], opponent);
+									WriteFile(hashmap, jav, editor);
 								}
 								else {
 									string warning = "not match any type.\n";
@@ -251,7 +254,7 @@ public:
 		return temp;
 	}
 
-	void Login(unordered_map<Account*, Player*> hashmap, client_table& the_wok, bool& flag, string content)
+	void Login(map<Account*, Player*> hashmap, client_table& the_wok, bool& flag, string content)
 	{
 		the_wok.account = content;
 
@@ -267,7 +270,7 @@ public:
 		int posit = mushroom.find_first_of(" ");
 		string letter = mushroom.substr(0, posit);
 		string secrete = mushroom.substr(posit + 1, mushroom.size() - posit - 1);
-		
+
 		if (letter == "Y") {
 			string en = DecryptPass(secrete);
 			the_wok.pass = en;
@@ -291,7 +294,7 @@ public:
 
 	}
 
-	void Register(unordered_map<Account*, Player*>& hashmap, client_table& the_wok, string content)
+	void Register(map<Account*, Player*>& hashmap, client_table& the_wok, string content)
 	{
 		string sendmsg, var;
 		if (isAvailableUsername(hashmap, content) == true)
@@ -364,7 +367,7 @@ public:
 		SendTo(the_wok.client_gate, sendmsg);
 	}
 
-	void ChangePassword(unordered_map<Account*, Player*> hashmap, client_table& the_wok)
+	void ChangePassword(map<Account*, Player*> hashmap, client_table& the_wok)
 	{
 		string sendmsg = "password: ";
 		SendTo(the_wok.client_gate, sendmsg);
@@ -383,7 +386,7 @@ public:
 				SendTo(the_wok.client_gate, rep);
 			}
 		} while (var != the_wok.pass);
-		
+
 		sendmsg = "new password: ";
 		SendTo(the_wok.client_gate, sendmsg);
 
@@ -422,7 +425,7 @@ public:
 		}
 	}
 
-	void Server_CreateRoom(unordered_map<Account*, Player*> hashmap, client_table the_wok, vector<client_table> socialcredit,
+	void Server_CreateRoom(map<Account*, Player*> hashmap, client_table the_wok, vector<client_table> socialcredit,
 		string message, client_table& oppo)
 	{
 		string var;
@@ -533,7 +536,7 @@ public:
 		} while (flag);
 	}
 
-	void GameHandle(unordered_map<Account*, Player*>& hashmap,client_table the_wok, client_table opponent)
+	void GameHandle(map<Account*, Player*>& hashmap, client_table the_wok, client_table opponent)
 	{
 		string var;
 		do
@@ -546,7 +549,7 @@ public:
 				var = ReceiveFrom(opponent.client_gate);//receive "hit" or "miss" or "game over"
 				SendTo(the_wok.client_gate, var);
 			} while (var == "hit");
-			
+
 			if (var == "game over")
 			{
 				UpdateScore(hashmap, the_wok, opponent);
@@ -572,8 +575,8 @@ public:
 		if (var1 == "Y" && var2 == "Y")
 		{
 			string msg = "Play again";
-			SendTo(the_wok.client_gate,msg);
-			SendTo(opponent.client_gate,msg);
+			SendTo(the_wok.client_gate, msg);
+			SendTo(opponent.client_gate, msg);
 		}
 		else
 		{
@@ -583,7 +586,7 @@ public:
 		}
 	}
 
-	void UpdateScore(unordered_map<Account*, Player*>& hashmap,client_table winner, client_table loser)
+	void UpdateScore(map<Account*, Player*>& hashmap, client_table winner, client_table loser)
 	{
 		for (auto it = hashmap.begin(); it != hashmap.end(); it++)
 		{
@@ -633,7 +636,7 @@ public:
 		send(sock_id, package.c_str(), package.size(), 0);
 	}
 
-	void check_user_menu(unordered_map<Account*, Player*>& hashmap, client_table& the_wok, string opt) {
+	void check_user_menu(map<Account*, Player*>& hashmap, client_table& the_wok, string opt) {
 		int option = getoption(opt);
 		string username = getname(opt);
 		dispatch(hashmap, the_wok, option, username);
@@ -671,7 +674,7 @@ public:
 		return user_string;
 	}
 
-	void dispatch(unordered_map<Account*, Player*>& hashmap, client_table& the_wok, int option, string username) {
+	void dispatch(map<Account*, Player*>& hashmap, client_table& the_wok, int option, string username) {
 		const int find_name = 1;
 		const int check_online = 2;
 		const int show_dob = 3;
@@ -720,7 +723,7 @@ public:
 		}
 	}
 
-	bool find_Name(unordered_map<Account*, Player*>& hashmap, string username) {
+	bool find_Name(map<Account*, Player*>& hashmap, string username) {
 		for (auto it = hashmap.begin(); it != hashmap.end(); it++)
 			if (it->first->Account_name() == username) return true;
 		return false;
@@ -733,7 +736,7 @@ public:
 		return false;
 	}
 
-	void show_DOB(unordered_map<Account*, Player*>& hashmap, client_table& the_wok, string username) {
+	void show_DOB(map<Account*, Player*>& hashmap, client_table& the_wok, string username) {
 		stringstream builder;
 		for (auto it = hashmap.begin(); it != hashmap.end(); it++)
 			if (it->first->Account_name() == username)
@@ -744,7 +747,7 @@ public:
 		SendTo(the_wok.client_gate, mts);
 	}
 
-	void show_Fullname(unordered_map<Account*, Player*>& hashmap, client_table& the_wok, string username) {
+	void show_Fullname(map<Account*, Player*>& hashmap, client_table& the_wok, string username) {
 		stringstream builder;
 		for (auto it = hashmap.begin(); it != hashmap.end(); it++)
 			if (it->first->Account_name() == username)
@@ -755,7 +758,7 @@ public:
 		SendTo(the_wok.client_gate, mts);
 	}
 
-	void show_Note(unordered_map<Account*, Player*>& hashmap, client_table& the_wok, string username) {
+	void show_Note(map<Account*, Player*>& hashmap, client_table& the_wok, string username) {
 		stringstream builder;
 		for (auto it = hashmap.begin(); it != hashmap.end(); it++)
 			if (it->first->Account_name() == username)
@@ -766,7 +769,7 @@ public:
 		SendTo(the_wok.client_gate, mts);
 	}
 
-	void show_All(unordered_map<Account*, Player*>& hashmap, client_table& the_wok, string username) {
+	void show_All(map<Account*, Player*>& hashmap, client_table& the_wok, string username) {
 		stringstream builder;
 		builder << "All information about Player: " << username << endl;
 		for (auto it = hashmap.begin(); it != hashmap.end(); it++)
@@ -783,7 +786,7 @@ public:
 		SendTo(the_wok.client_gate, mts);
 	}
 
-	void show_Point(unordered_map<Account*, Player*>& hashmap, client_table& the_wok, string username) {
+	void show_Point(map<Account*, Player*>& hashmap, client_table& the_wok, string username) {
 		stringstream builder;
 		for (auto it = hashmap.begin(); it != hashmap.end(); it++)
 			if (it->first->Account_name() == username)
@@ -795,7 +798,7 @@ public:
 		SendTo(the_wok.client_gate, mts);
 	}
 
-	void setup_info_menu(unordered_map<Account*, Player*>& hashmap, client_table& the_wok, string opt_setup, string user) {
+	void setup_info_menu(map<Account*, Player*>& hashmap, client_table& the_wok, string opt_setup, string user) {
 		int option = getoption_setup(opt_setup);
 		string element = getelement_setup(opt_setup);
 		dispatch_setup(hashmap, the_wok, option, element, user);
@@ -825,7 +828,7 @@ public:
 		return element_string;
 	}
 
-	void dispatch_setup(unordered_map<Account*, Player*>& hashmap, client_table& the_wok, int option, string element, string username) {
+	void dispatch_setup(map<Account*, Player*>& hashmap, client_table& the_wok, int option, string element, string username) {
 		const int change_fullname = 1;
 		const int change_dob = 2;
 		const int change_note = 3;
@@ -845,7 +848,7 @@ public:
 		}
 	}
 
-	void change_Fullname(unordered_map<Account*, Player*>& hashmap, client_table& the_wok, int option, string element, string username) {
+	void change_Fullname(map<Account*, Player*>& hashmap, client_table& the_wok, int option, string element, string username) {
 		stringstream builder;
 		string mts;
 		for (auto it = hashmap.begin(); it != hashmap.end(); it++)
@@ -856,10 +859,11 @@ public:
 				SendTo(the_wok.client_gate, mts);
 				break;
 			}
+		WriteFile(hashmap, jav, editor);
 
 	}
 
-	void change_Dob(unordered_map<Account*, Player*>& hashmap, client_table& the_wok, int option, string element, string username) {
+	void change_Dob(map<Account*, Player*>& hashmap, client_table& the_wok, int option, string element, string username) {
 		stringstream builder;
 		string mts;
 		for (auto it = hashmap.begin(); it != hashmap.end(); it++)
@@ -870,9 +874,10 @@ public:
 				SendTo(the_wok.client_gate, mts);
 				break;
 			}
+		WriteFile(hashmap, jav, editor);
 	}
 
-	void change_Note(unordered_map<Account*, Player*>& hashmap, client_table& the_wok, int option, string element, string username) {
+	void change_Note(map<Account*, Player*>& hashmap, client_table& the_wok, int option, string element, string username) {
 		stringstream builder;
 		string mts;
 		for (auto it = hashmap.begin(); it != hashmap.end(); it++)
@@ -886,7 +891,6 @@ public:
 	}
 
 	~Server() {
-		WriteFile(hashmap, jav, editor);
 		CleanHashmap(hashmap);
 		closesocket(clientSocket);
 		WSACleanup();

@@ -1,9 +1,9 @@
-#ifndef DATACORE_H
+﻿#ifndef DATACORE_H
 #define DATACORE_H
 
 #include<iostream>
 #include<fstream>
-#include<unordered_map>
+#include<map>
 #include<sstream>
 #include<string>
 #include<vector>
@@ -94,16 +94,16 @@ public:
 };
 
 // hàm nạp dữ liệu từ file.
-void LoadData(fstream& editor, fstream& jav, unordered_map<Account*, Player*>& hashmap);
-void Readfile(unordered_map<Account*, Player*>& hashmap, fstream& jav, fstream& editor);
+void LoadData(fstream& editor, fstream& jav, map<Account*, Player*>& hashmap);
+void Readfile(map<Account*, Player*>& hashmap, fstream& jav, fstream& editor);
 
 //hàm ghi đè dữ liệu.
-void WriteFile(unordered_map<Account*, Player*> hashmap, fstream& jav, fstream& editor);
-void CleanHashmap(unordered_map<Account*, Player*>& hashmap);
+void WriteFile(map<Account*, Player*> hashmap, fstream& jav, fstream& editor);
+void CleanHashmap(map<Account*, Player*>& hashmap);
 
 // Login and Register.
-bool isMatch(unordered_map<Account*, Player*> hashmap, string account, string password, Player& user);
-bool isAvailableUsername(unordered_map<Account*, Player*> hashmap, string S);
+bool isMatch(map<Account*, Player*> hashmap, string account, string password, Player& user);
+bool isAvailableUsername(map<Account*, Player*> hashmap, string S);
 void writeAtBottomOfNewOne(Player P, Account A);
 
 #endif
