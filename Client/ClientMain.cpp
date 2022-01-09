@@ -165,7 +165,7 @@ int main() {
 							int SpaceIndex = msg.find_first_of(" ");
 							if (SpaceIndex != -1)
 								msg = msg.substr(0, SpaceIndex);
-							if (msg == "upload_file")// thg moi gui trc.
+							if (msg == "upload_ships")// thg moi gui trc.
 							{
 								UploadFileHandle(hexgate, messageToSend, map, stat);
 								string msg = hexgate.Receive();
