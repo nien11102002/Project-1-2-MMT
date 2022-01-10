@@ -36,8 +36,8 @@ void writeAtBottomOfNewOne(Player P, Account A)
 	fstream f;
 	f.open("Acc and Pass.txt", ios::out | ios::app);
 	f << endl;
-	f << A.Account_name() << endl;;
-	f << A.Pass() << endl;
+	f << A.Account_name() << endl;
+	f << A.Pass();
 	f.close();
 
 	f.open("Player.txt", ios::out | ios::app);
@@ -45,6 +45,6 @@ void writeAtBottomOfNewOne(Player P, Account A)
 	f << P.Name() << endl;
 	f << P.Birthday() << endl;
 	f << P.Win() << endl;
-	f << P.Loss() << endl;
+	f << P.Loss();
 	f.close();
 }
