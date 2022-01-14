@@ -774,11 +774,7 @@ public:
 		builder << "All information about Player: " << username << endl;
 		for (auto it = hashmap.begin(); it != hashmap.end(); it++)
 			if (it->first->Account_name() == username) {
-				builder << "Fullname: " << it->second->Name() << endl;
-				builder << "Status: " << it->second->Online() << endl;
-				builder << "Date of Birth: " << it->second->Birthday() << endl;
-				builder << "Win: " << it->second->Win() << endl;
-				builder << "Loss: " << it->second->Loss() << endl << endl;
+				builder << it->second->ToString() << endl;
 			}
 		if (!find_Name(hashmap, username))
 			builder << "Player " << username << " does not exist!\n\n";
