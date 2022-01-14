@@ -112,6 +112,7 @@ void Attack(Client& hexgate, string& messagetosend, int turn, vector<vector<char
 		if (var == "miss")
 		{
 			map[x][y] = '~';
+			cout << "\n\nYou didn't hit enemy ship.\n";
 			getAttacked(hexgate, stat, map, SHIP);
 		}
 		else if (var == "game over")
@@ -175,7 +176,7 @@ void getAttacked(Client& hexgate, vector<vector<char>>& stat, vector<vector<char
 				PrintPlayBoard(stat, map);
 				cout << "Enemy " << tmp << endl;
 				msg = "hit";
-				cout << msg;
+				cout << msg<<endl;
 				hexgate.Sending("hit");
 			}
 		}
@@ -183,7 +184,7 @@ void getAttacked(Client& hexgate, vector<vector<char>>& stat, vector<vector<char
 		{
 			msg = "miss";
 			stat[x][y] = '~';
-			cout << msg;
+			cout << msg<<endl;
 			hexgate.Sending("miss");
 		}
 
