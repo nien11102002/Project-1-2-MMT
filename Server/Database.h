@@ -1,4 +1,4 @@
-﻿#ifndef DATACORE_H
+#ifndef DATACORE_H
 #define DATACORE_H
 
 #include<iostream>
@@ -57,8 +57,6 @@ public:
 		stringstream builder;
 		builder << name << "\n" << "Win: " << win << "\tLoss: " << loss << "\n";
 		builder << "Birthday: " << DOB << endl;
-		string onl = (online == true) ? "Online.\n" : "Offline.\n";
-		builder << "Status: " << onl << endl;
 		builder << "Note: " << Note << endl;
 		string stream = builder.str();
 		return stream;
