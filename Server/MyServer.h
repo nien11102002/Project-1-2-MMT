@@ -822,7 +822,7 @@ public:
 	string getelement_setup(string opt) {
 		string element_string;
 		smatch match;
-		regex user_pattern("\\s(\\w+(\\s?\\w+)*)");
+		regex user_pattern("\\s(\\w+(\\/?\\s?\\w+)*)");
 		regex_search(opt, match, user_pattern);
 		element_string = match[1];
 		return element_string;
