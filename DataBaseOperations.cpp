@@ -1,6 +1,6 @@
 ﻿void DataOperation() {// Hàm để chạy DataBase, để tạm thời, nếu muốn chạy thì cứ dán vô 
 	// project mới và include file DataCore.h để chạy, chừa hàm main để xây dựng Server và Client.
-	// Note từ Mạnh Hùng 13-11-2021.
+	// Note từ Mạnh Hùng 13-11-2021. Đồ án thành công 10 điểm.
 
 	fstream editor, jav;
 	unordered_map<Account*, Player*> hashmap;
