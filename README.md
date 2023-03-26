@@ -7,11 +7,11 @@ Chương trình:
 +) Dùng đúng câu lệnh trong đề nếu làm console.
 +) Copy Source code tham khảo đối với 
 	- đoạn mã hóa.
-	- database(SQL).***
+	- database(txt file).***
 Lưu ý: nhớ copy link tham khảo.
 Còn lại phải tự xây dựng.
 +) Bắt buộc phải dùng thư viện socket.
-+) Không giới thư viện trong ngôn ngữ và ngôn ngữ lập trình.(C++ vs SQL).***
++) Không giới hạn thư viện trong ngôn ngữ và ngôn ngữ lập trình.(C++ vs txt file).***
 
 Đối với chương trình:
 - Chương trình phải chạy được.
